@@ -13,21 +13,9 @@ export const metadata: Metadata = {
   description: 'We help businesses automate and scale using advanced AI systems and workflows. Book a strategy call today.',
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/images/starlight-logo.png',
+    apple: '/images/starlight-logo.png',
+    shortcut: '/images/starlight-logo.png',
   },
 }
 
