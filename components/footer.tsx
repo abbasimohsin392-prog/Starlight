@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Twitter, Linkedin, Github, Mail } from "lucide-react"
+import { Instagram, Mail } from "lucide-react"
 
 const footerLinks = {
   product: [
@@ -13,7 +13,7 @@ const footerLinks = {
   ],
   contact: [
     { label: "Book a Strategy Call", href: "https://calendly.com" },
-    { label: "Email Us", href: "mailto:hello@starlightai.site" },
+    { label: "Email Us", href: "mailto:starlightai306@gmail.com" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -22,10 +22,8 @@ const footerLinks = {
 }
 
 const socialLinks = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Github, href: "#", label: "GitHub" },
-  { icon: Mail, href: "#", label: "Email" },
+  { icon: Instagram, href: "https://www.instagram.com/starlight_.ai/", label: "Instagram" },
+  { icon: Mail, href: "mailto:starlightai306@gmail.com", label: "Email" },
 ]
 
 export function Footer() {
@@ -52,6 +50,8 @@ export function Footer() {
                 <motion.a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
