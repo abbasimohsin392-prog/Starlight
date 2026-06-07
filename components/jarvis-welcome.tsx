@@ -8,26 +8,32 @@ export function JarvisWelcome() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [muted, setMuted] = useState(false)
   const [visible, setVisible] = useState(true)
+  const [played, setPlayed] = useState(false)
 
   useEffect(() => {
     const audio = new Audio("/jarvis-welcome.mp3")
     audioRef.current = audio
     audio.volume = 0.7
 
-    const timer = setTimeout(() => {
-      audio.play().catch(() => {})
-    }, 1500)
+    const handleScroll = () => {
+      if (!played) {
+        audio.play().catch(() => {})
+        setPlayed(true)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { once: true, passive: true })
 
     const hideTimer = setTimeout(() => {
       setVisible(false)
-    }, 8000)
+    }, 10000)
 
     return () => {
-      clearTimeout(timer)
+      window.removeEventListener("scroll", handleScroll)
       clearTimeout(hideTimer)
       audio.pause()
     }
-  }, [])
+  }, [played])
 
   const toggleMute = () => {
     if (audioRef.current) {
