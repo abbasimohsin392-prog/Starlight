@@ -120,4 +120,53 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ dur
+            transition={{ duration: 0.8, delay: 0.55 }}
+            className="flex flex-wrap justify-center gap-2 mb-10 max-w-3xl"
+          >
+            {niches.map((niche, i) => (
+              <motion.span
+                key={niche}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.6 + i * 0.04 }}
+                className="glass-card px-3 py-1 rounded-full text-xs text-muted-foreground border border-white/10 cursor-default hover:border-purple-500/40 hover:bg-purple-500/10 transition-colors duration-200"
+              >
+                {niche}
+              </motion.span>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col sm:flex-row gap-4 mb-16"
+          >
+            <a href="mailto:starlightai306@gmail.com">
+              <Button
+                size="lg"
+                className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg shadow-lg shadow-purple-500/25 transition-transform duration-200 hover:scale-105 hover:-translate-y-0.5"
+              >
+                Book a Free Strategy Call
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </a>
+
+            <Link href="/services">
+              <Button
+                size="lg"
+                variant="outline"
+                className="btn-outline-glow border-border hover:bg-secondary/50 px-8 py-6 text-lg w-full transition-transform duration-200 hover:scale-105 hover:-translate-y-0.5"
+              >
+                See What We Build
+              </Button>
+            </Link>
+          </motion.div>
+
+        </div>
+      </motion.div>
+
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
+    </section>
+  )
+}
