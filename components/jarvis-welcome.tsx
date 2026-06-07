@@ -15,28 +15,26 @@ export function JarvisWelcome() {
     audioRef.current = audio
     audio.volume = 0.7
 
-    const handleScroll = () => {
-      if (!played) {
-        audio.play().catch(() => {})
-        setPlayed(true)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll, { once: true, passive: true })
-
     const hideTimer = setTimeout(() => {
       setVisible(false)
-    }, 10000)
+    }, 15000)
 
     return () => {
-      window.removeEventListener("scroll", handleScroll)
       clearTimeout(hideTimer)
       audio.pause()
     }
-  }, [played])
+  }, [])
+
+  const handleClick = () => {
+    if (audioRef.current && !played) {
+      audioRef.current.play().catch(() => {})
+      setPlayed(true)
+    }
+    toggleMute()
+  }
 
   const toggleMute = () => {
-    if (audioRef.current) {
+    if (audioRef.current && played) {
       audioRef.current.muted = !muted
       setMuted(!muted)
     }
@@ -50,16 +48,14 @@ export function JarvisWelcome() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-24 left-6 z-50 flex items-center gap-3 glass-card px-4 py-3 rounded-2xl border border-white/10 shadow-lg shadow-purple-500/10"
+          onClick={handleClick}
+          className="fixed bottom-24 left-6 z-50 flex items-center gap-3 glass-card px-4 py-3 rounded-2xl border border-white/10 shadow-lg shadow-purple-500/10 cursor-pointer hover:border-cyan-400/30 transition-colors"
         >
           <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <p className="text-sm text-muted-foreground font-medium">
-            <span className="text-cyan-400">JARVIS</span> — Starlight AI Online
+            <span className="text-cyan-400">JARVIS</span> — {played ? "Starlight AI Online" : "Click to Initialize"}
           </p>
-          <button
-            onClick={toggleMute}
-            className="text-muted-foreground hover:text-foreground transition-colors ml-1"
-          >
+          <button className="text-muted-foreground hover:text-foreground transition-colors ml-1">
             {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
         </motion.div>
