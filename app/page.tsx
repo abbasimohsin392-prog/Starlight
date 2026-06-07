@@ -8,12 +8,15 @@ import { TestimonialsSection } from "@/components/testimonials-section"
 import { FAQSection } from "@/components/faq-section"
 import { Footer } from "@/components/footer"
 import { CinematicBackground } from "@/components/cinematic-background"
+import { UrgencyBanner } from "@/components/urgency-banner"
+import { FloatingCTA } from "@/components/floating-cta"
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-background relative">
+      <UrgencyBanner />
       <CinematicBackground />
-      <div className="relative z-10">
+      <div className="relative z-10 pt-9">
         <Navbar />
         <HeroSection />
         <TrustedCompanies />
@@ -24,6 +27,7 @@ export default function Home() {
         <FAQSection />
         <Footer />
       </div>
+      <FloatingCTA />
     </main>
   )
 }
