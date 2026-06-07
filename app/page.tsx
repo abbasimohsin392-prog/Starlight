@@ -10,12 +10,14 @@ import { Footer } from "@/components/footer"
 import { CinematicBackground } from "@/components/cinematic-background"
 import { UrgencyBanner } from "@/components/urgency-banner"
 import { FloatingCTA } from "@/components/floating-cta"
+import { JarvisWelcome } from "@/components/jarvis-welcome"
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-background relative">
       <UrgencyBanner />
       <CinematicBackground />
+      <JarvisWelcome />
       <div className="relative z-10 pt-9">
         <Navbar />
         <HeroSection />
