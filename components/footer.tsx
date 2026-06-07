@@ -13,7 +13,7 @@ const footerLinks = {
   ],
   contact: [
     { label: "Book a Strategy Call", href: "https://calendly.com" },
-    { label: "Email Us", href: "mailto:starlightai306@gmail.com" },
+    { label: "Email Us", href: "https://mail.google.com/mail/?view=cm&to=starlightai306@gmail.com" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -23,7 +23,7 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/starlight_.ai/", label: "Instagram" },
-  { icon: Mail, href: "mailto:starlightai306@gmail.com", label: "Email" },
+  { icon: Mail, href: "https://mail.google.com/mail/?view=cm&to=starlightai306@gmail.com", label: "Email" },
 ]
 
 export function Footer() {
