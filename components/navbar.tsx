@@ -60,7 +60,7 @@ export function Navbar() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground border border-border hover:bg-secondary/50 transition-colors btn-outline-glow cursor-pointer"
+              className="px-4 py-2 rounded-md text-sm font-medium text-foreground border border-white/20 hover:border-white/40 hover:bg-white/5 transition-colors cursor-pointer"
             >
               Book a Call
             </motion.a>
