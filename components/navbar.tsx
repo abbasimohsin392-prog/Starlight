@@ -56,21 +56,18 @@ export function Navbar() {
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                variant="ghost"
-                className="btn-outline-glow text-muted-foreground hover:text-foreground"
-                onClick={() => window.open(CALENDLY_LINK, '_blank')}
-              >
-                Book a Call
-              </Button>
+              <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="btn-outline-glow text-muted-foreground hover:text-foreground">
+                  Book a Call
+                </Button>
+              </a>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                className="btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-medium"
-                onClick={() => window.open(CALENDLY_LINK, '_blank')}
-              >
-                Get Started
-              </Button>
+              <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
+                <Button className="btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-medium">
+                  Get Started
+                </Button>
+              </a>
             </motion.div>
           </div>
 
@@ -107,21 +104,18 @@ export function Navbar() {
                 ))}
                 <div className="flex flex-col gap-3 pt-4">
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start text-muted-foreground btn-outline-glow"
-                      onClick={() => window.open(CALENDLY_LINK, '_blank')}
-                    >
-                      Book a Call
-                    </Button>
+                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="w-full">
+                      <Button variant="ghost" className="w-full justify-start text-muted-foreground btn-outline-glow">
+                        Book a Call
+                      </Button>
+                    </a>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button
-                      className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-medium"
-                      onClick={() => window.open(CALENDLY_LINK, '_blank')}
-                    >
-                      Get Started
-                    </Button>
+                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="w-full">
+                      <Button className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-medium">
+                        Get Started
+                      </Button>
+                    </a>
                   </motion.div>
                 </div>
               </div>
