@@ -4,7 +4,6 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 
 const navLinks = [
@@ -55,20 +54,26 @@ export function Navbar() {
 
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" className="btn-outline-glow text-muted-foreground hover:text-foreground">
-                  Book a Call
-                </Button>
-              </a>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                <Button className="btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-medium">
-                  Get Started
-                </Button>
-              </a>
-            </motion.div>
+            <motion.a
+              href={CALENDLY_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground border border-border hover:bg-secondary/50 transition-colors btn-outline-glow"
+            >
+              Book a Call
+            </motion.a>
+            <motion.a
+              href={CALENDLY_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors"
+            >
+              Get Started
+            </motion.a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -103,20 +108,26 @@ export function Navbar() {
                   </Link>
                 ))}
                 <div className="flex flex-col gap-3 pt-4">
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="w-full">
-                      <Button variant="ghost" className="w-full justify-start text-muted-foreground btn-outline-glow">
-                        Book a Call
-                      </Button>
-                    </a>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="w-full">
-                      <Button className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-medium">
-                        Get Started
-                      </Button>
-                    </a>
-                  </motion.div>
+                  <motion.a
+                    href={CALENDLY_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-muted-foreground border border-border hover:bg-secondary/50 transition-colors btn-outline-glow text-center"
+                  >
+                    Book a Call
+                  </motion.a>
+                  <motion.a
+                    href={CALENDLY_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors text-center"
+                  >
+                    Get Started
+                  </motion.a>
                 </div>
               </div>
             </motion.div>
