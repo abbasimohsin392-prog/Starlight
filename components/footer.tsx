@@ -12,7 +12,7 @@ const footerLinks = {
     { label: "About", href: "/about" },
   ],
   contact: [
-    { label: "Book a Strategy Call", href: "https://calendly.com" },
+    { label: "Book a Strategy Call", href: "https://calendly.com/starlightai306/30min" },
     { label: "Email Us", href: "https://mail.google.com/mail/?view=cm&to=starlightai306@gmail.com" },
   ],
   legal: [
@@ -54,7 +54,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                  className="w-10 h-10 rounded-full glass flex items=center justify-center text-muted-foreground hover:text-foreground transition-colors"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />
@@ -86,12 +86,14 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.contact.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  
                     href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-foreground transition-colors text-sm"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
