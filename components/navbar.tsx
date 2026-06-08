@@ -27,7 +27,7 @@ export function Navbar() {
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+
           <Link href="/" className="flex items-center gap-2">
             <Image
               src="/images/starlight-logo.png"
@@ -39,7 +39,6 @@ export function Navbar() {
             />
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
@@ -52,7 +51,6 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
             <motion.a
               href={CALENDLY_LINK}
@@ -64,19 +62,17 @@ export function Navbar() {
             >
               Book a Call
             </motion.a>
-            <motion.a
-              href={CALENDLY_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors cursor-pointer"
-            >
-              Get Started
-            </motion.a>
+            <Link href="/pricing">
+              <motion.span
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors cursor-pointer inline-block"
+              >
+                Get Started
+              </motion.span>
+            </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2 text-foreground"
             onClick={() => setIsOpen(!isOpen)}
@@ -86,7 +82,6 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -114,20 +109,19 @@ export function Navbar() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-muted-foreground border border-border hover:bg-secondary/50 transition-colors btn-outline-glow text-center cursor-pointer"
+                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-foreground border border-white/20 hover:border-white/40 hover:bg-white/5 transition-colors cursor-pointer text-center"
                   >
                     Book a Call
                   </motion.a>
-                  <motion.a
-                    href={CALENDLY_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors text-center cursor-pointer"
-                  >
-                    Get Started
-                  </motion.a>
+                  <Link href="/pricing" onClick={() => setIsOpen(false)}>
+                    <motion.span
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors cursor-pointer inline-block text-center"
+                    >
+                      Get Started
+                    </motion.span>
+                  </Link>
                 </div>
               </div>
             </motion.div>
