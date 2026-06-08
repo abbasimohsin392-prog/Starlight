@@ -31,7 +31,6 @@ export function Footer() {
     <footer className="relative pt-24 pb-12 border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
-          {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
               <Image
@@ -54,7 +53,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full glass flex items=center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                  className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />
@@ -63,7 +62,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Product Links */}
           <div>
             <h4 className="font-semibold mb-4">Product</h4>
             <ul className="space-y-3">
@@ -80,7 +78,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact Links */}
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-3">
@@ -99,7 +96,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal Links */}
           <div>
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-3">
@@ -117,7 +113,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
             © {new Date().getFullYear()} Starlight AI. All rights reserved.
