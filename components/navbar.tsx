@@ -23,7 +23,7 @@ export function Navbar() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 glass"
+      className="fixed top-0 left-0 right-0 z-[70] glass"
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -60,7 +60,7 @@ export function Navbar() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground border border-border hover:bg-secondary/50 transition-colors btn-outline-glow"
+              className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground border border-border hover:bg-secondary/50 transition-colors btn-outline-glow cursor-pointer"
             >
               Book a Call
             </motion.a>
@@ -70,7 +70,7 @@ export function Navbar() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors"
+              className="px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors cursor-pointer"
             >
               Get Started
             </motion.a>
@@ -114,7 +114,7 @@ export function Navbar() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-muted-foreground border border-border hover:bg-secondary/50 transition-colors btn-outline-glow text-center"
+                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-muted-foreground border border-border hover:bg-secondary/50 transition-colors btn-outline-glow text-center cursor-pointer"
                   >
                     Book a Call
                   </motion.a>
@@ -124,7 +124,7 @@ export function Navbar() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors text-center"
+                    className="w-full px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors text-center cursor-pointer"
                   >
                     Get Started
                   </motion.a>
