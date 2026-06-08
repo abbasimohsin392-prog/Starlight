@@ -15,11 +15,10 @@ import { JarvisWelcome } from "@/components/jarvis-welcome"
 export default function Home() {
   return (
     <main className="min-h-screen bg-background relative">
-      <UrgencyBanner />
       <CinematicBackground />
-      <JarvisWelcome />
-      <div className="relative z-10 pt-9">
-        <Navbar />
+      <UrgencyBanner />
+      <Navbar />
+      <div className="relative z-10 pt-28">
         <HeroSection />
         <TrustedCompanies />
         <ServicesSection />
@@ -29,6 +28,7 @@ export default function Home() {
         <FAQSection />
         <Footer />
       </div>
+      <JarvisWelcome />
       <FloatingCTA />
     </main>
   )
