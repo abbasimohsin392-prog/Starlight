@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useEffect, useState } from "react"
 import { ArrowRight, MessageCircle } from "lucide-react"
 
+const CALENDLY_LINK = "https://calendly.com/starlightai306/30min"
+
 export function FloatingCTA() {
   const [show, setShow] = useState(false)
 
@@ -17,7 +19,9 @@ export function FloatingCTA() {
     <AnimatePresence>
       {show && (
         <motion.a
-          href="mailto:starlightai306@gmail.com"
+          href={CALENDLY_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
