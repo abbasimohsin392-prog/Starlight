@@ -5,25 +5,13 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Instagram, Mail } from "lucide-react"
 
-const footerLinks = {
-  product: [
-    { label: "Services", href: "/services" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "About", href: "/about" },
-  ],
-  contact: [
-    { label: "Book a Strategy Call", href: "https://calendly.com/starlightai306/30min" },
-    { label: "Email Us", href: "https://mail.google.com/mail/?view=cm&to=starlightai306@gmail.com" },
-  ],
-  legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-  ],
-}
+const GMAIL_LINK = "https://mail.google.com/mail/?view=cm&to=starlightai306@gmail.com"
+const CALENDLY_LINK = "https://calendly.com/starlightai306/30min"
+const INSTAGRAM_LINK = "https://www.instagram.com/starlight_.ai/"
 
 const socialLinks = [
-  { icon: Instagram, href: "https://www.instagram.com/starlight_.ai/", label: "Instagram" },
-  { icon: Mail, href: "https://mail.google.com/mail/?view=cm&to=starlightai306@gmail.com", label: "Email" },
+  { icon: Instagram, href: INSTAGRAM_LINK, label: "Instagram" },
+  { icon: Mail, href: GMAIL_LINK, label: "Email" },
 ]
 
 export function Footer() {
@@ -31,6 +19,7 @@ export function Footer() {
     <footer className="relative pt-24 pb-12 border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
               <Image
@@ -65,52 +54,28 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Product</h4>
             <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li><Link href="/services" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Services</Link></li>
+              <li><Link href="/pricing" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Pricing</Link></li>
+              <li><Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors text-sm">About</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-3">
-              {footerLinks.contact.map((link) => (
-                <li key={link.label}>
-                  
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li><a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Book a Strategy Call</a></li>
+              <li><a href={GMAIL_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Email Us</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li><Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Terms of Service</Link></li>
             </ul>
           </div>
+
         </div>
 
         <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
