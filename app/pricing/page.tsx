@@ -1,17 +1,15 @@
 "use client"
-
 import { motion } from "framer-motion"
 import { Check, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { CinematicBackground } from "@/components/cinematic-background"
-
 const plans = [
   {
-    name: "Starter",
-    price: "$99",
-    period: "/month",
+    name: "Growth",
+    price: "$399",
+    period: "monthly",
     description: "Perfect for small businesses getting started with AI",
     features: [
       "1 Custom AI Chatbot",
@@ -24,7 +22,7 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "$799",
+    price: "$2,599",
     period: " one-time",
     description: "For growing companies ready to scale with AI",
     features: [
@@ -56,7 +54,6 @@ const plans = [
     popular: false,
   },
 ]
-
 const faqs = [
   {
     question: "What is included in the one-time payment?",
@@ -75,7 +72,6 @@ const faqs = [
     answer: "We offer a 30-day satisfaction guarantee. If you are not happy with your solution, we will work with you to make it right or provide a full refund.",
   },
 ]
-
 export default function PricingPage() {
   return (
     <main className="min-h-screen bg-background relative">
@@ -103,7 +99,6 @@ export default function PricingPage() {
           </motion.div>
         </div>
       </section>
-
       {/* Pricing Cards */}
       <section className="py-16 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -128,7 +123,6 @@ export default function PricingPage() {
                     </span>
                   </div>
                 )}
-
                 <div className="text-center mb-8">
                   <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
@@ -137,7 +131,6 @@ export default function PricingPage() {
                     <span className="text-muted-foreground">{plan.period}</span>
                   </div>
                 </div>
-
                 <ul className="space-y-4 mb-8">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-center gap-3">
@@ -148,14 +141,9 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Button
-                    className={`w-full ${
-                      plan.popular
-                        ? "btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
-                        : "btn-outline-glow bg-secondary hover:bg-secondary/80"
-                    }`}
+                    className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
                   >
                     {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
                   </Button>
@@ -165,7 +153,6 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
-
       {/* FAQ Section */}
         <section className="py-24 relative">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -183,7 +170,6 @@ export default function PricingPage() {
               Have questions about our pricing? We have answers.
             </p>
           </motion.div>
-
           <div className="space-y-6">
             {faqs.map((faq, index) => (
               <motion.div
@@ -201,7 +187,6 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
         <section className="py-24 relative">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
@@ -229,7 +214,6 @@ export default function PricingPage() {
             </motion.div>
           </div>
         </section>
-
         <Footer />
       </div>
     </main>
