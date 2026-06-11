@@ -5,8 +5,8 @@ import { Check } from "lucide-react"
 const plans = [
   {
     name: "Growth",
-    price: "$1,199",
-    period: " one-time",
+    price: "$399",
+    period: "monthly",
     description: "Perfect for small businesses getting started with AI",
     features: [
       "1 Custom AI Chatbot",
