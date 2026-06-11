@@ -1,14 +1,12 @@
 "use client"
-
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Check } from "lucide-react"
-
 const plans = [
   {
-    name: "Starter",
-    price: "$99",
-    period: "/month",
+    name: "Growth",
+    price: "$1,199",
+    period: " one-time",
     description: "Perfect for small businesses getting started with AI",
     features: [
       "1 Custom AI Chatbot",
@@ -21,7 +19,7 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "$799",
+    price: "$2,599",
     period: " one-time",
     description: "For growing companies ready to scale with AI",
     features: [
@@ -53,7 +51,6 @@ const plans = [
     popular: false,
   },
 ]
-
 export function PricingSection() {
   return (
     <section id="pricing" className="py-24 relative">
@@ -74,7 +71,6 @@ export function PricingSection() {
             Choose the plan that fits your business needs. All plans include our core AI technology stack.
           </p>
         </motion.div>
-
         <div className="grid md:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
             <motion.div
@@ -96,7 +92,6 @@ export function PricingSection() {
                   </span>
                 </div>
               )}
-
               <div className="text-center mb-8">
                 <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
                 <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
@@ -105,7 +100,6 @@ export function PricingSection() {
                   <span className="text-muted-foreground">{plan.period}</span>
                 </div>
               </div>
-
               <ul className="space-y-4 mb-8">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-3">
@@ -116,17 +110,12 @@ export function PricingSection() {
                   </li>
                 ))}
               </ul>
-
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <Button
-                  className={`w-full ${
-                    plan.popular
-                      ? "btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
-                      : "btn-outline-glow bg-secondary hover:bg-secondary/80"
-                  }`}
+                  className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
                 >
                   {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
                 </Button>
