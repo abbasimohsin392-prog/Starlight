@@ -142,7 +142,7 @@ export function HeroSection() {
             transition={{ duration: 0.9, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row gap-4 mb-16"
           >
-            <a href="mailto:starlightai306@gmail.com">
+          <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer">
               <Button
                 size="lg"
                 className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg shadow-lg shadow-purple-500/25 transition-transform duration-200 hover:scale-105 hover:-translate-y-0.5"
@@ -151,7 +151,6 @@ export function HeroSection() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </a>
-
             <Link href="/services">
               <Button
                 size="lg"
