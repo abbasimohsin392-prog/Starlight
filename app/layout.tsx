@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     apple: '/images/starlight-logo.png',
     shortcut: '/images/starlight-logo.png',
   },
+  verification: {
+    google: '0QMjYd5hSASQ_63IPTOFqdZlyssMFaRxbkvOBLZVuJY',
+  },
 }
 
 export default function RootLayout({
