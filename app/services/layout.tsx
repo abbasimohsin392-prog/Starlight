@@ -1,20 +1,20 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'About Us',
+  title: 'AI Services - Chatbots, Automation & Custom AI Solutions',
   description:
-    'Learn about Starlight AI - an AI automation agency helping businesses scale with custom chatbots, workflow automation, and AI integrations.',
+    'Explore Starlight AI services: AI chatbots, workflow automation, AI integration, custom AI models, and data analytics built to grow your business.',
   alternates: {
-    canonical: '/about',
+    canonical: '/services',
   },
   openGraph: {
-    title: 'About Starlight AI',
+    title: 'AI Services - Starlight AI',
     description:
-      'Learn about Starlight AI - an AI automation agency helping businesses scale with custom chatbots, workflow automation, and AI integrations.',
-    url: 'https://www.starlightai.site/about',
+      'Explore Starlight AI services: AI chatbots, workflow automation, AI integration, custom AI models, and data analytics built to grow your business.',
+    url: 'https://www.starlightai.site/services',
   },
 }
 
-export default function AboutLayout({ children }: { children: React.ReactNode }) {
+export default function ServicesLayout({ children }: { children: React.ReactNode }) {
   return children
 }
