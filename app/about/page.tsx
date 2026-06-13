@@ -8,13 +8,6 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { CinematicBackground } from "@/components/cinematic-background"
 
-const stats = [
-  { value: "100+", label: "Projects Delivered" },
-  { value: "50+", label: "Happy Clients" },
-  { value: "99%", label: "Client Satisfaction" },
-  { value: "24/7", label: "Support Available" },
-]
-
 const values = [
   {
     icon: Target,
@@ -38,36 +31,13 @@ const values = [
   },
 ]
 
-const team = [
-  {
-    name: "Alex Chen",
-    role: "Founder & CEO",
-    bio: "10+ years in AI/ML with experience at leading tech companies.",
-  },
-  {
-    name: "Sarah Johnson",
-    role: "Head of AI Development",
-    bio: "PhD in Machine Learning, specializing in NLP and automation.",
-  },
-  {
-    name: "Michael Park",
-    role: "Solutions Architect",
-    bio: "Expert in enterprise AI integration and system design.",
-  },
-  {
-    name: "Emily Rodriguez",
-    role: "Client Success Lead",
-    bio: "Dedicated to ensuring every client achieves their AI goals.",
-  },
-]
-
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background relative">
       <CinematicBackground />
       <div className="relative z-10">
         <Navbar />
-        
+
         {/* Hero Section */}
         <section className="relative pt-32 pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -83,30 +53,9 @@ export default function AboutPage() {
               <span className="gradient-text">AI Innovation</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              We are a team of AI experts passionate about helping businesses harness the power of artificial intelligence to achieve extraordinary results.
+              We help businesses harness the power of artificial intelligence to achieve real, measurable results.
             </p>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-4xl sm:text-5xl font-bold gradient-text mb-2">{stat.value}</div>
-                <div className="text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -124,7 +73,7 @@ export default function AboutPage() {
                 Our Mission
               </h2>
               <p className="text-muted-foreground text-lg mb-6">
-                At Starlight AI, we believe every business deserves access to powerful AI technology. Our mission is to democratize AI by making it accessible, affordable, and impactful for businesses of all sizes.
+                At Starlight AI, we believe every business deserves access to powerful AI technology. Our mission is to make AI accessible, affordable, and impactful for businesses of all sizes.
               </p>
               <p className="text-muted-foreground text-lg">
                 We combine cutting-edge technology with deep industry expertise to create AI solutions that solve real problems and deliver measurable results. Our approach is collaborative, transparent, and always focused on your success.
@@ -180,46 +129,6 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{value.title}</h3>
                 <p className="text-muted-foreground text-sm">{value.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-        <section className="py-24 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Meet Our Team</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              A dedicated team of AI experts committed to your success.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="glass-card rounded-2xl p-6 text-center"
-              >
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500/30 to-cyan-500/30 mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-cyan-400">
-                    {member.name.split(" ").map((n) => n[0]).join("")}
-                  </span>
-                </div>
-                <h3 className="text-lg font-semibold mb-1">{member.name}</h3>
-                <p className="text-cyan-400 text-sm mb-3">{member.role}</p>
-                <p className="text-muted-foreground text-sm">{member.bio}</p>
               </motion.div>
             ))}
           </div>
