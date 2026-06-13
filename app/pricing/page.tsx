@@ -8,7 +8,7 @@ import { CinematicBackground } from "@/components/cinematic-background"
 const plans = [
   {
     name: "Growth",
-    price: "$399",
+    price: "$297",
     period: "monthly",
     description: "Perfect for small businesses getting started with AI",
     features: [
