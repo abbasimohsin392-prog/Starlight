@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Bot, Workflow, Zap, Brain, Database, Shield, ArrowRight } from "lucide-react"
+import { Bot, Workflow, Zap, Brain, Database, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -61,17 +61,6 @@ const services = [
       "Custom visualizations",
       "Predictive analytics",
       "Automated reporting",
-    ],
-  },
-  {
-    icon: Shield,
-    title: "AI Security Solutions",
-    description: "Protect your business with intelligent threat detection and automated security responses.",
-    details: [
-      "Threat detection & prevention",
-      "Anomaly detection",
-      "Compliance monitoring",
-      "Incident response automation",
     ],
   },
 ]
