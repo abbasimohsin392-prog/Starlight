@@ -16,6 +16,7 @@ const plans = [
       "Up to 10k interactions/mo",
     ],
     popular: false,
+    link: "https://www.creem.io/payment/prod_2Y9ewaoyMMSAuUyLDgMiNR",
   },
   {
     name: "Professional",
@@ -32,6 +33,7 @@ const plans = [
       "Dedicated account manager",
     ],
     popular: true,
+    link: "https://www.creem.io/payment/prod_6cZACXePnr7hqlbziXYm4l",
   },
   {
     name: "Enterprise",
@@ -49,6 +51,7 @@ const plans = [
       "Executive business reviews",
     ],
     popular: false,
+    link: "https://calendly.com/starlightai306/30min",
   },
 ]
 export function PricingSection() {
@@ -114,11 +117,13 @@ export function PricingSection() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Button
-                  className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
-                >
-                  {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
-                </Button>
+                <a href={plan.link} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
+                  >
+                    {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+                  </Button>
+                </a>
               </motion.div>
             </motion.div>
           ))}
