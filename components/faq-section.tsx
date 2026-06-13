@@ -1,3 +1,13 @@
+"use client"
+
+import { motion } from "framer-motion"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 const faqs = [
   {
     question: "How long does it take to get my AI system up and running?",
@@ -9,7 +19,7 @@ const faqs = [
   },
   {
     question: "What exactly is included in the Growth plan?",
-    answer: "The Growth plan includes a fully custom AI chatbot built for your business, integrated directly into your website or platform, plus basic workflow automation. It handles customer queries, lead capture, and appointment booking 24/7, with up to 10k interactions per month.",
+    answer: "The Growth plan includes a fully custom AI chatbot built for your business, integrated directly into your website or platform, plus basic workflow automomation. It handles customer queries, lead capture, and appointment booking 24/7, with up to 10k interactions per month.",
   },
   {
     question: "What if I want ongoing support or updates?",
@@ -32,3 +42,52 @@ const faqs = [
     answer: "We offer revisions until you're happy with the system. Our goal is to deliver real results for your business, not just a finished product. Your satisfaction is our priority.",
   },
 ]
+
+export function FAQSection() {
+  return (
+    <section id="faq" className="py-24 relative">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">FAQ</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-4 mb-6 text-balance">
+            Frequently Asked{" "}
+            <span className="gradient-text">Questions</span>
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            Everything you need to know before getting started with Starlight AI.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="glass-card rounded-xl px-6 border-0"
+              >
+                <AccordionTrigger className="text-left hover:no-underline py-6 text-foreground">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground pb-6">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
