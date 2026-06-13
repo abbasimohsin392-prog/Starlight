@@ -1,8 +1,6 @@
 "use client"
-
 import { motion } from "framer-motion"
-import { Bot, Workflow, Zap, Brain, Database, Shield } from "lucide-react"
-
+import { Bot, Workflow, Zap, Brain, Database } from "lucide-react"
 const services = [
   {
     icon: Bot,
@@ -29,13 +27,7 @@ const services = [
     title: "Data Analytics & BI",
     description: "Transform raw data into actionable insights with AI-powered analytics dashboards.",
   },
-  {
-    icon: Shield,
-    title: "AI Security Solutions",
-    description: "Protect your business with intelligent threat detection and automated security responses.",
-  },
 ]
-
 export function ServicesSection() {
   return (
     <section id="services" className="py-24 relative">
@@ -56,7 +48,6 @@ export function ServicesSection() {
             From chatbots to custom AI models, we deliver comprehensive AI solutions that drive real business results.
           </p>
         </motion.div>
-
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
             <motion.div
