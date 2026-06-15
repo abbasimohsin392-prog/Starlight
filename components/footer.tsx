@@ -5,7 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Instagram, Mail } from "lucide-react"
 
-const GMAIL_LINK = "https://mail.google.com/mail/?view=cm&to=starlightai306@gmail.com"
+const GMAIL_LINK = "mailto:hello@starlightai.site"
 const CALENDLY_LINK = "https://calendly.com/starlightai306/30min"
 const INSTAGRAM_LINK = "https://www.instagram.com/starlight_.ai/"
 
