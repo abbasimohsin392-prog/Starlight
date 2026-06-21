@@ -128,6 +128,24 @@ export function PricingSection() {
             </motion.div>
           ))}
         </div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-center mt-10"
+        >
+          <p className="text-muted-foreground text-sm">
+            Prefer bank transfer?{" "}
+            
+              href="mailto:hello@starlightai.site?subject=USD%20Wire%20Payment%20Inquiry"
+              className="text-cyan-400 hover:underline"
+            >
+              Contact us
+            </a>{" "}
+            for USD wire payment details.
+          </p>
+        </motion.div>
       </div>
     </section>
   )
