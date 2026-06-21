@@ -151,13 +151,15 @@ export default function AboutPage() {
                 Let us discuss how we can help transform your business with AI.
               </p>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button
-                  size="lg"
-                  className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg"
-                >
-                  Book a Strategy Call
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="lg"
+                    className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg"
+                  >
+                    Book a Strategy Call
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </a>
               </motion.div>
             </motion.div>
           </div>
