@@ -16,7 +16,7 @@ const plans = [
       "Up to 10k interactions/mo",
     ],
     popular: false,
-    link: "https://www.creem.io/payment/prod_2Y9ewaoyMMSAuUyLDgMiNR",
+    link: "https://calendly.com/starlightai306/30min",
   },
   {
     name: "Professional",
@@ -33,7 +33,7 @@ const plans = [
       "Dedicated account manager",
     ],
     popular: true,
-    link: "https://www.creem.io/payment/prod_6cZACXePnr7hqlbziXYm4l",
+    link: "https://calendly.com/starlightai306/30min",
   },
   {
     name: "Enterprise",
@@ -128,23 +128,57 @@ export function PricingSection() {
             </motion.div>
           ))}
         </div>
+        {/* Payment Methods Section */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-center mt-10"
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-16 glass-card rounded-2xl p-8 max-w-3xl mx-auto"
         >
-          <p className="text-muted-foreground text-sm">
-            Prefer bank transfer?{" "}
-            
-              href="mailto:hello@starlightai.site?subject=USD%20Wire%20Payment%20Inquiry"
-              className="text-cyan-400 hover:underline"
+          <div className="text-center mb-8">
+            <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">Payment</span>
+            <h3 className="text-2xl font-bold mt-2 mb-2">How Payment Works</h3>
+            <p className="text-muted-foreground text-sm">
+              We accept international bank transfers. Simple, secure, and hassle-free.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-6 mb-8">
+            <div className="text-center">
+              <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center mx-auto mb-3">
+                <span className="text-cyan-400 font-bold text-sm">1</span>
+              </div>
+              <p className="text-sm font-medium mb-1">Book a Call</p>
+              <p className="text-xs text-muted-foreground">We discuss your needs and agree on a plan</p>
+            </div>
+            <div className="text-center">
+              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-3">
+                <span className="text-purple-400 font-bold text-sm">2</span>
+              </div>
+              <p className="text-sm font-medium mb-1">Receive Invoice</p>
+              <p className="text-xs text-muted-foreground">We send you a USD invoice via email</p>
+            </div>
+            <div className="text-center">
+              <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center mx-auto mb-3">
+                <span className="text-cyan-400 font-bold text-sm">3</span>
+              </div>
+              <p className="text-sm font-medium mb-1">Wire Transfer</p>
+              <p className="text-xs text-muted-foreground">Pay via international bank transfer in USD</p>
+            </div>
+          </div>
+          <div className="text-center">
+            <p className="text-muted-foreground text-sm mb-4">
+              We accept USD international wire transfers. Payment details are shared after your strategy call.
+            </p>
+            <a
+              href="https://calendly.com/starlightai306/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium"
             >
-              Contact us
-            </a>{" "}
-            for USD wire payment details.
-          </p>
+              Book a free strategy call to get started →
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>
