@@ -2,6 +2,7 @@
   command = "npm run build"
   publish = ".next"
 
+# Security headers
 [[headers]]
   for = "/*"
   [headers.values]
