@@ -25,8 +25,8 @@ export function AIGuideOrb() {
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
-    const width = 220
-    const height = 220
+    const width = 150
+    const height = 150
 
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100)
@@ -149,8 +149,8 @@ export function AIGuideOrb() {
       style={{
         top: "12vh",
         right: "4vw",
-        width: 220,
-        height: 220,
+        width: 150,
+        height: 150,
       }}
     />
   )
