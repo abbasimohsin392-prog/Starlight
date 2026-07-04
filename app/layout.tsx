@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { SmoothScrollProvider } from '@/components/smooth-scroll-provider'
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -93,6 +94,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
+        <SmoothScrollProvider />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
