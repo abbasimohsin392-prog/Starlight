@@ -11,11 +11,13 @@ import { CinematicBackground } from "@/components/cinematic-background"
 import { UrgencyBanner } from "@/components/urgency-banner"
 import { FloatingCTA } from "@/components/floating-cta"
 import { JarvisWelcome } from "@/components/jarvis-welcome"
+import { AIGuideOrb } from "@/components/ai-guide-orb"
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-background relative">
       <CinematicBackground />
+      <AIGuideOrb />
       <UrgencyBanner />
       <Navbar />
       <div className="relative z-10 pt-28">
