@@ -52,7 +52,7 @@ export function HeroSection() {
           >
             <Sparkles className="h-4 w-4 text-cyan-400" />
             <span className="text-sm text-muted-foreground tracking-wide">
-              AI Systems for Every Business & Industry
+              AI Automation for UK, US & Gulf Businesses
             </span>
             <motion.div
               className="w-1.5 h-1.5 rounded-full bg-cyan-400"
@@ -91,9 +91,9 @@ export function HeroSection() {
             transition={{ duration: 0.9, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
             className="text-lg sm:text-xl text-muted-foreground mb-4 max-w-2xl leading-relaxed"
           >
-            From AI chatbots to full workflow automation & custom websites —
-            we build intelligent systems for businesses of every niche.
-            <span className="text-foreground font-medium"> Up and running in weeks, not months.</span>
+            AI chatbots that book appointments while you sleep, workflows that qualify leads before your team wakes up.
+            Built for dental clinics, real estate teams, e-commerce brands, and boutique retailers across the UK, US, and Gulf.
+            <span className="text-foreground font-medium"> Live in weeks, not months.</span>
           </motion.p>
 
           <motion.div

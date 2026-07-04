@@ -40,10 +40,10 @@ export const metadata: Metadata = {
     description: 'Custom AI chatbots, workflow automation, and AI integrations for businesses across the UK, US, and Gulf.',
     images: [
       {
-        url: '/images/starlight-logo.png',
+        url: '/images/og-banner.jpg',
         width: 1200,
         height: 630,
-        alt: 'Starlight AI',
+        alt: 'Starlight AI - Custom AI Systems That Run Your Business',
       },
     ],
   },
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Starlight AI - AI Automation Agency',
     description: 'Custom AI chatbots, workflow automation, and AI integrations for businesses across the UK, US, and Gulf.',
-    images: ['/images/starlight-logo.png'],
+    images: ['/images/og-banner.jpg'],
   },
   robots: {
     index: true,
