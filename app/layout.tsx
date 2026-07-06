@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     default: 'Starlight AI - AI Automation Agency for Chatbots & Workflow Automation',
     template: '%s | Starlight AI',
   },
-  description: 'Starlight AI builds custom AI chatbots, workflow automation, and AI integrations for businesses across the UK, US, and Gulf. Book a free strategy call today.',
+  description: 'Starlight AI builds custom AI chatbots, workflow automation, and AI integrations for businesses worldwide. Book a free strategy call today.',
   keywords: [
     'AI automation agency',
     'AI chatbot development',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     url: 'https://www.starlightai.site',
     siteName: 'Starlight AI',
     title: 'Starlight AI - AI Automation Agency for Chatbots & Workflow Automation',
-    description: 'Custom AI chatbots, workflow automation, and AI integrations for businesses across the UK, US, and Gulf.',
+    description: 'Custom AI chatbots, workflow automation, and AI integrations for businesses worldwide.',
     images: [
       {
         url: '/images/og-banner.jpg',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Starlight AI - AI Automation Agency',
-    description: 'Custom AI chatbots, workflow automation, and AI integrations for businesses across the UK, US, and Gulf.',
+    description: 'Custom AI chatbots, workflow automation, and AI integrations for businesses worldwide.',
     images: ['/images/og-banner.jpg'],
   },
   robots: {
@@ -75,9 +75,9 @@ const organizationJsonLd = {
   name: 'Starlight AI',
   url: 'https://www.starlightai.site',
   logo: 'https://www.starlightai.site/images/starlight-logo.png',
-  description: 'AI automation agency offering chatbots, workflow automation, custom AI solutions, and AI integrations for businesses in the UK, US, and Gulf.',
+  description: 'AI automation agency offering chatbots, workflow automation, custom AI solutions, and AI integrations for businesses worldwide.',
   sameAs: ['https://x.com/MAoun_onrise'],
-  areaServed: ['United Kingdom', 'United States', 'Gulf Cooperation Council'],
+  areaServed: 'Worldwide',
 }
 
 export default function RootLayout({
