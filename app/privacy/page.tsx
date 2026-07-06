@@ -1,6 +1,19 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { CinematicBackground } from "@/components/cinematic-background"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Read Starlight AI's privacy policy to understand how we collect, use, and protect your data.",
+  alternates: {
+    canonical: "/privacy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 export default function PrivacyPolicy() {
   return (

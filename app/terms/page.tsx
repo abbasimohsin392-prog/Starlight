@@ -1,6 +1,19 @@
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { CinematicBackground } from "@/components/cinematic-background"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Read Starlight AI's terms of service governing use of our website and AI automation services.",
+  alternates: {
+    canonical: "/terms",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
 
 export default function TermsOfService() {
   return (

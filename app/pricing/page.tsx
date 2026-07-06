@@ -59,12 +59,12 @@ const plans = [
 ]
 const faqs = [
   {
-    question: "What is included in the one-time payment?",
-    answer: "Your one-time payment includes full setup, implementation, and deployment of your AI solution. You own the solution outright with no recurring fees for the core functionality.",
+    question: "What's the difference between monthly and one-time plans?",
+    answer: "Growth and AI Receptionist are monthly retainers that cover ongoing usage and support. Professional is a one-time payment for a fully built solution you own outright, with no recurring fee for the core functionality.",
   },
   {
     question: "Are there any ongoing costs?",
-    answer: "The one-time payment covers the full solution. Optional services like premium support, additional training, or major upgrades may have separate costs.",
+    answer: "Monthly plans (Growth, AI Receptionist) bill every month for usage and support. The Professional one-time payment covers the full build — optional premium support, extra training, or major upgrades may have separate costs.",
   },
   {
     question: "Can I upgrade my plan later?",
@@ -97,7 +97,7 @@ export default function PricingPage() {
               <span className="gradient-text">Pricing</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              One-time payment, lifetime value. Choose the plan that fits your business needs.
+              Monthly or one-time — choose the plan that fits your business needs.
             </p>
           </motion.div>
         </div>
