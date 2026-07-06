@@ -19,7 +19,7 @@ const plans = [
       "Up to 10k interactions/mo",
     ],
     popular: false,
-    link: "https://www.creem.io/payment/prod_2Y9ewaoyMMSAuUyLDgMiNR",
+    link: "https://calendly.com/starlightai306/30min",
   },
   {
     name: "Professional",
@@ -36,7 +36,7 @@ const plans = [
       "Dedicated account manager",
     ],
     popular: true,
-    link: "https://www.creem.io/payment/prod_6cZACXePnr7hqlbziXYm4l",
+    link: "https://calendly.com/starlightai306/30min",
   },
   {
     name: "Enterprise",
