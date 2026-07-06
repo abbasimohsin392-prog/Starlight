@@ -158,6 +158,71 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
+      {/* AI Receptionist Add-on */}
+      <section className="py-16 relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-10"
+          >
+            <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">New</span>
+            <h2 className="text-3xl sm:text-4xl font-bold mt-4 mb-4 text-balance">
+              AI <span className="gradient-text">Receptionist</span>
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+              Never miss a call again. A 24/7 AI phone agent that answers, books appointments, and qualifies leads automatically.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="glass-card border-cyan-500/50 glow-purple rounded-2xl p-8 md:flex md:items-center md:justify-between gap-10"
+          >
+            <div className="md:flex-1">
+              <div className="flex items-baseline gap-1 mb-4">
+                <span className="text-4xl font-bold">$399</span>
+                <span className="text-muted-foreground">/month</span>
+              </div>
+              <ul className="space-y-3 mb-6 md:mb-0">
+                {[
+                  "24/7 call answering, no missed leads",
+                  "Automatic appointment booking & calendar sync",
+                  "Lead qualification & CRM logging",
+                  "~500 minutes/month included",
+                  "Custom voice, script & business knowledge base",
+                  "Call transcripts & analytics dashboard",
+                ].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-cyan-400" />
+                    </div>
+                    <span className="text-sm text-muted-foreground">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-8 md:mt-0 md:flex-shrink-0">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="lg"
+                    className="w-full md:w-auto btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8"
+                  >
+                    Book a Demo Call
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </a>
+              </motion.div>
+              <p className="text-xs text-muted-foreground text-center md:text-left mt-3">Live walkthrough before you commit</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
       {/* FAQ Section */}
         <section className="py-24 relative">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
