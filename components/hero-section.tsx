@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Sparkles, Zap, Globe, Bot } from "lucide-react"
+import { ArrowRight, Sparkles, Zap, Globe, Bot, PhoneCall } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const niches = [
@@ -103,6 +103,7 @@ export function HeroSection() {
           >
             {[
               { icon: Bot, label: "AI Chatbots" },
+              { icon: PhoneCall, label: "AI Receptionist" },
               { icon: Globe, label: "Custom Websites" },
               { icon: Zap, label: "Workflow Automation" },
             ].map(({ icon: Icon, label }) => (

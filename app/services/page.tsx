@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Bot, Workflow, Zap, Brain, Database, ArrowRight } from "lucide-react"
+import { Bot, Workflow, Zap, Brain, Database, ArrowRight, PhoneCall } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -17,6 +17,17 @@ const services = [
       "Multi-language support",
       "Seamless CRM integration",
       "Analytics dashboard",
+    ],
+  },
+  {
+    icon: PhoneCall,
+    title: "AI Receptionist",
+    description: "A 24/7 AI phone agent that answers every call, books appointments, and qualifies leads so you never miss a customer.",
+    details: [
+      "Answers calls day and night",
+      "Automatic appointment booking",
+      "Lead qualification & CRM logging",
+      "Call transcripts & analytics",
     ],
   },
   {

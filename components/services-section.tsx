@@ -1,11 +1,16 @@
 "use client"
 import { motion } from "framer-motion"
-import { Bot, Workflow, Zap, Brain, Database } from "lucide-react"
+import { Bot, Workflow, Zap, Brain, Database, PhoneCall } from "lucide-react"
 const services = [
   {
     icon: Bot,
     title: "AI Chatbots & Assistants",
     description: "Custom AI-powered chatbots that handle customer support, lead generation, and internal operations 24/7.",
+  },
+  {
+    icon: PhoneCall,
+    title: "AI Receptionist",
+    description: "A 24/7 AI phone agent that answers calls, books appointments, and qualifies leads so you never miss a customer.",
   },
   {
     icon: Workflow,
