@@ -53,7 +53,7 @@ export function JarvisWelcome() {
         >
           <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
           <p className="text-sm text-muted-foreground font-medium">
-            <span className="text-cyan-400">JARVIS</span> — {played ? "Starlight AI Online" : "Click to Initialize"}
+            <span className="text-cyan-400">JARVIS</span> - {played ? "Starlight AI Online" : "Click to Initialize"}
           </p>
           <button className="text-muted-foreground hover:text-foreground transition-colors ml-1">
             {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
