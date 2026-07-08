@@ -64,7 +64,7 @@ const faqs = [
   },
   {
     question: "Are there any ongoing costs?",
-    answer: "Monthly plans (Growth, AI Receptionist) bill every month for usage and support. The Professional one-time payment covers the full build — optional premium support, extra training, or major upgrades may have separate costs.",
+    answer: "Monthly plans (Growth, AI Receptionist) bill every month for usage and support. The Professional one-time payment covers the full build. Optional premium support, extra training, or major upgrades may have separate costs.",
   },
   {
     question: "Can I upgrade my plan later?",
@@ -97,7 +97,7 @@ export default function PricingPage() {
               <span className="gradient-text">Pricing</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Monthly or one-time — choose the plan that fits your business needs.
+              Monthly or one-time, choose the plan that fits your business needs.
             </p>
           </motion.div>
         </div>
