@@ -6,7 +6,7 @@ const results = [
   {
     icon: "🦷",
     industry: "Dental Clinics",
-    result: "Automated patient enquiries, appointment reminders, and missed call follow-ups — freeing up front desk staff to focus on in-clinic care.",
+    result: "Automated patient enquiries, appointment reminders, and missed call follow-ups, freeing up front desk staff to focus on in-clinic care.",
     metric: "80% faster response time",
   },
   {
@@ -42,7 +42,7 @@ export function TestimonialsSection() {
             <span className="gradient-text">Business Problems</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            We build AI systems tailored to your industry — not generic tools, but solutions designed around how your business actually works.
+            We build AI systems tailored to your industry, not generic tools, but solutions designed around how your business actually works.
           </p>
         </motion.div>
 
