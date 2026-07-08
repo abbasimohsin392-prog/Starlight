@@ -5,9 +5,9 @@ import { useState, useEffect } from "react"
 import { Flame, X } from "lucide-react"
 
 const messages = [
-  "🔥 Limited spots — only 3 onboarding slots left this month",
-  "⚡ Last client went live in 11 days — yours could too",
-  "🚀 Free strategy call — no commitment, no pressure",
+  "🔥 Limited spots: only 3 onboarding slots left this month",
+  "⚡ Last client went live in 11 days, yours could too",
+  "🚀 Free strategy call, no commitment, no pressure",
   "💬 Real businesses. Real results. Book your call today.",
 ]
 
