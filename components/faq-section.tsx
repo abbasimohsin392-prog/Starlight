@@ -35,7 +35,7 @@ const faqs = [
   },
   {
     question: "What kind of businesses do you work with?",
-    answer: "We work with businesses across all industries — salons, dental clinics, real estate agencies, law firms, e-commerce stores, restaurants, SaaS companies and more. If you have customers, we can automate and improve how you serve them.",
+    answer: "We work with businesses across all industries: salons, dental clinics, real estate agencies, law firms, e-commerce stores, restaurants, SaaS companies and more. If you have customers, we can automate and improve how you serve them.",
   },
   {
     question: "What if I'm not satisfied with the result?",
