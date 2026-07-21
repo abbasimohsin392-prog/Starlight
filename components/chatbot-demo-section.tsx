@@ -11,18 +11,112 @@ const INITIAL: Message = {
   text: "Hi! I can help book a call or answer a quick question about what we build. What are you trying to solve?",
 }
 
+type KnowledgeEntry = { keywords: string[]; answer: string }
+
+// Sourced directly from the real site content (services-section, pricing-section, faq-section)
+// so the demo never contradicts what's actually on the page.
+const KNOWLEDGE: KnowledgeEntry[] = [
+  {
+    keywords: ["what is starlight", "who are you", "what do you do", "about starlight", "what is this"],
+    answer:
+      "Starlight AI builds custom AI chatbots, AI receptionists, and workflow automation for businesses that don't want to keep losing customers to slow response times. Think 24/7 AI that answers, qualifies, and books — not just a script.",
+  },
+  {
+    keywords: ["service", "what can you build", "what do you offer", "what do you make"],
+    answer:
+      "Six core things: AI Chatbots & Assistants, an AI Receptionist that answers calls 24/7, Workflow Automation, AI Integration into your existing tools, Custom AI Models trained on your data, and AI-powered Data Analytics dashboards. Want detail on any of those?",
+  },
+  {
+    keywords: ["receptionist", "phone", "answer calls", "answer my calls", "missed call"],
+    answer:
+      "The AI Receptionist is a 24/7 phone agent — it answers calls, books appointments, and qualifies leads so nothing falls through after hours or during a busy shift.",
+  },
+  {
+    keywords: ["custom model", "machine learning", "ml model", "train"],
+    answer:
+      "For businesses with specific data or workflows, we build tailored machine learning models around your actual use case rather than a generic off-the-shelf bot. That's part of the Professional and Enterprise tiers.",
+  },
+  {
+    keywords: ["analytics", "dashboard", "data insight", "report"],
+    answer:
+      "We also build AI-powered analytics dashboards that turn your raw business data into something you can actually act on — included from the Professional tier up, with monthly reporting even on Growth.",
+  },
+  {
+    keywords: ["price", "cost", "how much", "pricing", "plan"],
+    answer:
+      "Three tiers: Growth is $297/mo — one custom AI chatbot, basic automation, up to 10k interactions/mo. Professional is $2,599 one-time — 3 AI solutions, 24/7 priority support, custom integrations, up to 100k interactions/mo. Enterprise is custom-quoted for unlimited scale. Which sounds closest to your business?",
+  },
+  {
+    keywords: ["growth plan", "growth tier", "297"],
+    answer:
+      "Growth ($297/mo) gets you 1 custom AI chatbot, basic workflow automation, email support, monthly reporting, and up to 10k interactions a month — it's the starting point for small businesses.",
+  },
+  {
+    keywords: ["professional plan", "professional tier", "2599", "2,599"],
+    answer:
+      "Professional ($2,599 one-time) is our most popular — 3 custom AI solutions, advanced automation, 24/7 priority support, real-time analytics, custom integrations, a dedicated account manager, and up to 100k interactions/mo.",
+  },
+  {
+    keywords: ["enterprise"],
+    answer:
+      "Enterprise is custom-quoted — unlimited AI solutions, enterprise-grade security, 24/7 phone & Slack support, custom ML development, unlimited interactions, and on-premise deployment if you need it. Best discussed on a call so we can scope it right.",
+  },
+  {
+    keywords: ["payment", "pay", "invoice", "wire", "bank transfer", "how do i pay"],
+    answer:
+      "Simple 3 steps: we book a call and agree on a plan, we send you a USD invoice by email, then you pay via international bank wire transfer. Payment details go out right after your strategy call.",
+  },
+  {
+    keywords: ["how long", "timeline", "how fast", "how quickly", "when can", "turnaround"],
+    answer:
+      "Most clients are live within 2 weeks. A basic AI chatbot can go live in 5-7 days. Bigger custom automations or full builds usually take 2-4 weeks depending on scope.",
+  },
+  {
+    keywords: ["technical", "do i need to know", "coding", "setup myself"],
+    answer:
+      "Zero technical knowledge needed on your end. We handle setup and deployment end to end — once it's live it runs on autopilot, with a simple dashboard so you can check performance anytime.",
+  },
+  {
+    keywords: ["integrat", "whatsapp", "instagram", "crm", "connect to"],
+    answer:
+      "We integrate with WhatsApp, Instagram, your website, CRMs, booking systems, email platforms, and most tools you're already using. If there's something specific, just tell us and we'll make it work.",
+  },
+  {
+    keywords: ["secure", "security", "data safe", "privacy", "gdpr"],
+    answer:
+      "Everything's encrypted end-to-end and we never share your data with third parties. Your business data stays private and under your control.",
+  },
+  {
+    keywords: ["industr", "what businesses", "who do you work with", "what kind of business"],
+    answer:
+      "All kinds — salons, dental clinics, real estate agencies, law firms, e-commerce, restaurants, SaaS companies, and home service businesses too. If you have customers, we can automate how you serve them.",
+  },
+  {
+    keywords: ["not satisfied", "guarantee", "refund", "revision"],
+    answer:
+      "We offer revisions until you're happy with the system — the goal is a result that actually works for your business, not just a checkbox delivery.",
+  },
+  {
+    keywords: ["support", "help after"],
+    answer:
+      "Growth includes email support. Professional steps up to 24/7 priority support with a dedicated account manager. Enterprise adds 24/7 phone & Slack support with an SLA.",
+  },
+  {
+    keywords: ["book", "call", "demo", "get started", "talk to someone", "human"],
+    answer:
+      "The fastest next step is a free 15-minute strategy call — scroll down to the booking section on this page, or I can tell you what we'll cover on it. Want that?",
+  },
+]
+
+const FALLBACK =
+  "Good question — the fastest way to get a precise answer for your business is a free 15-minute strategy call. Want the booking link?"
+
 function getReply(input: string): string {
   const t = input.toLowerCase()
-  if (t.includes("price") || t.includes("cost") || t.includes("how much")) {
-    return "Plans start at $297/mo — the Growth tier covers one custom AI chatbot and basic automation. Want me to pull up the pricing section, or book a call to scope it out?"
+  for (const entry of KNOWLEDGE) {
+    if (entry.keywords.some((k) => t.includes(k))) return entry.answer
   }
-  if (t.includes("chatbot") || t.includes("bot")) {
-    return "We build custom AI chatbots that answer calls and site chats 24/7, then book straight into your calendar — like the one you're talking to right now. Want a demo on your own site?"
-  }
-  if (t.includes("time") || t.includes("long") || t.includes("weeks")) {
-    return "Most builds go live in 1-3 weeks depending on scope. A quick call is the fastest way to get a real timeline for your case."
-  }
-  return "Got it — the fastest next step is a free strategy call, we'll map this to a real plan in about 15 minutes. Want the link?"
+  return FALLBACK
 }
 
 export function ChatbotDemoSection() {
