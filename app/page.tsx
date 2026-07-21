@@ -3,7 +3,9 @@ import { HeroSection } from "@/components/hero-section"
 import { TrustedCompanies } from "@/components/trusted-companies"
 import { ServicesSection } from "@/components/services-section"
 import { FeaturesSection } from "@/components/features-section"
+import { ChatbotDemoSection } from "@/components/chatbot-demo-section"
 import { PricingSection } from "@/components/pricing-section"
+import { BookingSection } from "@/components/booking-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { FAQSection } from "@/components/faq-section"
 import { Footer } from "@/components/footer"
@@ -25,7 +27,9 @@ export default function Home() {
         <TrustedCompanies />
         <ServicesSection />
         <FeaturesSection />
+        <ChatbotDemoSection />
         <PricingSection />
+        <BookingSection />
         <TestimonialsSection />
         <FAQSection />
         <Footer />
