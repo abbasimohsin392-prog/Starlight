@@ -12,14 +12,17 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.starlightai.site'),
   title: {
-    default: 'Starlight AI - AI Automation Agency for Chatbots & Workflow Automation',
+    default: 'Starlight AI - AI Receptionist & Chatbots for Home Service Businesses',
     template: '%s | Starlight AI',
   },
-  description: 'Starlight AI builds custom AI chatbots, AI receptionists, workflow automation, and AI integrations for businesses worldwide. Book a free strategy call today.',
+  description: 'Starlight AI builds AI receptionists and chatbots that answer missed calls and book jobs for plumbing, HVAC, and electrical companies — plus workflow automation for any business. Book a free strategy call.',
   keywords: [
+    'AI receptionist for plumbers',
+    'AI receptionist for HVAC companies',
+    'missed call text back service',
+    'AI chatbot for home services',
     'AI automation agency',
     'AI chatbot development',
-    'AI receptionist',
     'workflow automation',
     'custom AI solutions',
     'AI integration services',
@@ -38,8 +41,8 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://www.starlightai.site',
     siteName: 'Starlight AI',
-    title: 'Starlight AI - AI Automation Agency for Chatbots & Workflow Automation',
-    description: 'Custom AI chatbots, AI receptionists, workflow automation, and AI integrations for businesses worldwide.',
+    title: 'Starlight AI - AI Receptionist & Chatbots for Home Service Businesses',
+    description: 'AI receptionists and chatbots that answer missed calls and book jobs for plumbing, HVAC, and electrical companies — plus workflow automation for any business.',
     images: [
       {
         url: '/images/og-banner.jpg',
@@ -51,8 +54,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Starlight AI - AI Automation Agency',
-    description: 'Custom AI chatbots, AI receptionists, workflow automation, and AI integrations for businesses worldwide.',
+    title: 'Starlight AI - AI Receptionist & Chatbots for Home Service Businesses',
+    description: 'AI receptionists and chatbots that answer missed calls and book jobs for plumbing, HVAC, and electrical companies.',
     images: ['/images/og-banner.jpg'],
   },
   robots: {
@@ -81,6 +84,23 @@ const organizationJsonLd = {
   areaServed: 'Worldwide',
 }
 
+const serviceJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'AI Receptionist and Chatbot for Home Service Businesses',
+  provider: {
+    '@type': 'Organization',
+    name: 'Starlight AI',
+    url: 'https://www.starlightai.site',
+  },
+  areaServed: ['United States', 'United Kingdom', 'Kuwait'],
+  audience: {
+    '@type': 'Audience',
+    audienceType: 'Plumbing, HVAC, and electrical companies',
+  },
+  description: 'AI receptionist and chatbot systems that answer after-hours and missed calls, qualify leads, and book jobs for plumbing, HVAC, and electrical businesses.',
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -92,6 +112,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
         />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
