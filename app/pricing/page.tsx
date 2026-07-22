@@ -23,8 +23,8 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "$2,599",
-    period: " one-time",
+    price: "$997",
+    period: "monthly",
     description: "For growing companies ready to scale with AI",
     features: [
       "3 Custom AI Solutions",
@@ -59,12 +59,12 @@ const plans = [
 ]
 const faqs = [
   {
-    question: "What's the difference between monthly and one-time plans?",
-    answer: "Growth and AI Receptionist are monthly retainers that cover ongoing usage and support. Professional is a one-time payment for a fully built solution you own outright, with no recurring fee for the core functionality.",
+    question: "Are all plans monthly subscriptions?",
+    answer: "Yes — Growth, Professional, and AI Receptionist are all monthly subscriptions that cover ongoing usage, support, and updates. There's no long-term lock-in; you can cancel anytime with notice.",
   },
   {
     question: "Are there any ongoing costs?",
-    answer: "Monthly plans (Growth, AI Receptionist) bill every month for usage and support. The Professional one-time payment covers the full build. Optional premium support, extra training, or major upgrades may have separate costs.",
+    answer: "Your monthly plan covers usage, support, and maintenance. Optional premium support, extra training, or major upgrades may have separate costs, but those are always discussed upfront.",
   },
   {
     question: "Can I upgrade my plan later?",
@@ -97,7 +97,7 @@ export default function PricingPage() {
               <span className="gradient-text">Pricing</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Monthly or one-time, choose the plan that fits your business needs.
+              Simple monthly subscriptions — choose the plan that fits your business needs.
             </p>
           </motion.div>
         </div>

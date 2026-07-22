@@ -20,8 +20,8 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "$2,599",
-    period: " one-time",
+    price: "$997",
+    period: "/mo",
     description: "For growing companies ready to scale with AI",
     features: [
       "3 Custom AI Solutions",

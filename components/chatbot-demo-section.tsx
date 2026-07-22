@@ -44,7 +44,7 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["price", "cost", "how much", "pricing", "plan"],
     answer:
-      "Three tiers: Growth is $297/mo — one custom AI chatbot, basic automation, up to 10k interactions/mo. Professional is $2,599 one-time — 3 AI solutions, 24/7 priority support, custom integrations, up to 100k interactions/mo. Enterprise is custom-quoted for unlimited scale. Which sounds closest to your business?",
+      "Three tiers: Growth is $297/mo — one custom AI chatbot, basic automation, up to 10k interactions/mo. Professional is $997/mo — 3 AI solutions, 24/7 priority support, custom integrations, up to 100k interactions/mo. Enterprise is custom-quoted for unlimited scale. Which sounds closest to your business?",
   },
   {
     keywords: ["growth plan", "growth tier", "297"],
@@ -52,9 +52,9 @@ const KNOWLEDGE: KnowledgeEntry[] = [
       "Growth ($297/mo) gets you 1 custom AI chatbot, basic workflow automation, email support, monthly reporting, and up to 10k interactions a month — it's the starting point for small businesses.",
   },
   {
-    keywords: ["professional plan", "professional tier", "2599", "2,599"],
+    keywords: ["professional plan", "professional tier", "997"],
     answer:
-      "Professional ($2,599 one-time) is our most popular — 3 custom AI solutions, advanced automation, 24/7 priority support, real-time analytics, custom integrations, a dedicated account manager, and up to 100k interactions/mo.",
+      "Professional ($997/mo) is our most popular — 3 custom AI solutions, advanced automation, 24/7 priority support, real-time analytics, custom integrations, a dedicated account manager, and up to 100k interactions/mo.",
   },
   {
     keywords: ["enterprise"],
@@ -102,21 +102,109 @@ const KNOWLEDGE: KnowledgeEntry[] = [
       "Growth includes email support. Professional steps up to 24/7 priority support with a dedicated account manager. Enterprise adds 24/7 phone & Slack support with an SLA.",
   },
   {
-    keywords: ["book", "call", "demo", "get started", "talk to someone", "human"],
+    keywords: ["book", "call", "demo", "get started", "talk to someone", "human", "speak to", "sales"],
     answer:
       "The fastest next step is a free 15-minute strategy call — scroll down to the booking section on this page, or I can tell you what we'll cover on it. Want that?",
   },
+  {
+    keywords: ["contract", "commit", "lock in", "cancel", "cancellation", "minimum term", "how long do i have to"],
+    answer:
+      "Every plan is a straightforward monthly subscription — no long lock-in contracts. You can cancel anytime; we just ask for notice so we can hand things off cleanly.",
+  },
+  {
+    keywords: ["trial", "free trial", "test it first", "try before"],
+    answer:
+      "We don't run open free trials, but the strategy call itself is free and we'll show you exactly what your bot would look like before you commit to anything.",
+  },
+  {
+    keywords: ["roi", "worth it", "results", "how many leads", "does it actually work", "proof", "case stud", "example client"],
+    answer:
+      "Most home service clients see it pay for itself by catching the after-hours and during-a-job calls they were previously missing entirely. Happy to walk through exactly how that plays out for your business on a call.",
+  },
+  {
+    keywords: ["competitor", "vs zapier", "vs other", "why you", "why starlight", "different from"],
+    answer:
+      "The difference is we don't hand you a generic tool and walk away — we build, train, and manage the whole system around your business, and you get a real person (not a ticket queue) if something needs adjusting.",
+  },
+  {
+    keywords: ["multilingual", "language", "spanish", "other languages"],
+    answer:
+      "Yes, the AI can handle multiple languages including Spanish — just let us know which ones your customers use and we'll set it up.",
+  },
+  {
+    keywords: ["setup fee", "onboarding fee", "hidden fee", "extra cost", "additional cost"],
+    answer:
+      "No hidden fees — the plan price covers setup and the ongoing system. Anything beyond your plan's scope (like extra interaction volume) would be discussed upfront, never billed as a surprise.",
+  },
+  {
+    keywords: ["maintenance", "who manages", "updates", "who maintains", "ongoing work"],
+    answer:
+      "We handle all the ongoing maintenance and updates on our end — you're not left to manage settings or fix things yourself.",
+  },
+  {
+    keywords: ["website", "build a website", "landing page", "do you build sites"],
+    answer:
+      "We're focused on AI chatbots, receptionists, and automation rather than website design — but if you already have a site, we plug straight into it.",
+  },
+  {
+    keywords: ["seo", "marketing", "social media", "ads", "digital marketing"],
+    answer:
+      "Our core focus is AI automation, but we also offer digital marketing support — happy to cover that on a strategy call if it's something you need.",
+  },
+  {
+    keywords: ["own my data", "who owns", "data ownership", "export my data"],
+    answer:
+      "Your data is yours. It's never sold or shared, and you can request an export at any time.",
+  },
+  {
+    keywords: ["uptime", "downtime", "reliab", "always on", "24/7"],
+    answer:
+      "The system runs 24/7 with high uptime, so calls and messages get handled whether it's 2pm or 2am.",
+  },
+  {
+    keywords: ["doesn't know", "handoff", "escalate", "what if it can't answer", "urgent"],
+    answer:
+      "If something's outside the bot's scope or sounds urgent, it hands off to a real person on your team instead of guessing.",
+  },
+  {
+    keywords: ["personality", "customize", "sound like", "brand voice", "tone"],
+    answer:
+      "We tune the tone and personality to match your brand — friendly and casual, or more formal, whatever fits how your business talks to customers.",
+  },
+  {
+    keywords: ["who built", "who made", "who is starlight", "founder", "company"],
+    answer:
+      "Starlight AI is a small, hands-on AI automation studio — you work directly with the team building your system, not a big impersonal agency.",
+  },
+  {
+    keywords: ["hi", "hello", "hey", "yo", "sup"],
+    answer:
+      "Hey! Happy to help — ask me about pricing, timelines, what we build, or how payment works. What's on your mind?",
+  },
+  {
+    keywords: ["thanks", "thank you", "appreciate"],
+    answer:
+      "Anytime! If you're ready, the next step is a free 15-minute strategy call — just scroll down to book one.",
+  },
+  {
+    keywords: ["bye", "goodbye", "see you"],
+    answer:
+      "Take care! When you're ready, the booking section below has a free strategy call slot waiting.",
+  },
 ]
 
-const FALLBACK =
-  "Good question — the fastest way to get a precise answer for your business is a free 15-minute strategy call. Want the booking link?"
+const FALLBACKS = [
+  "Good question — I don't have that pinned down exactly, but a free 15-minute strategy call is the fastest way to get a precise answer for your business. Want the booking link?",
+  "That's a bit outside what I can nail down here, but the team can answer it directly on a quick call — want me to point you to the booking section?",
+  "I want to give you a real answer, not a guess — that's best covered on a free strategy call. Should I point you there?",
+]
 
 function getReply(input: string): string {
   const t = input.toLowerCase()
   for (const entry of KNOWLEDGE) {
     if (entry.keywords.some((k) => t.includes(k))) return entry.answer
   }
-  return FALLBACK
+  return FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)]
 }
 
 export function ChatbotDemoSection() {
