@@ -11,7 +11,8 @@ const INITIAL: Message = {
   text: "Hi! I can help book a call or answer a quick question about what we build. What are you trying to solve?",
 }
 
-type KnowledgeEntry = { keywords: string[]; answer: string }
+type KnowledgeEntry = { keywords: string[]; answer: string; sets?: FollowUpId }
+type FollowUpId = "servicesDetail" | "pricingPlan" | "bookingLink"
 
 // Sourced directly from the real site content (services-section, pricing-section, faq-section)
 // so the demo never contradicts what's actually on the page.
@@ -25,6 +26,7 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     keywords: ["service", "what can you build", "what do you offer", "what do you make"],
     answer:
       "Six core things: AI Chatbots & Assistants, an AI Receptionist that answers calls 24/7, Workflow Automation, AI Integration into your existing tools, Custom AI Models trained on your data, and AI-powered Data Analytics dashboards. Want detail on any of those?",
+    sets: "servicesDetail",
   },
   {
     keywords: ["receptionist", "phone", "answer calls", "answer my calls", "missed call"],
@@ -45,6 +47,7 @@ const KNOWLEDGE: KnowledgeEntry[] = [
     keywords: ["price", "cost", "how much", "pricing", "plan"],
     answer:
       "Three tiers: Growth is $297/mo — one custom AI chatbot, basic automation, up to 10k interactions/mo. Professional is $997/mo — 3 AI solutions, 24/7 priority support, custom integrations, up to 100k interactions/mo. Enterprise is custom-quoted for unlimited scale. Which sounds closest to your business?",
+    sets: "pricingPlan",
   },
   {
     keywords: ["growth plan", "growth tier", "297"],
@@ -104,7 +107,8 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["book", "call", "demo", "get started", "talk to someone", "human", "speak to", "sales"],
     answer:
-      "The fastest next step is a free 15-minute strategy call — scroll down to the booking section on this page, or I can tell you what we'll cover on it. Want that?",
+      "The fastest next step is a free 15-minute strategy call — no pressure, just a quick chat about your setup. Want the direct link?",
+    sets: "bookingLink",
   },
   {
     keywords: ["contract", "commit", "lock in", "cancel", "cancellation", "minimum term", "how long do i have to"],
@@ -199,18 +203,49 @@ const FALLBACKS = [
   "I want to give you a real answer, not a guess — that's best covered on a free strategy call. Should I point you there?",
 ]
 
-function getReply(input: string): string {
-  const t = input.toLowerCase()
-  for (const entry of KNOWLEDGE) {
-    if (entry.keywords.some((k) => t.includes(k))) return entry.answer
+const FOLLOWUPS: Record<FollowUpId, string> = {
+  servicesDetail:
+    "Sure — which one: AI Chatbots & Assistants, AI Receptionist, Workflow Automation, AI Integrations, Custom AI Models, or Analytics Dashboards? Just name one.",
+  pricingPlan:
+    "Growth ($297/mo) fits a single chatbot and basic automation. Professional ($997/mo) is our most popular — 3 AI solutions and a dedicated account manager. Enterprise is custom. Which sounds like your size?",
+  bookingLink:
+    "Here's the direct link: calendly.com/starlightai306/30min — or scroll down to the booking section on this page. Takes 15 minutes, no pressure.",
+}
+
+const AFFIRMATIVE = /^(yes|yeah|yep|yup|sure|ok|okay|please|pls|definitely|absolutely|of course|go ahead)[.!]?$/i
+const NEGATIVE = /^(no|nah|nope|not really|not now|maybe later)[.!]?$/i
+
+const NUDGE =
+  "Happy to help — what would you like more on: pricing, services, timelines, or booking a call?"
+
+function getReply(input: string, pending: FollowUpId | null): { text: string; nextPending: FollowUpId | null } {
+  const t = input.toLowerCase().trim()
+
+  if (pending && AFFIRMATIVE.test(t)) {
+    return { text: FOLLOWUPS[pending], nextPending: null }
   }
-  return FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)]
+  if (pending && NEGATIVE.test(t)) {
+    return { text: NUDGE, nextPending: null }
+  }
+
+  for (const entry of KNOWLEDGE) {
+    if (entry.keywords.some((k) => t.includes(k))) {
+      return { text: entry.answer, nextPending: entry.sets ?? null }
+    }
+  }
+
+  if (AFFIRMATIVE.test(t)) {
+    return { text: NUDGE, nextPending: null }
+  }
+
+  return { text: FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)], nextPending: null }
 }
 
 export function ChatbotDemoSection() {
   const [messages, setMessages] = useState<Message[]>([INITIAL])
   const [input, setInput] = useState("")
   const [typing, setTyping] = useState(false)
+  const [pending, setPending] = useState<FollowUpId | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -223,9 +258,11 @@ export function ChatbotDemoSection() {
     setMessages((m) => [...m, { role: "user", text: val }])
     setInput("")
     setTyping(true)
+    const { text, nextPending } = getReply(val, pending)
     setTimeout(() => {
       setTyping(false)
-      setMessages((m) => [...m, { role: "bot", text: getReply(val) }])
+      setMessages((m) => [...m, { role: "bot", text }])
+      setPending(nextPending)
     }, 850)
   }
 
