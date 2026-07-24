@@ -34,7 +34,7 @@ export function AIGuideOrb() {
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
     renderer.setSize(width, height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
     mount.appendChild(renderer.domElement)
 
     // Core: low-poly icosahedron, wireframe, cyan
@@ -98,6 +98,7 @@ export function AIGuideOrb() {
     // the page footer, echoing the site's two accent colors.
     let scrollTween: gsap.core.Tween | null = null
     if (!prefersReducedMotion) {
+      let isGold = false
       scrollTween = gsap.to(mount, {
         yPercent: 0,
         ease: "none",
@@ -109,9 +110,14 @@ export function AIGuideOrb() {
           onUpdate: (self) => {
             const progress = self.progress
             mount.style.transform = `translateY(${progress * 65}vh)`
-            const hue = progress > 0.85 ? 0xf5b942 : 0x22d3ee
-            coreMaterial.color.setHex(hue)
-            ringMaterial.color.setHex(progress > 0.85 ? 0xfcd34d : 0x67e8f9)
+            // Only touch materials when actually crossing the threshold,
+            // instead of re-setting identical color values every tick.
+            const shouldBeGold = progress > 0.85
+            if (shouldBeGold !== isGold) {
+              isGold = shouldBeGold
+              coreMaterial.color.setHex(isGold ? 0xf5b942 : 0x22d3ee)
+              ringMaterial.color.setHex(isGold ? 0xfcd34d : 0x67e8f9)
+            }
           },
         },
       })
