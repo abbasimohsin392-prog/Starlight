@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles, Zap, Globe, Bot, PhoneCall } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -15,11 +15,6 @@ const niches = [
 const rotatingWords = ["Automates", "Scales", "Transforms", "Elevates", "Powers"]
 
 export function HeroSection() {
-  const { scrollY } = useScroll()
-  const y = useTransform(scrollY, [0, 600], [0, -80])
-  const opacity = useTransform(scrollY, [0, 350], [1, 0])
-  const scale = useTransform(scrollY, [0, 400], [1, 0.97])
-
   const [wordIndex, setWordIndex] = useState(0)
 
   useEffect(() => {
@@ -38,10 +33,7 @@ export function HeroSection() {
       <div className="absolute w-[250px] h-[250px] rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" style={{ left: "75%", top: "10%" }} />
       <div className="absolute w-[200px] h-[200px] rounded-full bg-purple-400/8 blur-3xl pointer-events-none" style={{ left: "60%", top: "65%" }} />
 
-      <motion.div
-        style={{ y, opacity, scale }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
-      >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center text-center">
 
           <motion.div
@@ -163,7 +155,7 @@ export function HeroSection() {
           </motion.div>
 
         </div>
-      </motion.div>
+      </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
     </section>

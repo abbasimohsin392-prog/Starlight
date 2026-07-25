@@ -28,7 +28,7 @@ export function TrustedCompanies() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center"
         >
-          <p className="text-muted-foreground text-xs uppercase tracking-widest mb-6">Serving businesses across</p>
+          <p className="text-muted-foreground text-xs uppercase tracking-widest mb-6">Built for</p>
           <div className="flex flex-wrap justify-center gap-3">
             {logos.map((name, i) => (
               <motion.div
