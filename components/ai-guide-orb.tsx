@@ -23,6 +23,12 @@ export function AIGuideOrb() {
     const mount = mountRef.current
     if (!mount) return
 
+    // Skip the WebGL orb entirely on mobile: continuous render loop is
+    // heavy on typical Android GPUs and isn't worth the cost on small
+    // screens where the orb is a minor visual detail anyway.
+    const isMobile = window.matchMedia("(max-width: 767px)").matches
+    if (isMobile) return
+
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     const width = 150

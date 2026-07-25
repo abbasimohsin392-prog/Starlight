@@ -145,6 +145,14 @@
   transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Backdrop blur is expensive to composite, especially on Android.
+   Lighten it on small screens only; desktop/tablet keep full blur(20px). */
+@media (max-width: 767px) {
+  .glass-card {
+    backdrop-filter: blur(8px);
+  }
+}
+
 /* Premium Navbar Glass */
 .glass-navbar {
   background: rgba(5, 5, 5, 0.6);
