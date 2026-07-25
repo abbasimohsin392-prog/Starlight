@@ -17,7 +17,13 @@ const socialLinks = [
 export function Footer() {
   return (
     <footer className="relative pt-24 pb-12 border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+      >
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
 
           <div className="lg:col-span-2">
@@ -86,7 +92,7 @@ export function Footer() {
             Built with AI, for AI-powered businesses.
           </p>
         </div>
-      </div>
+      </motion.div>
     </footer>
   )
 }
