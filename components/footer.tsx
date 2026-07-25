@@ -3,15 +3,17 @@
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Instagram, Mail } from "lucide-react"
+import { Instagram, Mail, Phone } from "lucide-react"
 
 const GMAIL_LINK = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
+const WHATSAPP_LINK = "https://wa.me/923007657038"
 const CALENDLY_LINK = "https://calendly.com/starlightai306/30min"
 const INSTAGRAM_LINK = "https://www.instagram.com/starlight_.ai/"
 
 const socialLinks = [
   { icon: Instagram, href: INSTAGRAM_LINK, label: "Instagram" },
   { icon: Mail, href: GMAIL_LINK, label: "Email" },
+  { icon: Phone, href: WHATSAPP_LINK, label: "WhatsApp" },
 ]
 
 export function Footer() {
@@ -71,6 +73,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li><a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Book a Strategy Call</a></li>
               <li><a href={GMAIL_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Email Us</a></li>
+              <li><a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">WhatsApp</a></li>
             </ul>
           </div>
 
