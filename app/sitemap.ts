@@ -1,7 +1,15 @@
 import type { MetadataRoute } from 'next'
+import { niches } from '@/lib/niches'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.starlightai.site'
+
+  const nicheUrls: MetadataRoute.Sitemap = niches.map((niche) => ({
+    url: `${baseUrl}/solutions/${niche.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }))
 
   return [
     {
@@ -28,6 +36,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/solutions`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    ...nicheUrls,
     {
       url: `${baseUrl}/demo`,
       lastModified: new Date(),
