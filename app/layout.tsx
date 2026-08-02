@@ -11,21 +11,27 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.starlightai.site'),
   title: {
-    default: 'Starlight AI - AI Receptionist & Chatbots for Home Service Businesses',
+    default: 'Starlight AI - AI Chatbots, Receptionists & Automation for Any Business',
     template: '%s | Starlight AI',
   },
-  description: 'Starlight AI builds AI receptionists and chatbots that answer missed calls and book jobs for plumbing, HVAC, and electrical companies — plus workflow automation for any business. Book a free strategy call.',
+  description: 'Starlight AI builds AI chatbots, 24/7 AI receptionists, and workflow automation for businesses across every industry — real estate, dental, legal, hospitality, home services, and more. Serving the US, UK, and Kuwait. Book a free strategy call.',
   keywords: [
-    'AI receptionist for plumbers',
-    'AI receptionist for HVAC companies',
-    'missed call text back service',
-    'AI chatbot for home services',
     'AI automation agency',
     'AI chatbot development',
+    'AI receptionist for small business',
+    'missed call text back service',
     'workflow automation',
     'custom AI solutions',
     'AI integration services',
     'business process automation',
+    'AI chatbot for real estate',
+    'AI chatbot for dental clinics',
+    'AI chatbot for law firms',
+    'AI chatbot for restaurants',
+    'AI receptionist for med spas',
+    'AI receptionist for gyms',
+    'AI automation UK',
+    'AI automation Kuwait',
   ],
   generator: 'v0.app',
   alternates: {
@@ -40,8 +46,8 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://www.starlightai.site',
     siteName: 'Starlight AI',
-    title: 'Starlight AI - AI Receptionist & Chatbots for Home Service Businesses',
-    description: 'AI receptionists and chatbots that answer missed calls and book jobs for plumbing, HVAC, and electrical companies — plus workflow automation for any business.',
+    title: 'Starlight AI - AI Chatbots, Receptionists & Automation for Any Business',
+    description: 'AI chatbots, 24/7 AI receptionists, and workflow automation for businesses across every industry, serving the US, UK, and Kuwait.',
     images: [
       {
         url: '/images/og-banner.jpg',
@@ -53,8 +59,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Starlight AI - AI Receptionist & Chatbots for Home Service Businesses',
-    description: 'AI receptionists and chatbots that answer missed calls and book jobs for plumbing, HVAC, and electrical companies.',
+    title: 'Starlight AI - AI Chatbots, Receptionists & Automation for Any Business',
+    description: 'AI chatbots, 24/7 AI receptionists, and workflow automation for businesses across every industry, serving the US, UK, and Kuwait.',
     images: ['/images/og-banner.jpg'],
   },
   robots: {
@@ -78,15 +84,15 @@ const organizationJsonLd = {
   name: 'Starlight AI',
   url: 'https://www.starlightai.site',
   logo: 'https://www.starlightai.site/images/starlight-logo.png',
-  description: 'AI automation agency offering chatbots, AI receptionists, workflow automation, custom AI solutions, and AI integrations for businesses worldwide.',
-  sameAs: ['https://x.com/MAoun_onrise'],
-  areaServed: 'Worldwide',
+  description: 'AI automation agency offering chatbots, AI receptionists, workflow automation, custom AI solutions, and AI integrations for businesses across every industry, worldwide.',
+  sameAs: ['https://x.com/MAoun_onrise', 'https://www.instagram.com/starlight_.ai/'],
+  areaServed: ['United States', 'United Kingdom', 'Kuwait'],
 }
 
 const serviceJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  serviceType: 'AI Receptionist and Chatbot for Home Service Businesses',
+  serviceType: 'AI Chatbots, Receptionists & Workflow Automation',
   provider: {
     '@type': 'Organization',
     name: 'Starlight AI',
@@ -95,9 +101,21 @@ const serviceJsonLd = {
   areaServed: ['United States', 'United Kingdom', 'Kuwait'],
   audience: {
     '@type': 'Audience',
-    audienceType: 'Plumbing, HVAC, and electrical companies',
+    audienceType: 'Businesses of any type, including real estate, dental, legal, hospitality, beauty and wellness, fitness, automotive, property management, and home services',
   },
-  description: 'AI receptionist and chatbot systems that answer after-hours and missed calls, qualify leads, and book jobs for plumbing, HVAC, and electrical businesses.',
+  description: 'AI receptionist and chatbot systems that answer after-hours and missed calls, qualify leads, and book appointments, plus workflow automation, AI integration, custom AI models, and AI-powered analytics for businesses of any type.',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Starlight AI Services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Chatbots & Assistants' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Receptionist' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Workflow Automation' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Integration' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Custom AI Models' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Data Analytics & BI' } },
+    ],
+  },
 }
 
 export default function RootLayout({
