@@ -15,6 +15,15 @@ import { PricingSection } from "@/components/pricing-section"
 const WHATSAPP_LINK = "https://wa.me/923007657038"
 const CALENDLY_LINK = "https://calendly.com/starlightai306/30min"
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.starlightai.site/" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.starlightai.site/services" },
+  ],
+}
+
 const featuredServices = [
   {
     icon: Bot,
@@ -70,6 +79,10 @@ const additionalServices = [
 export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-background relative">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <CinematicBackground />
       <UrgencyBanner />
       <div className="relative z-10">
@@ -144,16 +157,16 @@ export default function ServicesPage() {
                       <h3 className="text-2xl font-semibold mb-3">{service.title}</h3>
                       <p className="text-muted-foreground mb-4">{service.description}</p>
                       <ul className="space-y-2">
-                        {service.details.map((detail) => (
-                          <li key={detail} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                            {detail}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </motion.div>
+                      {service.details.map((detail) => (
+                        <li key={detail} className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                </div>
+              </motion.div>
               ))}
             </div>
           </div>
@@ -198,11 +211,11 @@ export default function ServicesPage() {
                   <ul className="space-y-1.5">
                     {service.details.map((detail) => (
                       <li key={detail} className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <div className="w-1 h-1 rounded-full bg-cyan-400" />
-                        {detail}
+                      <div className="w-1 h-1 rounded-full bg-cyan-400" />
+                      {detail}
                       </li>
-                    ))}
-                  </ul>
+                  ))}
+                </ul>
                 </motion.div>
               ))}
             </div>
@@ -230,7 +243,7 @@ export default function ServicesPage() {
                   <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                     <Button size="lg" className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg">
                       Book a Strategy Call
-                      <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </a>
                 </motion.div>
@@ -239,7 +252,7 @@ export default function ServicesPage() {
                     <Button size="lg" variant="outline" className="px-8 py-6 text-lg border-white/20 hover:bg-white/5">
                       Chat on WhatsApp
                       <MessageCircle className="ml-2 h-5 w-5" />
-                    </Button>
+                  </Button>
                   </a>
                 </motion.div>
               </div>
