@@ -73,6 +73,9 @@ export function PricingSection() {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Choose the plan that fits your business needs. All plans include our core AI technology stack.
           </p>
+          <p className="text-muted-foreground text-sm max-w-xl mx-auto mt-4">
+            Every business is different — pricing depends on scope. Get a proposal built around your setup.
+          </p>
         </motion.div>
         <div className="grid md:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
@@ -98,9 +101,8 @@ export function PricingSection() {
               <div className="text-center mb-8">
                 <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
                 <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="text-muted-foreground">{plan.period}</span>
+                <div className="flex items-center justify-center">
+                  <span className="text-sm text-cyan-400 font-semibold uppercase tracking-wider">Custom Pricing</span>
                 </div>
               </div>
               <ul className="space-y-4 mb-8">
@@ -113,18 +115,22 @@ export function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <a href={plan.link} target="_blank" rel="noopener noreferrer">
-                  <Button
-                    className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
-                  >
-                    {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
-                  </Button>
-                </a>
-              </motion.div>
+              <div className="flex flex-col gap-3">
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <a href={plan.link} target="_blank" rel="noopener noreferrer">
+                    <Button className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground">
+                      Get a Custom Proposal
+                    </Button>
+                  </a>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <a href={plan.link} target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" className="w-full border-border hover:bg-secondary/50">
+                      Book a Strategy Call
+                    </Button>
+                  </a>
+                </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -176,7 +182,7 @@ export function PricingSection() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium"
             >
-              Book a free strategy call to get started →
+              Book a strategy call to get your custom proposal →
             </a>
           </div>
         </motion.div>
