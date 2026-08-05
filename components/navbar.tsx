@@ -68,7 +68,7 @@ export function Navbar() {
                 whileTap={{ scale: 0.95 }}
                 className="px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors cursor-pointer inline-block"
               >
-                Get Started
+                Get a Proposal
               </motion.span>
             </Link>
           </div>
@@ -119,7 +119,7 @@ export function Navbar() {
                       whileTap={{ scale: 0.98 }}
                       className="w-full px-4 py-2 rounded-md text-sm font-medium text-foreground bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 btn-glow transition-colors cursor-pointer inline-block text-center"
                     >
-                      Get Started
+                      Get a Proposal
                     </motion.span>
                   </Link>
                 </div>
