@@ -98,6 +98,29 @@ export default function AboutPage() {
         </div>
       </section>
 
+
+      {/* Founder Section */}
+      <section className="py-24 relative">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="glass-card rounded-2xl p-8 sm:p-12"
+          >
+            <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">From the Founder</span>
+            <p className="text-muted-foreground text-lg mt-6 mb-4 leading-relaxed">
+              Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable — a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.
+            </p>
+            <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
+              What began as one idea — that every business deserves the responsiveness of a company ten times its size — has grown into an automation practice trusted across the US, UK, and Kuwait. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.
+            </p>
+            <p className="text-foreground font-semibold">— Aoun, Founder, Starlight AI</p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Values Section */}
       <section className="py-24 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
