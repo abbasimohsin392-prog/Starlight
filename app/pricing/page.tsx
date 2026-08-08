@@ -8,8 +8,8 @@ import { CinematicBackground } from "@/components/cinematic-background"
 const plans = [
   {
     name: "Growth",
-    price: "$297",
-    period: "monthly",
+    price: "Tailored Quote",
+    period: "",
     description: "Perfect for small businesses getting started with AI",
     features: [
       "1 Custom AI Chatbot",
@@ -23,8 +23,8 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "$997",
-    period: "monthly",
+    price: "Tailored Quote",
+    period: "",
     description: "For growing companies ready to scale with AI",
     features: [
       "3 Custom AI Solutions",
@@ -40,7 +40,7 @@ const plans = [
   },
   {
     name: "Enterprise",
-    price: "Custom",
+    price: "Tailored Quote",
     period: "",
     description: "Tailored solutions for large-scale operations",
     features: [
@@ -60,7 +60,7 @@ const plans = [
 const faqs = [
   {
     question: "Are all plans monthly subscriptions?",
-    answer: "Yes — Growth, Professional, and AI Receptionist are all monthly subscriptions that cover ongoing usage, support, and updates. There's no long-term lock-in; you can cancel anytime with notice.",
+    answer: "Yes — Growth, Professional, and AI Receptionist run as monthly subscriptions covering ongoing usage, support, and updates, with pricing scoped to your setup during your proposal call. There's no long-term lock-in; you can cancel anytime with notice.",
   },
   {
     question: "Are there any ongoing costs?",
@@ -97,7 +97,7 @@ export default function PricingPage() {
               <span className="gradient-text">Pricing</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Simple monthly subscriptions — choose the plan that fits your business needs.
+              Every business is different — pricing depends on scope. Get a proposal built around your setup.
             </p>
           </motion.div>
         </div>
@@ -129,9 +129,8 @@ export default function PricingPage() {
                 <div className="text-center mb-8">
                   <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
-                  <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    <span className="text-muted-foreground">{plan.period}</span>
+                  <div className="flex items-center justify-center">
+                    <span className="text-sm text-cyan-400 font-semibold uppercase tracking-wider">{plan.price}</span>
                   </div>
                 </div>
                 <ul className="space-y-4 mb-8">
@@ -149,7 +148,7 @@ export default function PricingPage() {
                     <Button
                       className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
                     >
-                      {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+                      "Request Your Proposal"
                     </Button>
                   </a>
                 </motion.div>
@@ -278,7 +277,7 @@ export default function PricingPage() {
                     size="lg"
                     className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg"
                   >
-                    Book a Strategy Call
+                    Get Your Proposal
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </a>
