@@ -12,7 +12,7 @@ const niches = [
   "SaaS", "Logistics", "Education", "Hospitality",
 ]
 
-const rotatingWords = ["Missed Calls", "Slow Replies", "Unanswered Messages", "Lost Leads"]
+const rotatingWords = ["Missed Call", "Slow Reply", "Unanswered Message", "Lost Lead"]
 
 export function HeroSection() {
   const [wordIndex, setWordIndex] = useState(0)
@@ -59,7 +59,7 @@ export function HeroSection() {
             transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 text-balance max-w-5xl"
           >
-            Stop Losing Customers to{" "}
+            Every{" "}
             <span className="relative inline-block">
               <AnimatePresence mode="wait">
                 <motion.span
@@ -74,7 +74,7 @@ export function HeroSection() {
                 </motion.span>
               </AnimatePresence>
             </span>{" "}
-            Every Day
+            Is a Client Walking to Your Competitor
           </motion.h1>
 
           <motion.p
@@ -139,7 +139,7 @@ export function HeroSection() {
                 size="lg"
                 className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg shadow-lg shadow-purple-500/25 transition-transform duration-200 hover:scale-105 hover:-translate-y-0.5"
               >
-                Book a Strategy Call
+                Get Your Proposal
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </a>
