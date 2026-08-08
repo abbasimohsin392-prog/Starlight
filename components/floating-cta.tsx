@@ -10,7 +10,7 @@ const EMAIL_LINK = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starligh
 const DEMO_LINK = "/demo"
 
 const actions = [
-  { icon: CalendarCheck, label: "Book a Strategy Call", href: CALENDLY_LINK, external: true },
+  { icon: CalendarCheck, label: "Talk to a Strategist", href: CALENDLY_LINK, external: true },
   { icon: Phone, label: "WhatsApp", href: WHATSAPP_LINK, external: true },
   { icon: Mail, label: "Email Us", href: EMAIL_LINK, external: true },
   { icon: Bot, label: "See Live Demo", href: DEMO_LINK, external: false },
