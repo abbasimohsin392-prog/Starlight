@@ -242,7 +242,7 @@ export default function ServicesPage() {
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                     <Button size="lg" className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg">
-                      Book a Strategy Call
+                      Get Your Proposal
                     <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </a>
