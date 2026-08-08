@@ -46,18 +46,18 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["price", "cost", "how much", "pricing", "plan"],
     answer:
-      "Three tiers: Growth is $297/mo — one custom AI chatbot, basic automation, up to 10k interactions/mo. Professional is $997/mo — 3 AI solutions, 24/7 priority support, custom integrations, up to 100k interactions/mo. Enterprise is custom-quoted for unlimited scale. Which sounds closest to your business?",
+      "Three tiers: Growth (one custom AI chatbot, basic automation, up to 10k interactions/mo), Professional (3 AI solutions, 24/7 priority support, custom integrations, up to 100k interactions/mo), and Enterprise (unlimited scale). Every plan is priced around your setup — which sounds closest to your business?",
     sets: "pricingPlan",
   },
   {
     keywords: ["growth plan", "growth tier", "297"],
     answer:
-      "Growth ($297/mo) gets you 1 custom AI chatbot, basic workflow automation, email support, monthly reporting, and up to 10k interactions a month — it's the starting point for small businesses.",
+      "Growth gets you 1 custom AI chatbot, basic workflow automation, email support, monthly reporting, and up to 10k interactions a month — it's the starting point for small businesses, priced around your setup.",
   },
   {
     keywords: ["professional plan", "professional tier", "997"],
     answer:
-      "Professional ($997/mo) is our most popular — 3 custom AI solutions, advanced automation, 24/7 priority support, real-time analytics, custom integrations, a dedicated account manager, and up to 100k interactions/mo.",
+      "Professional is our most popular — 3 custom AI solutions, advanced automation, 24/7 priority support, real-time analytics, custom integrations, a dedicated account manager, and up to 100k interactions/mo. Pricing is scoped to your business on a quick call.",
   },
   {
     keywords: ["enterprise"],
@@ -207,7 +207,7 @@ const FOLLOWUPS: Record<FollowUpId, string> = {
   servicesDetail:
     "Sure — which one: AI Chatbots & Assistants, AI Receptionist, Workflow Automation, AI Integrations, Custom AI Models, or Analytics Dashboards? Just name one.",
   pricingPlan:
-    "Growth ($297/mo) fits a single chatbot and basic automation. Professional ($997/mo) is our most popular — 3 AI solutions and a dedicated account manager. Enterprise is custom. Which sounds like your size?",
+    "Growth fits a single chatbot and basic automation. Professional is our most popular — 3 AI solutions and a dedicated account manager. Enterprise is fully custom. Every plan is priced around your setup — want a tailored proposal?",
   bookingLink:
     "Here's the direct link: calendly.com/starlightai306/30min — or scroll down to the booking section on this page. Takes 15 minutes, no pressure.",
 }
