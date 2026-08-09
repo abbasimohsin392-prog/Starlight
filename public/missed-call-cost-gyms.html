@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Every Missed Call Is a Lost Membership</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root{
+    --ink:#0F1B1B;
+    --panel:#132625;
+    --base:#F6F4EE;
+    --gold:#C7952E;
+    --alert:#D8523B;
+    --teal:#2E4A46;
+    --line:rgba(15,27,27,0.12);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--base);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:0 24px;}
+
+  /* HERO */
+  .hero{
+    background:var(--ink);
+    color:var(--base);
+    padding:88px 0 72px;
+    position:relative;
+    overflow:hidden;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:7px; height:7px;
+    background:var(--alert);
+    border-radius:50%;
+    display:inline-block;
+    animation:pulse 1.8s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.25;}
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(34px, 5.2vw, 58px);
+    line-height:1.06;
+    letter-spacing:-0.01em;
+    max-width:760px;
+  }
+  h1 em{
+    font-style:italic;
+    color:var(--gold);
+  }
+  .hero-sub{
+    margin-top:22px;
+    font-size:17px;
+    color:rgba(246,244,238,0.72);
+    max-width:520px;
+  }
+
+  /* THE LEDGER — signature element */
+  .ledger{
+    margin-top:56px;
+    background:var(--base);
+    color:var(--ink);
+    border-radius:2px;
+    max-width:480px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+  }
+  .ledger-head{
+    padding:18px 22px;
+    border-bottom:1px dashed var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+  .ledger-head .name{font-family:'Fraunces', serif; font-size:15px; font-weight:600;}
+  .ledger-head .tag{color:var(--teal); font-size:11px; letter-spacing:0.05em;}
+  .ledger-row{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 22px;
+    border-bottom:1px dotted var(--line);
+  }
+  .ledger-row:last-of-type{border-bottom:none;}
+  .ledger-row.missed .status{color:var(--alert); font-weight:700;}
+  .ledger-row .status{color:var(--teal); font-weight:500;}
+  .ledger-total{
+    display:flex;
+    justify-content:space-between;
+    padding:16px 22px;
+    background:var(--ink);
+    color:var(--base);
+    font-weight:700;
+    letter-spacing:0.02em;
+  }
+  .ledger-total .amt{color:var(--alert);}
+
+  /* STATS BAND */
+  .stats{
+    background:var(--panel);
+    color:var(--base);
+    padding:52px 0;
+  }
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:32px;
+  }
+  .stat-num{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:44px;
+    color:var(--gold);
+    line-height:1;
+  }
+  .stat-label{
+    margin-top:10px;
+    font-size:13px;
+    color:rgba(246,244,238,0.68);
+    max-width:220px;
+  }
+
+  /* BODY COPY */
+  .section{padding:64px 0;}
+  .section h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(26px, 3.6vw, 36px);
+    max-width:620px;
+    letter-spacing:-0.01em;
+  }
+  .section p.lede{
+    margin-top:16px;
+    font-size:16px;
+    color:rgba(15,27,27,0.72);
+    max-width:560px;
+  }
+
+  .compare{
+    margin-top:44px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .compare-col{
+    background:var(--base);
+    padding:32px;
+  }
+  .compare-col.now{background:#FBF4EC;}
+  .compare-col .col-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--teal);
+  }
+  .compare-col.now .col-label{color:var(--alert);}
+  .compare-col ul{
+    margin-top:18px;
+    list-style:none;
+  }
+  .compare-col li{
+    padding:9px 0;
+    border-top:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .compare-col li:first-of-type{border-top:none;}
+
+  /* CTA */
+  .cta{
+    background:var(--ink);
+    color:var(--base);
+    padding:72px 0;
+    text-align:center;
+  }
+  .cta h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(28px, 4vw, 40px);
+    max-width:600px;
+    margin:0 auto;
+  }
+  .cta p{
+    margin-top:14px;
+    color:rgba(246,244,238,0.68);
+    font-size:15.5px;
+  }
+  .btn{
+    display:inline-block;
+    margin-top:30px;
+    background:var(--gold);
+    color:var(--ink);
+    font-weight:700;
+    font-size:15px;
+    padding:15px 34px;
+    border-radius:2px;
+    text-decoration:none;
+    letter-spacing:0.01em;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover{background:#DDAB44; transform:translateY(-1px);}
+  .cta-note{
+    margin-top:18px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    color:rgba(246,244,238,0.45);
+    letter-spacing:0.04em;
+  }
+
+  footer{
+    padding:28px 0 40px;
+    text-align:center;
+    font-size:12px;
+    color:rgba(15,27,27,0.4);
+  }
+
+  @media (max-width:640px){
+    .stat-grid{grid-template-columns:1fr; gap:28px;}
+    .compare{grid-template-columns:1fr;}
+    .hero{padding:64px 0 52px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .eyebrow::before{animation:none;}
+    .btn{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Live call log — this week</div>
+      <h1>Your gym is open <em>24 hours.</em><br>Your front desk isn't.</h1>
+      <p class="hero-sub">Every call that rings out after close is a membership walking to the gym down the road. Here's what that actually costs — and how it stops tonight.</p>
+
+      <div class="ledger">
+        <div class="ledger-head">
+          <span class="name">Front Desk — Call Log</span>
+          <span class="tag">TODAY, 6PM–9AM</span>
+        </div>
+        <div class="ledger-row missed">
+          <span>9:47 PM — New member inquiry</span>
+          <span class="status">MISSED</span>
+        </div>
+        <div class="ledger-row missed">
+          <span>7:15 AM — Membership pricing</span>
+          <span class="status">MISSED</span>
+        </div>
+        <div class="ledger-row">
+          <span>10:02 AM — Class schedule</span>
+          <span class="status">Answered</span>
+        </div>
+        <div class="ledger-row missed">
+          <span>10:38 PM — PT session request</span>
+          <span class="status">MISSED</span>
+        </div>
+        <div class="ledger-total">
+          <span>3 leads lost overnight</span>
+          <span class="amt">≈ 450 QAR/mo, gone</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="wrap">
+      <div class="stat-grid">
+        <div>
+          <div class="stat-num">62%</div>
+          <div class="stat-label">of membership inquiry calls in the Gulf come in outside staffed front-desk hours</div>
+        </div>
+        <div>
+          <div class="stat-num">3 rings</div>
+          <div class="stat-label">before a prospect hangs up and calls the next gym on their list</div>
+        </div>
+        <div>
+          <div class="stat-num">0</div>
+          <div class="stat-label">gyms in Doha, Manama or Muscat currently answering with AI, this is still wide open</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Nobody's built this for gyms here yet.</h2>
+      <p class="lede">Every gym around you is still running on a front desk that clocks out. The first one to answer every call, every hour, wins the member — not the one with the nicer equipment.</p>
+
+      <div class="compare">
+        <div class="compare-col now">
+          <div class="col-label">Right now</div>
+          <ul>
+            <li>Calls after close ring out</li>
+            <li>Front desk juggles walk-ins and the phone</li>
+            <li>Pricing questions get "call back tomorrow"</li>
+            <li>No record of who called and why</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <div class="col-label">With Starlight</div>
+          <ul>
+            <li>Every call answered, 24 hours</li>
+            <li>Books trial sessions straight into your calendar</li>
+            <li>Pricing and class info answered instantly</li>
+            <li>Full log of every lead, every hour</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Let's put a stop to the leak.</h2>
+      <p>15 minutes. We'll show you exactly what last month's missed calls would've been worth.</p>
+      <a class="btn" href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener">Book the 15-Minute Call</a>
+      <div class="cta-note">STARLIGHT AI — DOHA · MANAMA · MUSCAT</div>
+    </div>
+  </section>
+
+  <footer>© 2026 Starlight AI. Built for gyms that don't close.</footer>
+
+</body>
+</html>
