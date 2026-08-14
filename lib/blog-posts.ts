@@ -108,4 +108,92 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "ai-intake-assistant-for-law-firms-personal-injury",
+    title: "AI Intake Assistant for Law Firms: A Personal Injury Guide",
+    metaTitle: "AI Intake Assistant for Law Firms: Personal Injury Guide (2026)",
+    metaDescription:
+      "How an AI intake assistant answers calls, screens potential clients, and books consultations for personal injury and family law firms 24/7.",
+    date: "2026-08-13",
+    category: "Legal",
+    excerpt:
+      "A missed call after an accident is a missed case. Here's how an AI intake assistant captures and screens leads the moment they call.",
+    relatedNicheSlug: "law-firms",
+    content: [
+      {
+        type: "p",
+        text: "Personal injury cases usually start with a phone call made right after the worst moment of someone's week, an accident, an injury, a sudden legal problem. If that call goes to voicemail, the caller doesn't wait around. They search Google again and call the next firm on the list, often within minutes. An AI intake assistant exists to make sure that call never goes unanswered, at any hour.",
+      },
+      { type: "h2", text: "What an AI intake assistant actually does" },
+      {
+        type: "ul",
+        items: [
+          "Answers calls 24/7 and captures the key case details immediately",
+          "Screens and qualifies leads before an attorney's time is spent",
+          "Books free consultations directly into the firm's calendar",
+          "Answers common questions about process, timelines, and fees",
+          "Follows up automatically with leads who haven't scheduled yet",
+        ],
+      },
+      { type: "h2", text: "Why intake speed decides who gets the case" },
+      {
+        type: "p",
+        text: "Unlike most purchases, a potential client calling about an accident is usually calling several firms in the same hour. The firm that picks up, listens, and books the consultation first is usually the one that signs the case, regardless of which firm has the better track record.",
+      },
+      { type: "h2", text: "Screening before the attorney gets involved" },
+      {
+        type: "p",
+        text: "Not every caller has a case the firm can take. An AI intake assistant asks the right qualifying questions upfront, so attorneys spend their time on consultations that are actually worth booking, instead of manually screening every incoming call.",
+      },
+      { type: "h2", text: "Getting started" },
+      {
+        type: "p",
+        text: "Most firms can have an AI intake assistant live on their existing phone number within one to two weeks. Callers notice no change in how they reach the firm, they just stop reaching voicemail after hours.",
+      },
+    ],
+  },
+  {
+    slug: "ai-receptionist-for-auto-repair-shops-guide",
+    title: "AI Receptionist for Auto Repair Shops: A Practical Guide",
+    metaTitle: "AI Receptionist for Auto Repair Shops: Practical Guide (2026)",
+    metaDescription:
+      "How an AI receptionist answers calls, books appointments, and captures after-hours inquiries for auto repair shops so no job walks to a competitor.",
+    date: "2026-08-13",
+    category: "Automotive",
+    excerpt:
+      "Mechanics can't stop mid-job to answer the phone. Here's how an AI receptionist keeps every inquiry from becoming a lost job.",
+    relatedNicheSlug: "auto-repair-shops",
+    content: [
+      {
+        type: "p",
+        text: "Most auto repair shops lose jobs quietly. A customer calls about a check-engine light or an estimate while the shop's hands are literally under another vehicle, gets no answer, and calls the next shop on Google instead. There's no missed-call notification for a job that never got booked in the first place.",
+      },
+      { type: "h2", text: "What an AI receptionist handles" },
+      {
+        type: "ul",
+        items: [
+          "Answers calls while staff are working on vehicles",
+          "Books appointments and estimate requests around the clock",
+          "Answers common questions about services, turnaround, and pricing",
+          "Follows up automatically with missed calls instead of losing them",
+          "Sends appointment and vehicle pickup reminders",
+        ],
+      },
+      { type: "h2", text: "Why after-hours calls matter more than they seem" },
+      {
+        type: "p",
+        text: "A car problem doesn't wait for business hours. Customers calling in the evening or on weekends about a strange noise or a warning light are often ready to book immediately, they just need someone to pick up. Shops that only answer during the day are handing those bookings to whichever competitor answers first.",
+      },
+      { type: "h2", text: "What it costs the shop to skip this" },
+      {
+        type: "p",
+        text: "A single missed estimate call is rarely just one job. A customer who books elsewhere for a repair often becomes that shop's regular customer for years of future maintenance. The cost of a missed call compounds well past the first visit.",
+      },
+      { type: "h2", text: "Getting started" },
+      {
+        type: "p",
+        text: "Most shops can have an AI receptionist live on their existing shop number within one to two weeks, answering calls and booking estimates the same day it goes live.",
+      },
+    ],
+  },
 ]
