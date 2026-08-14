@@ -3,8 +3,9 @@
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Sparkles, Zap, Globe, Bot, PhoneCall } from "lucide-react"
+import { ArrowRight, Sparkles, Zap, Bot, PhoneCall, TrendingUp } from "lucide-react"
 import { useEffect, useState } from "react"
+import { InteractiveCore, type CoreMode } from "@/components/interactive-core"
 
 const niches = [
   "Real Estate", "Dental Clinics", "E-commerce", "Law Firms",
@@ -14,8 +15,15 @@ const niches = [
 
 const rotatingWords = ["Missed Call", "Slow Reply", "Unanswered Message", "Lost Lead"]
 
+const serviceModes: { id: CoreMode; label: string; icon: typeof Bot; glow: string }[] = [
+  { id: "chatbots", label: "AI Chatbots", icon: Bot, glow: "34,211,238" },
+  { id: "automation", label: "Workflow Automation", icon: Zap, glow: "168,85,247" },
+  { id: "marketing", label: "Digital Marketing", icon: TrendingUp, glow: "245,185,66" },
+]
+
 export function HeroSection() {
   const [wordIndex, setWordIndex] = useState(0)
+  const [mode, setMode] = useState<CoreMode>("chatbots")
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -24,14 +32,27 @@ export function HeroSection() {
     return () => clearInterval(interval)
   }, [])
 
+  const activeGlow = serviceModes.find((m) => m.id === mode)?.glow ?? "34,211,238"
+
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden"
     >
-      <div className="absolute w-[300px] h-[300px] rounded-full bg-purple-500/15 blur-3xl pointer-events-none" style={{ left: "10%", top: "20%" }} />
-      <div className="absolute w-[250px] h-[250px] rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" style={{ left: "75%", top: "10%" }} />
-      <div className="absolute w-[200px] h-[200px] rounded-full bg-purple-400/8 blur-3xl pointer-events-none" style={{ left: "60%", top: "65%" }} />
+      {/* Ambient glow — recolors with the active service mode */}
+      <motion.div
+        className="absolute w-[420px] h-[420px] rounded-full blur-3xl pointer-events-none"
+        style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
+        animate={{ backgroundColor: `rgba(${activeGlow}, 0.16)` }}
+        transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+      />
+      <div className="absolute w-[250px] h-[250px] rounded-full bg-cyan-500/8 blur-3xl pointer-events-none" style={{ left: "75%", top: "10%" }} />
+      <div className="absolute w-[200px] h-[200px] rounded-full bg-purple-400/6 blur-3xl pointer-events-none" style={{ left: "60%", top: "65%" }} />
+
+      {/* Interactive core — cursor-tilt centerpiece, tucked behind the copy */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 opacity-70">
+        <InteractiveCore mode={mode} />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center text-center">
@@ -91,22 +112,32 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.48, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-wrap justify-center gap-3 mb-8"
+            className="flex flex-wrap justify-center gap-3 mb-3"
           >
-            {[
-              { icon: Bot, label: "AI Chatbots" },
-              { icon: PhoneCall, label: "AI Receptionist" },
-              { icon: Globe, label: "Custom Websites" },
-              { icon: Zap, label: "Workflow Automation" },
-            ].map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex items-center gap-1.5 glass-card px-4 py-2 rounded-full border border-white/10 text-sm text-muted-foreground"
+            {serviceModes.map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setMode(id)}
+                className={`flex items-center gap-1.5 glass-card px-4 py-2 rounded-full border text-sm transition-colors duration-300 ${
+                  mode === id
+                    ? "border-white/40 text-foreground bg-white/10"
+                    : "border-white/10 text-muted-foreground hover:border-white/25"
+                }`}
               >
-                <Icon className="h-3.5 w-3.5 text-cyan-400" />
+                <Icon className="h-3.5 w-3.5" style={{ color: mode === id ? "currentColor" : undefined }} />
                 {label}
-              </div>
+              </button>
             ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.52 }}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground mb-8"
+          >
+            <PhoneCall className="h-3 w-3" />
+            AI Receptionist and Custom Websites included with every build
           </motion.div>
 
           <motion.div
