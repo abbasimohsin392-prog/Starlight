@@ -1,39 +1,27 @@
-import { Navbar } from "@/components/navbar"
-import { HeroSection } from "@/components/hero-section"
-import { TrustedCompanies } from "@/components/trusted-companies"
-import { ServicesSection } from "@/components/services-section"
-import { FeaturesSection } from "@/components/features-section"
-import { ChatbotDemoSection } from "@/components/chatbot-demo-section"
-import { PricingSection } from "@/components/pricing-section"
-import { BookingSection } from "@/components/booking-section"
-import { TestimonialsSection } from "@/components/testimonials-section"
-import { FAQSection } from "@/components/faq-section"
-import { Footer } from "@/components/footer"
-import { CinematicBackground } from "@/components/cinematic-background"
-import { UrgencyBanner } from "@/components/urgency-banner"
-import { FloatingCTA } from "@/components/floating-cta"
-import { JarvisWelcome } from "@/components/jarvis-welcome"
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/footer'
+import { Hero } from '@/components/hero'
+import { Services } from '@/components/services'
+import { Features } from '@/components/features'
+import { Showcase } from '@/components/showcase'
+import { Pricing } from '@/components/pricing'
+import { Testimonials } from '@/components/testimonials'
+import { Faq } from '@/components/faq'
 
-export default function Home() {
+export default function Page() {
   return (
-    <main className="min-h-screen bg-background relative">
-      <CinematicBackground />
-      <UrgencyBanner />
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <div className="relative z-10 pt-28">
-        <HeroSection />
-        <TrustedCompanies />
-        <ServicesSection />
-        <FeaturesSection />
-        <ChatbotDemoSection />
-        <PricingSection />
-        <BookingSection />
-        <TestimonialsSection />
-        <FAQSection />
-        <Footer />
-      </div>
-      <JarvisWelcome />
-      <FloatingCTA />
-    </main>
+      <main className="flex-1 pt-16">
+        <Hero />
+        <Services />
+        <Features />
+        <Showcase />
+        <Pricing />
+        <Testimonials />
+        <Faq />
+      </main>
+      <Footer />
+    </div>
   )
 }
