@@ -5,7 +5,9 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles, Zap, Bot, PhoneCall, TrendingUp } from "lucide-react"
 import { useEffect, useState } from "react"
-import { InteractiveCore, type CoreMode } from "@/components/interactive-core"
+import { LiveStatsTicker } from "@/components/live-stats-ticker"
+
+export type CoreMode = "chatbots" | "automation" | "marketing"
 
 const niches = [
   "Real Estate", "Dental Clinics", "E-commerce", "Law Firms",
@@ -46,13 +48,8 @@ export function HeroSection() {
         animate={{ backgroundColor: `rgba(${activeGlow}, 0.16)` }}
         transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
       />
-      <div className="absolute w-[250px] h-[250px] rounded-full bg-cyan-500/8 blur-3xl pointer-events-none" style={{ left: "75%", top: "10%" }} />
-      <div className="absolute w-[200px] h-[200px] rounded-full bg-purple-400/6 blur-3xl pointer-events-none" style={{ left: "60%", top: "65%" }} />
-
-      {/* Interactive core — cursor-tilt centerpiece, tucked behind the copy */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 opacity-70">
-        <InteractiveCore mode={mode} />
-      </div>
+      <div className="absolute w-[250px] h-[250px] rounded-full bg-cyan-500/8 blur-3xl pointer-events-none animate-float-glow" style={{ left: "75%", top: "10%" }} />
+      <div className="absolute w-[200px] h-[200px] rounded-full bg-purple-400/6 blur-3xl pointer-events-none animate-float-glow-reverse" style={{ left: "60%", top: "65%" }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center text-center">
@@ -78,7 +75,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 text-balance max-w-5xl"
+            className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 text-balance max-w-5xl"
           >
             Every{" "}
             <span className="relative inline-block">
@@ -102,7 +99,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
-            className="text-lg sm:text-xl text-muted-foreground mb-4 max-w-2xl leading-relaxed"
+            className="text-base sm:text-lg text-muted-foreground mb-4 max-w-2xl leading-relaxed"
           >
             AI chatbots that book appointments while you sleep, workflows that fix the bottlenecks costing you customers.
             <span className="text-foreground font-medium"> Built for businesses worldwide, live in weeks.</span>
@@ -118,6 +115,7 @@ export function HeroSection() {
               <button
                 key={id}
                 onClick={() => setMode(id)}
+                data-magnetic
                 className={`flex items-center gap-1.5 glass-card px-4 py-2 rounded-full border text-sm transition-colors duration-300 ${
                   mode === id
                     ? "border-white/40 text-foreground bg-white/10"
@@ -139,6 +137,8 @@ export function HeroSection() {
             <PhoneCall className="h-3 w-3" />
             AI Receptionist and Custom Websites included with every build
           </motion.div>
+
+          <LiveStatsTicker />
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -165,7 +165,7 @@ export function HeroSection() {
             transition={{ duration: 0.9, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row gap-4 mb-16"
           >
-          <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer">
+          <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer" data-magnetic>
               <Button
                 size="lg"
                 className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg shadow-lg shadow-purple-500/25 transition-transform duration-200 hover:scale-105 hover:-translate-y-0.5"
@@ -174,7 +174,7 @@ export function HeroSection() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </a>
-            <Link href="/services">
+            <Link href="/services" data-magnetic>
               <Button
                 size="lg"
                 variant="outline"
