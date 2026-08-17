@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion"
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 const metrics = [
-  { value: "2–3", unit: "wks", label: "Discovery to launch" },
+  { value: "4–8", unit: "days", label: "Discovery to launch" },
   { value: "24", unit: "/7", label: "AI uptime, every channel" },
   { value: "<60", unit: "sec", label: "Average first response" },
   { value: "12+", unit: "", label: "Industries live" },
