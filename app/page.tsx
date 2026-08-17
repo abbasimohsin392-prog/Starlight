@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/hero-section"
 import { TrustedCompanies } from "@/components/trusted-companies"
 import { ServicesSection } from "@/components/services-section"
 import { FeaturesSection } from "@/components/features-section"
+import { WorkPerformanceSection } from "@/components/work-performance-section"
 import { ChatbotDemoSection } from "@/components/chatbot-demo-section"
 import { PricingSection } from "@/components/pricing-section"
 import { BookingSection } from "@/components/booking-section"
@@ -25,6 +26,7 @@ export default function Home() {
         <TrustedCompanies />
         <ServicesSection />
         <FeaturesSection />
+        <WorkPerformanceSection />
         <ChatbotDemoSection />
         <PricingSection />
         <BookingSection />
