@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
+import ScrollExpand from "@/components/scroll-expand"
 import { TrustedCompanies } from "@/components/trusted-companies"
 import { ServicesSection } from "@/components/services-section"
 import { FeaturesSection } from "@/components/features-section"
@@ -23,6 +24,17 @@ export default function Home() {
       <Navbar />
       <div className="relative z-10 pt-28">
         <HeroSection />
+        <ScrollExpand
+          src="/images/og-banner.jpg"
+          alt="Starlight AI automation in action"
+          title="Built to scale"
+          scrollHint="Scroll"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold gradient-text mb-3">Every workflow, everywhere</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            From missed calls to booked appointments, Starlight AI automates the moments that used to cost you customers.
+          </p>
+        </ScrollExpand>
         <TrustedCompanies />
         <ServicesSection />
         <FeaturesSection />
