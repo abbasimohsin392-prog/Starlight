@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
 import ScrollExpand from "@/components/scroll-expand"
+import SwarmCursor from "@/components/swarm-cursor"
 import { TrustedCompanies } from "@/components/trusted-companies"
 import { ServicesSection } from "@/components/services-section"
 import { FeaturesSection } from "@/components/features-section"
@@ -35,6 +36,24 @@ export default function Home() {
             From missed calls to booked appointments, Starlight AI automates the moments that used to cost you customers.
           </p>
         </ScrollExpand>
+        <div style={{ position: "relative", width: "100%", height: "450px" }}>
+          <SwarmCursor
+            color="#22d3ee"
+            accentColor="#a855f7"
+            count={6}
+            size={1}
+            speed={2.5}
+            spread={100}
+            wander={0.25}
+            trail={0.75}
+            scatterOnClick
+          >
+            <div className="text-center px-4">
+              <h2 className="text-2xl sm:text-3xl font-bold gradient-text mb-2">Your leads, chased down</h2>
+              <p className="text-muted-foreground">Move your cursor and click around.</p>
+            </div>
+          </SwarmCursor>
+        </div>
         <TrustedCompanies />
         <ServicesSection />
         <FeaturesSection />

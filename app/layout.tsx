@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import { CustomCursor } from '@/components/custom-cursor'
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -75,7 +74,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: '0QMjYd5hSASQ_63IPTOFqdZlyssMFaRxbkvOBLZVuJY',
+    google: '0QMJYd5hSASQ_63IPTOFqdZlyssMFaRxbkvOBLZVuJY',
   },
 }
 
@@ -137,7 +136,6 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <CustomCursor />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
