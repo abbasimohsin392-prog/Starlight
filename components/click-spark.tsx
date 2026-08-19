@@ -1,13 +1,6 @@
 "use client"
 
-import {
-  useRef,
-  useEffect,
-  useCallback,
-  ReactNode,
-  useMemo,
-  MouseEvent,
-} from "react"
+import { useRef, useEffect, useCallback, ReactNode } from "react"
 
 interface ClickSparkProps {
   sparkColor?: string
@@ -27,6 +20,13 @@ interface Spark {
   startTime: number
 }
 
+/**
+ * Page-wide click spark effect.
+ * Renders a fixed, full-viewport, pointer-events-none canvas and listens
+ * for clicks on the whole document -- so it fires no matter where on the
+ * page the user clicks, not just inside a bounded container. Use it once,
+ * wrapping the page's content (or even with no children at all).
+ */
 const ClickSpark = ({
   sparkColor = "#fff",
   sparkSize = 10,
@@ -38,41 +38,22 @@ const ClickSpark = ({
   children,
 }: ClickSparkProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
   const sparksRef = useRef<Spark[]>([])
   const startTimeRef = useRef<number | null>(null)
 
+  // Keep the canvas sized to the full viewport.
   useEffect(() => {
     const canvas = canvasRef.current
-    const container = containerRef.current
-    if (!canvas || !container) return
-
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    let resizeTimeout: ReturnType<typeof setTimeout>
+    if (!canvas) return
 
     const resizeCanvas = () => {
-      const { width, height } = container.getBoundingClientRect()
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width
-        canvas.height = height
-      }
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
     }
 
-    const handleResize = () => {
-      clearTimeout(resizeTimeout)
-      resizeTimeout = setTimeout(resizeCanvas, 100)
-    }
-
-    const ro = new ResizeObserver(handleResize)
-    ro.observe(container)
     resizeCanvas()
-
-    return () => {
-      ro.disconnect()
-      clearTimeout(resizeTimeout)
-    }
+    window.addEventListener("resize", resizeCanvas)
+    return () => window.removeEventListener("resize", resizeCanvas)
   }, [])
 
   const easeFunc = useCallback(
@@ -91,6 +72,7 @@ const ClickSpark = ({
     [easing]
   )
 
+  // Animation loop.
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -138,14 +120,11 @@ const ClickSpark = ({
     }
   }, [sparkColor, sparkSize, sparkRadius, sparkCount, duration, easeFunc, extraScale])
 
-  const handleClick = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      const canvas = canvasRef.current
-      if (!canvas) return
-
-      const rect = canvas.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
+  // Listen for clicks anywhere on the page, not just inside a wrapper div.
+  useEffect(() => {
+    const handleClick = (e: globalThis.MouseEvent) => {
+      const x = e.clientX
+      const y = e.clientY
 
       const now = performance.now()
       const newSparks: Spark[] = Array.from({ length: sparkCount }, (_, i) => ({
@@ -156,34 +135,28 @@ const ClickSpark = ({
       }))
 
       sparksRef.current.push(...newSparks)
-    },
-    [sparkCount]
-  )
+    }
 
-  const style = useMemo(
-    () => ({
-      width: "100%",
-      height: "100%",
-      position: "relative" as const,
-    }),
-    []
-  )
+    document.addEventListener("click", handleClick)
+    return () => document.removeEventListener("click", handleClick)
+  }, [sparkCount])
 
   return (
-    <div ref={containerRef} style={style} onClick={handleClick}>
+    <>
       <canvas
         ref={canvasRef}
         style={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
+          width: "100vw",
+          height: "100vh",
           pointerEvents: "none",
+          zIndex: 9999,
         }}
       />
       {children}
-    </div>
+    </>
   )
 }
 
