@@ -407,13 +407,6 @@
 }
 
 
-/* Custom site-wide cursor */
-@media (hover: hover) and (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
-
 .cursor-inner {
   position: fixed;
   top: 0;
