@@ -27,12 +27,20 @@ export default function ScrollExpand({
 }: ScrollExpandProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const { scrollYProgress: windowProgress } = useScroll()
+  // Both modes track scroll progress against THIS section only, never the whole page.
+  // useWindowScroll: progress goes 0 -> 1 as the section scrolls from entering the
+  // viewport to fully passing it (matches the sticky pin below).
+  // local mode: progress goes 0 -> 1 as the section scrolls from entering the
+  // viewport to reaching its center.
+  const { scrollYProgress: pinnedProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  })
   const { scrollYProgress: elementProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "center center"],
   })
-  const progress = useWindowScroll ? windowProgress : elementProgress
+  const progress = useWindowScroll ? pinnedProgress : elementProgress
 
   const frameWidth = useTransform(progress, [0, 1], ["76%", "100%"])
   const frameHeight = useTransform(
