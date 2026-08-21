@@ -27,10 +27,10 @@ export default function Home() {
         <div className="relative z-10 pt-28">
           <HeroSection />
           <ScrollExpand
-            src="/images/og-banner.jpg"
-            alt="Starlight AI automation in action"
             title="Built to scale"
             scrollHint="Scroll"
+            useWindowScroll
+            content={<ChatbotDemoSection />}
           >
             <h2 className="text-2xl sm:text-3xl font-bold gradient-text mb-3">Every workflow, everywhere</h2>
             <p className="text-muted-foreground leading-relaxed">
@@ -41,7 +41,6 @@ export default function Home() {
           <ServicesSection />
           <FeaturesSection />
           <WorkPerformanceSection />
-          <ChatbotDemoSection />
           <PricingSection />
           <BookingSection />
           <TestimonialsSection />
