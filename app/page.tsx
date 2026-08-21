@@ -25,22 +25,12 @@ export default function Home() {
         <UrgencyBanner />
         <Navbar />
         <div className="relative z-10 pt-28">
-          <HeroSection />
-          <ScrollExpand
-            title="Built to scale"
-            scrollHint="Scroll"
-            useWindowScroll
-            content={<ChatbotDemoSection />}
-          >
-            <h2 className="text-2xl sm:text-3xl font-bold gradient-text mb-3">Every workflow, everywhere</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              From missed calls to booked appointments, Starlight AI automates the moments that used to cost you customers.
-            </p>
-          </ScrollExpand>
+          <ScrollExpand useWindowScroll content={<HeroSection />} />
           <TrustedCompanies />
           <ServicesSection />
           <FeaturesSection />
           <WorkPerformanceSection />
+          <ChatbotDemoSection />
           <PricingSection />
           <BookingSection />
           <TestimonialsSection />
