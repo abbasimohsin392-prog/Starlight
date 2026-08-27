@@ -1,1 +1,65 @@
-InVzZSBjbGllbnQiCgppbXBvcnQgeyB1c2VFZmZlY3QsIHVzZVN0YXRlIH0gZnJvbSAicmVhY3QiCgovKioKICogU21hbGwgYWx3YXlzLW9uIGFjdGl2aXR5IHRpY2tlciBmb3IgdGhlIGhlcm8g4oCUIHRocmVlIGNvdW50ZXJzIHRoYXQKICogaW5jcmVtZW50IGNvbnRpbnVvdXNseSBvbiB0aGVpciBvd24gcmFuZG9tIGNhZGVuY2UsIHB1cmVseSBkZWNvcmF0aXZlLgogKiBMYWJlbGVkICIobGl2ZSBzaW11bGF0aW9uKSIgc28gaXQgbmV2ZXIgcmVhZHMgYXMgYSByZWFsLCB2ZXJpZmllZCBtZXRyaWMuCiAqLwp0eXBlIE1ldHJpYyA9IHsga2V5OiBzdHJpbmc7IGxhYmVsOiBzdHJpbmc7IHZhbHVlOiBudW1iZXI7IG1pbjogbnVtYmVyOyBtYXg6IG51bWJlciB9Cgpjb25zdCBpbml0aWFsTWV0cmljczogTWV0cmljW10gPSBbCiAgeyBrZXk6ICJsZWFkcyIsIGxhYmVsOiAibGVhZHMgcm91dGVkIiwgdmFsdWU6IDEyODQwLCBtaW46IDEsIG1heDogNCB9LAogIHsga2V5OiAiY2hhdHMiLCBsYWJlbDogImNoYXRzIGFuc3dlcmVkIiwgdmFsdWU6IDgwMjEsIG1pbjogMSwgbWF4OiAzIH0sCiAgeyBrZXk6ICJjYWxscyIsIGxhYmVsOiAiY2FsbHMgYm9va2VkIiwgdmFsdWU6IDk2MywgbWluOiAxLCBtYXg6IDIgfSwKXQoKZXhwb3J0IGZ1bmN0aW9uIExpdmVTdGF0c1RpY2tlcigpIHsKICBjb25zdCBbbWV0cmljcywgc2V0TWV0cmljc10gPSB1c2VTdGF0ZShpbml0aWFsTWV0cmljcykKICBjb25zdCBbZmxhc2hLZXksIHNldEZsYXNoS2V5XSA9IHVzZVN0YXRlPHN0cmluZyB8IG51bGw+KG51bGwpCgogIHVzZUVmZmVjdCgoKSA9PiB7CiAgICBpZiAod2luZG93Lm1hdGNoTWVkaWEoIihwcmVmZXJzLXJlZHVjZWQtbW90aW9uOiByZWR1Y2UpIikubWF0Y2hlcykgcmV0dXJuCiAgICBsZXQgY2FuY2VsbGVkID0gZmFsc2UKICAgIGxldCB0aW1lb3V0SWQ6IFJldHVyblR5cGU8dHlwZW9mIHNldFRpbWVvdXQ+CgogICAgY29uc3QgdGljayA9ICgpID0+IHsKICAgICAgaWYgKGNhbmNlbGxlZCkgcmV0dXJuCiAgICAgIHNldE1ldHJpY3MoKHByZXYpID0+CiAgICAgICAgcHJldi5tYXAoKG0pID0+IHsKICAgICAgICAgIGlmIChNYXRoLnJhbmRvbSgpIDwgMC43KSB7CiAgICAgICAgICAgIHNldEZsYXNoS2V5KG0ua2V5KQogICAgICAgICAgICBzZXRUaW1lb3V0KCgpID0+IHNldEZsYXNoS2V5KChrKSA9PiAoayA9PT0gbS5rZXkgPyBudWxsIDogaykpLCAyODApCiAgICAgICAgICAgIHJldHVybiB7IC4uLm0sIHZhbHVlOiBtLnZhbHVlICsgTWF0aC5mbG9vcihNYXRoLnJhbmRvbSgpICogKG0ubWF4IC0gbS5taW4gKyAxKSkgKyBtLm1pbiB9CiAgICAgICAgICB9CiAgICAgICAgICByZXR1cm4gbQogICAgICAgIH0pLAogICAgICApCiAgICAgIHRpbWVvdXRJZCA9IHNldFRpbWVvdXQodGljaywgOTAwICsgTWF0aC5yYW5kb20oKSAqIDE0MDApCiAgICB9CiAgICB0aW1lb3V0SWQgPSBzZXRUaW1lb3V0KHRpY2ssIDEyMDApCgogICAgcmV0dXJuICgpID0+IHsKICAgICAgY2FuY2VsbGVkID0gdHJ1ZQogICAgICBjbGVhclRpbWVvdXQodGltZW91dElkKQogICAgfQogIH0sIFtdKQoKICByZXR1cm4gKAogICAgPGRpdiBjbGFzc05hbWU9ImZsZXggZmxleC13cmFwIGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBnYXAteC01IGdhcC15LTEuNSB0ZXh0LXhzIHRleHQtbXV0ZWQtZm9yZWdyb3VuZCBtYi02Ij4KICAgICAge21ldHJpY3MubWFwKChtKSA9PiAoCiAgICAgICAgPHNwYW4ga2V5PXttLmtleX0gY2xhc3NOYW1lPSJmbGV4IGl0ZW1zLWJhc2VsaW5lIGdhcC0xLjUiPgogICAgICAgICAgPGIKICAgICAgICAgICAgY2xhc3NOYW1lPSJmb250LXNlbWlib2xkIHRyYW5zaXRpb24tY29sb3JzIGR1cmF0aW9uLTMwMCIKICAgICAgICAgICAgc3R5bGU9e3sgY29sb3I6IGZsYXNoS2V5ID09PSBtLmtleSA/ICIjMjJkM2VlIiA6ICIjYTg1NWY3IiB9fQogICAgICAgICAgPgogICAgICAgICAgICB7bS52YWx1ZS50b0xvY2FsZVN0cmluZygpfQogICAgICAgICAgPC9iPgogICAgICAgICAge20ubGFiZWx9CiAgICAgICAgPC9zcGFuPgogICAgICApKX0KICAgICAgPHNwYW4gY2xhc3NOYW1lPSJvcGFjaXR5LTUwIj4obGl2ZSBzaW11bGF0aW9uKTwvc3Bhbj4KICAgIDwvZGl2PgogICkKfQo=
+"use client"
+
+import { useEffect, useState } from "react"
+
+/**
+ * Small always-on activity ticker for the hero — three counters that
+ * increment continuously on their own random cadence, purely decorative.
+ * Labeled "(live simulation)" so it never reads as a real, verified metric.
+ */
+type Metric = { key: string; label: string; value: number; min: number; max: number }
+
+const initialMetrics: Metric[] = [
+  { key: "leads", label: "leads routed", value: 12840, min: 1, max: 4 },
+  { key: "chats", label: "chats answered", value: 8021, min: 1, max: 3 },
+  { key: "calls", label: "calls booked", value: 963, min: 1, max: 2 },
+]
+
+export function LiveStatsTicker() {
+  const [metrics, setMetrics] = useState(initialMetrics)
+  const [flashKey, setFlashKey] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    let cancelled = false
+    let timeoutId: ReturnType<typeof setTimeout>
+
+    const tick = () => {
+      if (cancelled) return
+      setMetrics((prev) =>
+        prev.map((m) => {
+          if (Math.random() < 0.7) {
+            setFlashKey(m.key)
+            setTimeout(() => setFlashKey((k) => (k === m.key ? null : k)), 280)
+            return { ...m, value: m.value + Math.floor(Math.random() * (m.max - m.min + 1)) + m.min }
+          }
+          return m
+        }),
+      )
+      timeoutId = setTimeout(tick, 900 + Math.random() * 1400)
+    }
+    timeoutId = setTimeout(tick, 1200)
+
+    return () => {
+      cancelled = true
+      clearTimeout(timeoutId)
+    }
+  }, [])
+
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-muted-foreground mb-6">
+      {metrics.map((m) => (
+        <span key={m.key} className="flex items-baseline gap-1.5">
+          <b
+            className="font-semibold transition-colors duration-300"
+            style={{ color: flashKey === m.key ? "#22d3ee" : "#a855f7" }}
+          >
+            {m.value.toLocaleString()}
+          </b>
+          {m.label}
+        </span>
+      ))}
+      <span className="opacity-50">(live simulation)</span>
+    </div>
+  )
+}

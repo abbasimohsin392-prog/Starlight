@@ -1,1 +1,29 @@
-aW1wb3J0IHsgQW5hbHl0aWNzIH0gZnJvbSAnQHZlcmNlbC9hbmFseXRpY3MvbmV4dCcKaW1wb3J0IHR5cGUgeyBNZXRhZGF0YSwgVmlld3BvcnQgfSBmcm9tICduZXh0JwppbXBvcnQgJy4vZ2xvYmFscy5jc3MnCgpleHBvcnQgY29uc3QgbWV0YWRhdGE6IE1ldGFkYXRhID0gewogIHRpdGxlOiAnU3RhcmxpZ2h0IEFJIOKAlCBCdWlsZCB0aGUgZnV0dXJlLiBBdXRvbWF0ZSB0aGUgbm93LicsCiAgZGVzY3JpcHRpb246ICdTdGFybGlnaHQgQUkgYnVpbGRzIGludGVsbGlnZW50IHN5c3RlbXMsIHdvcmtmbG93IGF1dG9tYXRpb24gYW5kIGRpZ2l0YWwgZ3Jvd3RoIGVuZ2luZXMgZm9yIGFtYml0aW91cyBidXNpbmVzc2VzLicsCiAgZ2VuZXJhdG9yOiAnU3RhcmxpZ2h0IEFJJywKICBtZXRhZGF0YUJhc2U6IG5ldyBVUkwoJ2h0dHBzOi8vc3RhcmxpZ2h0YWkuc2l0ZScpLAogIG9wZW5HcmFwaDogewogICAgdGl0bGU6ICdTdGFybGlnaHQgQUknLAogICAgZGVzY3JpcHRpb246ICdJbnRlbGxpZ2VudCBzeXN0ZW1zIGZvciBhbWJpdGlvdXMgYnVzaW5lc3Nlcy4nLAogICAgdHlwZTogJ3dlYnNpdGUnLAogICAgdXJsOiAnaHR0cHM6Ly9zdGFybGlnaHRhaS5zaXRlJywKICAgIGltYWdlczogW3sgdXJsOiAnL2ltYWdlcy9vZy1iYW5uZXIuanBnJywgd2lkdGg6IDEyMDAsIGhlaWdodDogNjMwLCBhbHQ6ICdTdGFybGlnaHQgQUknIH1dLAogIH0sCiAgdHdpdHRlcjogewogICAgY2FyZDogJ3N1bW1hcnlfbGFyZ2VfaW1hZ2UnLAogICAgdGl0bGU6ICdTdGFybGlnaHQgQUknLAogICAgZGVzY3JpcHRpb246ICdJbnRlbGxpZ2VudCBzeXN0ZW1zIGZvciBhbWJpdGlvdXMgYnVzaW5lc3Nlcy4nLAogICAgaW1hZ2VzOiBbJy9pbWFnZXMvb2ctYmFubmVyLmpwZyddLAogIH0sCn0KCmV4cG9ydCBjb25zdCB2aWV3cG9ydDogVmlld3BvcnQgPSB7IGNvbG9yU2NoZW1lOiAnZGFyaycsIHRoZW1lQ29sb3I6ICcjMGEwYTBhJywgdXNlclNjYWxhYmxlOiB0cnVlIH0KCmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIFJvb3RMYXlvdXQoeyBjaGlsZHJlbiB9OiBSZWFkb25seTx7IGNoaWxkcmVuOiBSZWFjdC5SZWFjdE5vZGUgfT4pIHsKICByZXR1cm4gPGh0bWwgbGFuZz0iZW4iIGNsYXNzTmFtZT0iYmctYmFja2dyb3VuZCI+PGJvZHkgY2xhc3NOYW1lPSJhbnRpYWxpYXNlZCI+e2NoaWxkcmVufXtwcm9jZXNzLmVudi5OT0RFX0VOViA9PT0gJ3Byb2R1Y3Rpb24nICYmIDxBbmFseXRpY3MgLz59PC9ib2R5PjwvaHRtbD4KfQo=
+import { Analytics } from '@vercel/analytics/next'
+import type { Metadata, Viewport } from 'next'
+import './globals.css'
+
+export const metadata: Metadata = {
+  title: 'Starlight AI — Build the future. Automate the now.',
+  description: 'Starlight AI builds intelligent systems, workflow automation and digital growth engines for ambitious businesses.',
+  generator: 'Starlight AI',
+  metadataBase: new URL('https://starlightai.site'),
+  openGraph: {
+    title: 'Starlight AI',
+    description: 'Intelligent systems for ambitious businesses.',
+    type: 'website',
+    url: 'https://starlightai.site',
+    images: [{ url: '/images/og-banner.jpg', width: 1200, height: 630, alt: 'Starlight AI' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Starlight AI',
+    description: 'Intelligent systems for ambitious businesses.',
+    images: ['/images/og-banner.jpg'],
+  },
+}
+
+export const viewport: Viewport = { colorScheme: 'dark', themeColor: '#0a0a0a', userScalable: true }
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en" className="bg-background"><body className="antialiased">{children}{process.env.NODE_ENV === 'production' && <Analytics />}</body></html>
+}

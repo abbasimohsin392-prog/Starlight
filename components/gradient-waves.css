@@ -1,1 +1,6 @@
-LmdyYWRpZW50LXdhdmVzLWNvbnRhaW5lciB7CiAgcG9zaXRpb246IHJlbGF0aXZlOwogIHdpZHRoOiAxMDAlOwogIGhlaWdodDogMTAwJTsKICBvdmVyZmxvdzogaGlkZGVuOwp9Cg==
+.gradient-waves-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}

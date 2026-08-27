@@ -1,1 +1,35 @@
-aW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJwppbXBvcnQgdHlwZSB7IE1ldGFkYXRhIH0gZnJvbSAnbmV4dCcKaW1wb3J0IHsgYmxvZ1Bvc3RzIH0gZnJvbSAnQC9saWIvYmxvZy1wb3N0cycKaW1wb3J0IHsgUGFnZUhlYWRlciwgUGFnZUZvb3RlciB9IGZyb20gJ0AvY29tcG9uZW50cy9wYWdlLWNocm9tZScKCmV4cG9ydCBjb25zdCBtZXRhZGF0YTogTWV0YWRhdGEgPSB7CiAgdGl0bGU6ICdCbG9nIOKAlCBTdGFybGlnaHQgQUknLAogIGRlc2NyaXB0aW9uOiAnUHJhY3RpY2FsIGd1aWRlcyBvbiBBSSByZWNlcHRpb25pc3RzLCBjaGF0Ym90cywgYW5kIGF1dG9tYXRpb24gZm9yIHNtYWxsIGJ1c2luZXNzZXMuJywKICBhbHRlcm5hdGVzOiB7IGNhbm9uaWNhbDogJy9ibG9nJyB9LAp9CgpleHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBCbG9nSW5kZXhQYWdlKCkgewogIHJldHVybiAoCiAgICA8bWFpbiBzdHlsZT17eyBtaW5IZWlnaHQ6ICcxMDB2aCcgfX0+CiAgICAgIDxQYWdlSGVhZGVyIC8+CiAgICAgIDxzZWN0aW9uIGNsYXNzTmFtZT0ic2VjdGlvbiIgc3R5bGU9e3sgcGFkZGluZ1RvcDogMTgwIH19PgogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJzZWN0aW9uLWhlYWQiPgogICAgICAgICAgPGRpdj48c3BhbiBjbGFzc05hbWU9ImV5ZWJyb3ciPkJMT0c8L3NwYW4+PGgyPklkZWFzIHdvcnRoPGJyIC8+PGVtPmF1dG9tYXRpbmcgYXJvdW5kLjwvZW0+PC9oMj48L2Rpdj4KICAgICAgICAgIDxwIGNsYXNzTmFtZT0ic2VjdGlvbi1pbnRybyI+UHJhY3RpY2FsLCBuby1mbHVmZiBndWlkZXMgb24gd2hlcmUgQUkgYWN0dWFsbHkgc2F2ZXMgYnVzaW5lc3NlcyB0aW1lIGFuZCBtb25leS48L3A+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBzdHlsZT17eyBkaXNwbGF5OiAnZ3JpZCcsIGdhcDogMTggfX0+CiAgICAgICAgICB7YmxvZ1Bvc3RzLm1hcCgocG9zdCkgPT4gKAogICAgICAgICAgICA8TGluayBrZXk9e3Bvc3Quc2x1Z30gaHJlZj17YC9ibG9nLyR7cG9zdC5zbHVnfWB9IGNsYXNzTmFtZT0iZ2xhc3MtY2FyZCIgc3R5bGU9e3sgZGlzcGxheTogJ2Jsb2NrJywgcGFkZGluZzogJzI2cHggMzBweCcgfX0+CiAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJleWVicm93Ij57cG9zdC5jYXRlZ29yeS50b1VwcGVyQ2FzZSgpfSDCtyB7bmV3IERhdGUocG9zdC5kYXRlKS50b0xvY2FsZURhdGVTdHJpbmcoJ2VuLVVTJywgeyBtb250aDogJ2xvbmcnLCB5ZWFyOiAnbnVtZXJpYycgfSl9PC9zcGFuPgogICAgICAgICAgICAgIDxoMyBzdHlsZT17eyBtYXJnaW46ICcxMHB4IDAgOHB4JywgZm9udFNpemU6IDIyLCBmb250V2VpZ2h0OiA1MDAsIGxldHRlclNwYWNpbmc6ICctLjAyZW0nIH19Pntwb3N0LnRpdGxlfTwvaDM+CiAgICAgICAgICAgICAgPHAgc3R5bGU9e3sgbWFyZ2luOiAwLCBjb2xvcjogJ3ZhcigtLW11dGVkKScsIGZvbnRTaXplOiAxNCwgbGluZUhlaWdodDogMS42IH19Pntwb3N0LmV4Y2VycHR9PC9wPgogICAgICAgICAgICA8L0xpbms+CiAgICAgICAgICApKX0KICAgICAgICA8L2Rpdj4KICAgICAgPC9zZWN0aW9uPgogICAgICA8UGFnZUZvb3RlciAvPgogICAgPC9tYWluPgogICkKfQo=
+import Link from 'next/link'
+import type { Metadata } from 'next'
+import { blogPosts } from '@/lib/blog-posts'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/footer'
+
+export const metadata: Metadata = {
+  title: 'Blog — Starlight AI',
+  description: 'Practical guides on AI receptionists, chatbots, and automation for small businesses.',
+  alternates: { canonical: '/blog' },
+}
+
+export default function BlogIndexPage() {
+  return (
+    <main style={{ minHeight: '100vh' }}>
+      <Navbar />
+      <section className="section" style={{ paddingTop: 180 }}>
+        <div className="section-head">
+          <div><span className="eyebrow">BLOG</span><h2>Ideas worth<br /><em>automating around.</em></h2></div>
+          <p className="section-intro">Practical, no-fluff guides on where AI actually saves businesses time and money.</p>
+        </div>
+        <div style={{ display: 'grid', gap: 18 }}>
+          {blogPosts.map((post) => (
+            <Link key={post.slug} href={`/blog/${post.slug}`} className="glass-card" style={{ display: 'block', padding: '26px 30px' }}>
+              <span className="eyebrow">{post.category.toUpperCase()} · {new Date(post.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+              <h3 style={{ margin: '10px 0 8px', fontSize: 22, fontWeight: 500, letterSpacing: '-.02em' }}>{post.title}</h3>
+              <p style={{ margin: 0, color: 'var(--muted)', fontSize: 14, lineHeight: 1.6 }}>{post.excerpt}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+      <Footer />
+    </main>
+  )
+}

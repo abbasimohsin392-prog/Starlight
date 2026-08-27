@@ -1,1 +1,55 @@
-aW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJwppbXBvcnQgdHlwZSB7IE1ldGFkYXRhIH0gZnJvbSAnbmV4dCcKaW1wb3J0IHsgbm90Rm91bmQgfSBmcm9tICduZXh0L25hdmlnYXRpb24nCmltcG9ydCB7IGJsb2dQb3N0cywgdHlwZSBCbG9nQ29udGVudEJsb2NrIH0gZnJvbSAnQC9saWIvYmxvZy1wb3N0cycKaW1wb3J0IHsgbmljaGVzIH0gZnJvbSAnQC9saWIvbmljaGVzJwppbXBvcnQgeyBQYWdlSGVhZGVyLCBQYWdlRm9vdGVyIH0gZnJvbSAnQC9jb21wb25lbnRzL3BhZ2UtY2hyb21lJwoKZXhwb3J0IGZ1bmN0aW9uIGdlbmVyYXRlU3RhdGljUGFyYW1zKCkgewogIHJldHVybiBibG9nUG9zdHMubWFwKChwKSA9PiAoeyBzbHVnOiBwLnNsdWcgfSkpCn0KCmV4cG9ydCBmdW5jdGlvbiBnZW5lcmF0ZU1ldGFkYXRhKHsgcGFyYW1zIH06IHsgcGFyYW1zOiB7IHNsdWc6IHN0cmluZyB9IH0pOiBNZXRhZGF0YSB7CiAgY29uc3QgcG9zdCA9IGJsb2dQb3N0cy5maW5kKChwKSA9PiBwLnNsdWcgPT09IHBhcmFtcy5zbHVnKQogIGlmICghcG9zdCkgcmV0dXJuIHt9CiAgcmV0dXJuIHsKICAgIHRpdGxlOiBwb3N0Lm1ldGFUaXRsZSwKICAgIGRlc2NyaXB0aW9uOiBwb3N0Lm1ldGFEZXNjcmlwdGlvbiwKICAgIGFsdGVybmF0ZXM6IHsgY2Fub25pY2FsOiBgL2Jsb2cvJHtwb3N0LnNsdWd9YCB9LAogIH0KfQoKZnVuY3Rpb24gQmxvY2soeyBibG9jayB9OiB7IGJsb2NrOiBCbG9nQ29udGVudEJsb2NrIH0pIHsKICBpZiAoYmxvY2sudHlwZSA9PT0gJ2gyJykgcmV0dXJuIDxoMiBzdHlsZT17eyBmb250U2l6ZTogMjQsIGZvbnRXZWlnaHQ6IDUwMCwgbWFyZ2luOiAnMzRweCAwIDE0cHgnLCBsZXR0ZXJTcGFjaW5nOiAnLS4wMmVtJyB9fT57YmxvY2sudGV4dH08L2gyPgogIGlmIChibG9jay50eXBlID09PSAndWwnKSByZXR1cm4gPHVsIGNsYXNzTmFtZT0iYmVuZWZpdC1saXN0Ij57YmxvY2suaXRlbXMubWFwKChpKSA9PiA8bGkga2V5PXtpfT48c3BhbiBjbGFzc05hbWU9ImRvdCI+4pyTPC9zcGFuPntpfTwvbGk+KX08L3VsPgogIHJldHVybiA8cCBzdHlsZT17eyBjb2xvcjogJ3ZhcigtLW11dGVkKScsIGZvbnRTaXplOiAxNiwgbGluZUhlaWdodDogMS43NSwgbWFyZ2luOiAnMCAwIDE4cHgnIH19PntibG9jay50ZXh0fTwvcD4KfQoKZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gQmxvZ1Bvc3RQYWdlKHsgcGFyYW1zIH06IHsgcGFyYW1zOiB7IHNsdWc6IHN0cmluZyB9IH0pIHsKICBjb25zdCBwb3N0ID0gYmxvZ1Bvc3RzLmZpbmQoKHApID0+IHAuc2x1ZyA9PT0gcGFyYW1zLnNsdWcpCiAgaWYgKCFwb3N0KSBub3RGb3VuZCgpCiAgY29uc3QgcmVsYXRlZE5pY2hlID0gbmljaGVzLmZpbmQoKG4pID0+IG4uc2x1ZyA9PT0gcG9zdC5yZWxhdGVkTmljaGVTbHVnKQoKICByZXR1cm4gKAogICAgPG1haW4gc3R5bGU9e3sgbWluSGVpZ2h0OiAnMTAwdmgnIH19PgogICAgICA8UGFnZUhlYWRlciAvPgogICAgICA8YXJ0aWNsZSBjbGFzc05hbWU9InNlY3Rpb24iIHN0eWxlPXt7IHBhZGRpbmdUb3A6IDE4MCwgbWF4V2lkdGg6IDc2MCB9fT4KICAgICAgICA8c3BhbiBjbGFzc05hbWU9ImV5ZWJyb3ciPntwb3N0LmNhdGVnb3J5LnRvVXBwZXJDYXNlKCl9IMK3IHtuZXcgRGF0ZShwb3N0LmRhdGUpLnRvTG9jYWxlRGF0ZVN0cmluZygnZW4tVVMnLCB7IG1vbnRoOiAnbG9uZycsIGRheTogJ251bWVyaWMnLCB5ZWFyOiAnbnVtZXJpYycgfSl9PC9zcGFuPgogICAgICAgIDxoMSBzdHlsZT17eyBtYXJnaW46ICcxOHB4IDAgMzJweCcsIGZvbnRTaXplOiAnY2xhbXAoMi4ycmVtLCA0LjV2dywgMy40cmVtKScsIGZvbnRXZWlnaHQ6IDQ1MCwgbGV0dGVyU3BhY2luZzogJy0uMDVlbScsIGxpbmVIZWlnaHQ6IDEuMDUgfX0+e3Bvc3QudGl0bGV9PC9oMT4KICAgICAgICB7cG9zdC5jb250ZW50Lm1hcCgoYmxvY2ssIGkpID0+IDxCbG9jayBrZXk9e2l9IGJsb2NrPXtibG9ja30gLz4pfQoKICAgICAgICB7cmVsYXRlZE5pY2hlICYmICgKICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJnbGFzcy1jYXJkIiBzdHlsZT17eyBwYWRkaW5nOiAyOCwgbWFyZ2luOiAnNDBweCAwJyB9fT4KICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPSJleWVicm93Ij5TRUUgVEhFIEZVTEwgU09MVVRJT048L3NwYW4+CiAgICAgICAgICAgIDxoMyBzdHlsZT17eyBtYXJnaW46ICcxMHB4IDAnIH19PntyZWxhdGVkTmljaGUuaGVyb0xpbmV9PC9oMz4KICAgICAgICAgICAgPExpbmsgaHJlZj17YC9zb2x1dGlvbnMvJHtyZWxhdGVkTmljaGUuc2x1Z31gfSBzdHlsZT17eyBjb2xvcjogJ3ZhcigtLWN5YW4pJywgZm9udFNpemU6IDEzIH19PlJlYWQgbW9yZSDihpI8L0xpbms+CiAgICAgICAgICA8L2Rpdj4KICAgICAgICApfQoKICAgICAgICA8TGluayBocmVmPSIvYmxvZyIgc3R5bGU9e3sgY29sb3I6ICd2YXIoLS1jeWFuKScsIGZvbnRTaXplOiAxMyB9fT7ihpAgQWxsIHBvc3RzPC9MaW5rPgogICAgICA8L2FydGljbGU+CiAgICAgIDxQYWdlRm9vdGVyIC8+CiAgICA8L21haW4+CiAgKQp9Cg==
+import Link from 'next/link'
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { blogPosts, type BlogContentBlock } from '@/lib/blog-posts'
+import { niches } from '@/lib/niches'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/footer'
+
+export function generateStaticParams() {
+  return blogPosts.map((p) => ({ slug: p.slug }))
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const post = blogPosts.find((p) => p.slug === params.slug)
+  if (!post) return {}
+  return {
+    title: post.metaTitle,
+    description: post.metaDescription,
+    alternates: { canonical: `/blog/${post.slug}` },
+  }
+}
+
+function Block({ block }: { block: BlogContentBlock }) {
+  if (block.type === 'h2') return <h2 style={{ fontSize: 24, fontWeight: 500, margin: '34px 0 14px', letterSpacing: '-.02em' }}>{block.text}</h2>
+  if (block.type === 'ul') return <ul className="benefit-list">{block.items.map((i) => <li key={i}><span className="dot">✓</span>{i}</li>)}</ul>
+  return <p style={{ color: 'var(--muted)', fontSize: 16, lineHeight: 1.75, margin: '0 0 18px' }}>{block.text}</p>
+}
+
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = blogPosts.find((p) => p.slug === params.slug)
+  if (!post) notFound()
+  const relatedNiche = niches.find((n) => n.slug === post.relatedNicheSlug)
+
+  return (
+    <main style={{ minHeight: '100vh' }}>
+      <Navbar />
+      <article className="section" style={{ paddingTop: 180, maxWidth: 760 }}>
+        <span className="eyebrow">{post.category.toUpperCase()} · {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+        <h1 style={{ margin: '18px 0 32px', fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)', fontWeight: 450, letterSpacing: '-.05em', lineHeight: 1.05 }}>{post.title}</h1>
+        {post.content.map((block, i) => <Block key={i} block={block} />)}
+
+        {relatedNiche && (
+          <div className="glass-card" style={{ padding: 28, margin: '40px 0' }}>
+            <span className="eyebrow">SEE THE FULL SOLUTION</span>
+            <h3 style={{ margin: '10px 0' }}>{relatedNiche.heroLine}</h3>
+            <Link href={`/solutions/${relatedNiche.slug}`} style={{ color: 'var(--cyan)', fontSize: 13 }}>Read more →</Link>
+          </div>
+        )}
+
+        <Link href="/blog" style={{ color: 'var(--cyan)', fontSize: 13 }}>← All posts</Link>
+      </article>
+      <Footer />
+    </main>
+  )
+}
