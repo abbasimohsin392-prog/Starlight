@@ -168,7 +168,7 @@ export default function Page() {
   const current = useMemo(() => testimonials[testimonial], [testimonial])
 
   return <ClickSpark sparkColor="#06b6d4" sparkCount={8} sparkRadius={16}>
-    <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }}><span className="eyebrow">AI AUTOMATION STUDIO</span><h1>Starlight<span>.</span></h1></motion.div></motion.div>}</AnimatePresence>
+    <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 48, width: 'auto', marginBottom: 18 }} /><span className="eyebrow">AI AUTOMATION STUDIO</span><h1>Starlight<span>.</span></h1><p style={{ color: 'var(--muted)', fontSize: 14, marginTop: 10 }}>Build the future. Automate the now.</p></motion.div></motion.div>}</AnimatePresence>
     <motion.div className="cursor" animate={{ x: cursor.x, y: cursor.y }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
     <UrgencyBanner />
     <FloatingCTA />
