@@ -168,14 +168,14 @@ export default function Page() {
   const current = useMemo(() => testimonials[testimonial], [testimonial])
 
   return <ClickSpark sparkColor="#06b6d4" sparkCount={8} sparkRadius={16}>
-    <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 48, width: 'auto', marginBottom: 18 }} /><span className="eyebrow">AI AUTOMATION STUDIO</span><h1>Starlight<span>.</span></h1><p style={{ color: 'var(--muted)', fontSize: 14, marginTop: 10 }}>Build the future. Automate the now.</p></motion.div></motion.div>}</AnimatePresence>
+    <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 120, width: 'auto', marginBottom: 22 }} /><p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 22 }}>Build the future. Automate the now.</p><div style={{ width: 160, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.1)', overflow: 'hidden', margin: '0 auto' }}><motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, var(--purple), var(--cyan))' }} /></div></motion.div></motion.div>}</AnimatePresence>
     <motion.div className="cursor" animate={{ x: cursor.x, y: cursor.y }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
     <UrgencyBanner />
     <FloatingCTA />
     <JarvisWelcome />
     <main>
       <nav className={`nav ${scrolled ? 'nav-scrolled' : ''}`}>
-        <a href="#top" className="logo" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 26, width: 'auto' }} /></a>
+        <a href="#top" className="logo" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 44, width: 'auto' }} /></a>
         <div className="nav-links">{nav.map(item => <a key={item} href={`#${item.toLowerCase()}`} className={active === item ? 'active' : ''}>{item}</a>)}</div>
         <Magnetic href={CALENDLY}>Let&apos;s talk</Magnetic>
       </nav>

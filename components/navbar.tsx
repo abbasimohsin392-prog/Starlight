@@ -32,9 +32,9 @@ export function Navbar() {
             <Image
               src="/images/starlight-logo.png"
               alt="Starlight AI"
-              width={220}
-              height={50}
-              className="h-12 w-auto"
+              width={280}
+              height={64}
+              className="h-16 w-auto"
               priority
             />
           </Link>
