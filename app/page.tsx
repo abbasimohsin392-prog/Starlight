@@ -204,7 +204,8 @@ export default function Page() {
           <Reveal><span className="eyebrow">01 / WHAT WE DO</span><h2>Complex problems.<br /><em>Clear solutions.</em></h2></Reveal>
           <Reveal delay={.15}><p className="section-intro">Technology should feel like an advantage, not another thing to manage. We make it work quietly in the background.</p></Reveal>
         </div>
-        <div className="service-list">{services.map(([n, t, d], i) => <Reveal key={n} delay={i * .06}><article className="service-row"><span className="service-num">{n}</span><h3>{t}</h3><p>{d}</p><span className="row-arrow">↗</span></article></Reveal>)}</div>
+        <div className="service-list">{services.slice(0, 3).map(([n, t, d], i) => <Reveal key={n} delay={i * .06}><article className="service-row"><span className="service-num">{n}</span><h3>{t}</h3><p>{d}</p><span className="row-arrow">↗</span></article></Reveal>)}</div>
+        <Reveal delay={.2}><div style={{ textAlign: 'center', marginTop: 26 }}><a href="/services" style={{ color: 'var(--cyan)', fontSize: 13 }}>View all 6 services in detail →</a></div></Reveal>
       </section>
 
       <section className="section" style={{ paddingTop: 0 }}>
@@ -232,7 +233,12 @@ export default function Page() {
             <p className="about-copy" style={{ fontSize: 16, marginTop: 22 }}>Type a question like a real visitor would. This demo runs on canned logic, your live version connects to your calendar and CRM to actually book the job.</p>
             <ul className="benefit-list">{['Answers instantly, day or night', 'Books directly into your calendar', 'Hands off to a human for anything urgent'].map(f => <li key={f}><span className="dot">✦</span>{f}</li>)}</ul>
           </Reveal>
-          <Reveal delay={.15}><ChatDemo /></Reveal>
+          <Reveal delay={.15}><div className="glass-card" style={{ padding: 34, textAlign: 'center' }}>
+            <div style={{ fontSize: 28, marginBottom: 12 }}>✦</div>
+            <h3 style={{ marginBottom: 10 }}>Try the live assistant</h3>
+            <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 22 }}>Chat with a real working demo, ask about pricing, timelines, or how it books a call.</p>
+            <a href="/demo" className="plan-cta primary" style={{ display: 'inline-block' }}>Open the live demo →</a>
+          </div></Reveal>
         </div>
       </section>
 
@@ -252,15 +258,8 @@ export default function Page() {
           <Reveal><span className="eyebrow">06 / PRICING</span><h2>Simple, transparent<br /><em>pricing.</em></h2></Reveal>
           <Reveal delay={.15}><p className="section-intro">Every business is different, pricing depends on scope. Get a proposal built around your setup.</p></Reveal>
         </div>
-        <div className="pricing-grid">{plans.map((p, i) => <Reveal key={p.name} delay={i * .1}><div className={`glass-card plan-card ${p.popular ? 'popular' : ''}`}>{p.popular && <span className="plan-badge">Most Popular</span>}<h3>{p.name}</h3><p className="plan-desc">{p.desc}</p><span className="plan-tag">Tailored Quote</span><ul className="plan-features">{p.features.map(f => <li key={f}><span className="check">✓</span>{f}</li>)}</ul><a href={CALENDLY} target="_blank" rel="noopener noreferrer" className={`plan-cta ${p.popular ? 'primary' : ''}`}>Request Your Proposal</a></div></Reveal>)}</div>
-        <Reveal delay={.3}><div className="glass-card" style={{ maxWidth: 700, margin: '50px auto 0', padding: 34 }}>
-          <div style={{ textAlign: 'center', marginBottom: 10 }}><span className="eyebrow">PAYMENT</span><h3 style={{ margin: '8px 0' }}>How Payment Works</h3><p style={{ color: 'var(--muted)', fontSize: 13 }}>We accept international bank transfers. Simple, secure, and hassle-free.</p></div>
-          <div className="payment-steps">
-            <div><div className="num">1</div><p>Book a Call</p><small>We discuss your needs and agree on a plan</small></div>
-            <div><div className="num">2</div><p>Receive Invoice</p><small>We send you a USD invoice via email</small></div>
-            <div><div className="num">3</div><p>Wire Transfer</p><small>Pay via international bank transfer in USD</small></div>
-          </div>
-        </div></Reveal>
+        <div className="pricing-grid">{plans.map((p, i) => <Reveal key={p.name} delay={i * .1}><div className={`glass-card plan-card ${p.popular ? 'popular' : ''}`}>{p.popular && <span className="plan-badge">Most Popular</span>}<h3>{p.name}</h3><p className="plan-desc">{p.desc}</p><span className="plan-tag">Tailored Quote</span></div></Reveal>)}</div>
+        <Reveal delay={.3}><div style={{ textAlign: 'center', marginTop: 30 }}><a href="/pricing" style={{ color: 'var(--cyan)', fontSize: 13 }}>See full plan features & how payment works →</a></div></Reveal>
       </section>
 
       <section id="faq" className="section faq" style={{ paddingTop: 0 }}>
@@ -282,8 +281,8 @@ export default function Page() {
         <Reveal><div className="glass-card story-card">
           <span className="eyebrow">FROM THE FOUNDER</span>
           <p style={{ marginTop: 18 }}>Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable, a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.</p>
-          <p>What began as one idea, that every business deserves the responsiveness of a company ten times its size, has grown into an automation practice trusted across the US, UK, and Kuwait. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.</p>
           <p className="sign">— Aoun, Founder, Starlight AI</p>
+          <a href="/about" style={{ color: 'var(--cyan)', fontSize: 13 }}>Read the full story →</a>
         </div></Reveal>
       </section>
 
