@@ -266,7 +266,8 @@ export default function Page() {
         <div className="section-head" style={{ justifyContent: 'center', textAlign: 'center' }}>
           <Reveal><span className="eyebrow">07 / FAQ</span><h2>Frequently asked<br /><em>questions.</em></h2></Reveal>
         </div>
-        <div className="faq-list">{faqs.map(([q, a]) => <FaqItem key={q} q={q} a={a} />)}</div>
+        <div className="faq-list">{faqs.slice(0, 4).map(([q, a]) => <FaqItem key={q} q={q} a={a} />)}</div>
+        <Reveal delay={.2}><div style={{ textAlign: 'center', marginTop: 26 }}><a href="/services" style={{ color: 'var(--cyan)', fontSize: 13 }}>See all FAQs →</a></div></Reveal>
       </section>
 
       <section id="about" className="section about">
