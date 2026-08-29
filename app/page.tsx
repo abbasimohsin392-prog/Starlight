@@ -50,9 +50,9 @@ const featureCards = [
 ]
 
 const plans = [
-  { name: 'Growth', desc: 'Perfect for small businesses getting started with AI', features: ['1 Custom AI Chatbot', 'Basic workflow automation', 'Email support', 'Monthly reporting', 'Up to 10k interactions/mo'], popular: false },
-  { name: 'Professional', desc: 'For growing companies ready to scale with AI', features: ['3 Custom AI Solutions', 'Advanced automation workflows', 'Priority support (24/7)', 'Real-time analytics dashboard', 'Up to 100k interactions/mo', 'Custom integrations', 'Dedicated account manager'], popular: true },
-  { name: 'Enterprise', desc: 'Tailored solutions for large-scale operations', features: ['Unlimited AI Solutions', 'Enterprise-grade security', '24/7 phone & Slack support', 'Custom ML model development', 'Unlimited interactions', 'On-premise deployment option', 'SLA guarantee'], popular: false },
+  { name: 'Growth', desc: 'Perfect for small businesses getting started with AI', price: '$297/mo', features: ['1 Custom AI Chatbot', 'Basic workflow automation', 'Email support', 'Monthly reporting', 'Up to 10k interactions/mo'], popular: false },
+  { name: 'Professional', desc: 'For growing companies ready to scale with AI', price: '$597/mo', features: ['3 Custom AI Solutions', 'Advanced automation workflows', 'Priority support (24/7)', 'Real-time analytics dashboard', 'Up to 100k interactions/mo', 'Custom integrations', 'Dedicated account manager'], popular: true },
+  { name: 'Enterprise', desc: 'Tailored solutions for large-scale operations', price: 'Tailored Quote', features: ['Unlimited AI Solutions', 'Enterprise-grade security', '24/7 phone & Slack support', 'Custom ML model development', 'Unlimited interactions', 'On-premise deployment option', 'SLA guarantee'], popular: false },
 ]
 
 const faqs = [
@@ -258,7 +258,7 @@ export default function Page() {
           <Reveal><span className="eyebrow">06 / PRICING</span><h2>Simple, transparent<br /><em>pricing.</em></h2></Reveal>
           <Reveal delay={.15}><p className="section-intro">Every business is different, pricing depends on scope. Get a proposal built around your setup.</p></Reveal>
         </div>
-        <div className="pricing-grid">{plans.map((p, i) => <Reveal key={p.name} delay={i * .1}><div className={`glass-card plan-card ${p.popular ? 'popular' : ''}`}>{p.popular && <span className="plan-badge">Most Popular</span>}<h3>{p.name}</h3><p className="plan-desc">{p.desc}</p><span className="plan-tag">Tailored Quote</span></div></Reveal>)}</div>
+        <div className="pricing-grid">{plans.map((p, i) => <Reveal key={p.name} delay={i * .1}><div className={`glass-card plan-card ${p.popular ? 'popular' : ''}`}>{p.popular && <span className="plan-badge">Most Popular</span>}<h3>{p.name}</h3><p className="plan-desc">{p.desc}</p><span className="plan-tag">{p.price}</span></div></Reveal>)}</div>
         <Reveal delay={.3}><div style={{ textAlign: 'center', marginTop: 30 }}><a href="/pricing" style={{ color: 'var(--cyan)', fontSize: 13 }}>See full plan features & how payment works →</a></div></Reveal>
       </section>
 
@@ -267,7 +267,7 @@ export default function Page() {
           <Reveal><span className="eyebrow">07 / FAQ</span><h2>Frequently asked<br /><em>questions.</em></h2></Reveal>
         </div>
         <div className="faq-list">{faqs.slice(0, 4).map(([q, a]) => <FaqItem key={q} q={q} a={a} />)}</div>
-        <Reveal delay={.2}><div style={{ textAlign: 'center', marginTop: 26 }}><a href="/services" style={{ color: 'var(--cyan)', fontSize: 13 }}>See all FAQs →</a></div></Reveal>
+        <Reveal delay={.2}><div style={{ textAlign: 'center', marginTop: 26 }}><a href="/pricing" style={{ color: 'var(--cyan)', fontSize: 13 }}>See all FAQs →</a></div></Reveal>
       </section>
 
       <section id="about" className="section about">
