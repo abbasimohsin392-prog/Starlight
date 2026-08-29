@@ -267,102 +267,90 @@ export function ChatbotDemoSection() {
   }
 
   return (
-    <section id="chat-demo" className="py-24 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">See It Work</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-4 mb-6 text-balance">
-              This is the assistant that <span className="gradient-text">answers your calls.</span>
-            </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-              Type a question like a real visitor would. This demo runs on canned logic — your live version
-              connects to your calendar and CRM to actually book the job.
-            </p>
-            <ul className="space-y-3">
-              {["Answers instantly, day or night", "Books directly into your calendar", "Hands off to a human for anything urgent"].map((f) => (
-                <li key={f} className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-3 h-3 text-cyan-400" />
-                  </div>
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+    <section id="chat-demo" className="section">
+      <div className="about">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="eyebrow">SEE IT WORK</span>
+          <h2 style={{ marginTop: 16 }}>This is the assistant that <span className="gradient-text">answers your calls.</span></h2>
+          <p className="about-copy" style={{ margin: '18px 0' }}>
+            Type a question like a real visitor would. This demo runs on canned logic — your live version
+            connects to your calendar and CRM to actually book the job.
+          </p>
+          <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {["Answers instantly, day or night", "Books directly into your calendar", "Hands off to a human for anything urgent"].map((f) => (
+              <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 14, color: 'var(--muted)' }}>
+                <span className="check">✓</span>
+                {f}
+              </li>
+            ))}
+          </ul>
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="glass-card rounded-2xl overflow-hidden max-w-md w-full mx-auto"
-          >
-            <div className="flex items-center gap-3 px-5 py-4 border-b border-white/10">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
-                <Bot className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-medium leading-none">Starlight Assistant</p>
-                <p className="text-xs text-muted-foreground mt-1">Demo mode</p>
-              </div>
-              <span className="ml-auto w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="glass-card chat-demo"
+        >
+          <div className="chat-head">
+            <div className="chat-avatar"><Bot size={16} color="#fff" /></div>
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 500, margin: 0 }}>Starlight Assistant</p>
+              <p style={{ fontSize: 11, color: 'var(--muted)', margin: '2px 0 0' }}>Demo mode</p>
             </div>
+            <span className="chat-dot" style={{ marginLeft: 'auto', animation: 'pulse 2s infinite' }} />
+          </div>
 
-            <div ref={scrollRef} className="px-5 py-4 space-y-3 h-80 overflow-y-auto">
-              {messages.map((m, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className={`max-w-[85%] px-4 py-2.5 rounded-xl text-sm leading-snug ${
-                    m.role === "bot"
-                      ? "bg-white/[0.04] border border-white/10 self-start"
-                      : "bg-gradient-to-r from-purple-500 to-cyan-500 text-white ml-auto"
-                  }`}
-                  style={{ marginLeft: m.role === "user" ? "auto" : 0 }}
-                >
-                  {m.text}
-                </motion.div>
-              ))}
-              {typing && (
-                <div className="flex gap-1 px-4 py-2.5 w-fit">
-                  {[0, 1, 2].map((i) => (
-                    <motion.span
-                      key={i}
-                      className="w-1.5 h-1.5 rounded-full bg-muted-foreground"
-                      animate={{ opacity: [0.2, 1, 0.2] }}
-                      transition={{ duration: 1.1, repeat: Infinity, delay: i * 0.15 }}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2 px-4 py-3 border-t border-white/10">
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && send()}
-                placeholder="Ask about pricing, timelines..."
-                className="flex-1 bg-transparent border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-cyan-500/50 transition-colors"
-              />
-              <button
-                onClick={send}
-                aria-label="Send message"
-                className="w-9 h-9 rounded-lg bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center flex-shrink-0 hover:opacity-90 transition-opacity"
+          <div ref={scrollRef} className="chat-body">
+            {messages.map((m, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                className={`bubble ${m.role}`}
               >
-                <Send className="w-4 h-4 text-white" />
-              </button>
-            </div>
-          </motion.div>
-        </div>
+                {m.text}
+              </motion.div>
+            ))}
+            {typing && (
+              <div className="typing-dots">
+                {[0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    style={{ width: 6, height: 6, borderRadius: 999, background: 'var(--muted)' }}
+                    animate={{ opacity: [0.2, 1, 0.2] }}
+                    transition={{ duration: 1.1, repeat: Infinity, delay: i * 0.15 }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="chat-input">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && send()}
+              placeholder="Ask about pricing, timelines..."
+              style={{ flex: 1, background: 'transparent', border: '1px solid var(--line)', borderRadius: 10, padding: '9px 12px', fontSize: 13, color: 'var(--foreground)', outline: 'none' }}
+            />
+            <button
+              onClick={send}
+              aria-label="Send message"
+              className="primary"
+              style={{ width: 36, height: 36, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, cursor: 'pointer' }}
+            >
+              <Send size={16} color="#fff" />
+            </button>
+          </div>
+        </motion.div>
       </div>
     </section>
   )
