@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Check, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,8 +9,8 @@ import { CinematicBackground } from "@/components/cinematic-background"
 const plans = [
   {
     name: "Growth",
-    price: "Tailored Quote",
-    period: "",
+    monthlyPrice: 297,
+    annualPrice: 247,
     description: "Perfect for small businesses getting started with AI",
     features: [
       "1 Custom AI Chatbot",
@@ -23,8 +24,8 @@ const plans = [
   },
   {
     name: "Professional",
-    price: "Tailored Quote",
-    period: "",
+    monthlyPrice: 597,
+    annualPrice: 497,
     description: "For growing companies ready to scale with AI",
     features: [
       "3 Custom AI Solutions",
@@ -40,8 +41,8 @@ const plans = [
   },
   {
     name: "Enterprise",
-    price: "Tailored Quote",
-    period: "",
+    monthlyPrice: null,
+    annualPrice: null,
     description: "Tailored solutions for large-scale operations",
     features: [
       "Unlimited AI Solutions",
@@ -76,6 +77,7 @@ const faqs = [
   },
 ]
 export default function PricingPage() {
+  const [billing, setBilling] = useState<"monthly" | "annual">("monthly")
   return (
     <main className="min-h-screen bg-background relative">
       <CinematicBackground />
@@ -99,6 +101,24 @@ export default function PricingPage() {
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Every business is different — pricing depends on scope. Get a proposal built around your setup.
             </p>
+            <div className="flex items-center justify-center gap-3 mt-8">
+              <button
+                onClick={() => setBilling("monthly")}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition ${
+                  billing === "monthly" ? "bg-gradient-to-r from-purple-500 to-cyan-500 text-white" : "text-muted-foreground"
+                }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setBilling("annual")}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition ${
+                  billing === "annual" ? "bg-gradient-to-r from-purple-500 to-cyan-500 text-white" : "text-muted-foreground"
+                }`}
+              >
+                Annual <span className="text-xs opacity-80">(save ~17%)</span>
+              </button>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -129,9 +149,19 @@ export default function PricingPage() {
                 <div className="text-center mb-8">
                   <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
                   <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
-                  <div className="flex items-center justify-center">
-                    <span className="text-sm text-cyan-400 font-semibold uppercase tracking-wider">{plan.price}</span>
+                  <div className="flex items-center justify-center gap-1">
+                    {plan.monthlyPrice ? (
+                      <>
+                        <span className="text-3xl font-bold">${billing === "monthly" ? plan.monthlyPrice : plan.annualPrice}</span>
+                        <span className="text-sm text-muted-foreground">/mo</span>
+                      </>
+                    ) : (
+                      <span className="text-sm text-cyan-400 font-semibold uppercase tracking-wider">Tailored Quote</span>
+                    )}
                   </div>
+                  {plan.monthlyPrice && billing === "annual" && (
+                    <p className="text-xs text-cyan-400 mt-1">Billed annually</p>
+                  )}
                 </div>
                 <ul className="space-y-4 mb-8">
                   {plan.features.map((feature) => (
