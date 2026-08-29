@@ -17,7 +17,7 @@ export function JarvisWelcome() {
 
     const hideTimer = setTimeout(() => {
       setVisible(false)
-    }, 15000)
+    }, 30000)
 
     return () => {
       clearTimeout(hideTimer)
@@ -27,8 +27,13 @@ export function JarvisWelcome() {
 
   const handleClick = () => {
     if (audioRef.current && !played) {
-      audioRef.current.play().catch(() => {})
-      setPlayed(true)
+      audioRef.current
+        .play()
+        .then(() => setPlayed(true))
+        .catch((err) => {
+          console.error("Jarvis welcome audio failed to play:", err)
+        })
+      return
     }
     toggleMute()
   }
