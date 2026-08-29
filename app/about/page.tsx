@@ -1,195 +1,76 @@
 "use client"
+import { motion, AnimatePresence } from "framer-motion"
 
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { ArrowRight, Users, Target, Lightbulb, Award } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { CinematicBackground } from "@/components/cinematic-background"
-
-const values = [
-  {
-    icon: Target,
-    title: "Results-Driven",
-    description: "We focus on delivering measurable outcomes that directly impact your bottom line.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Innovation First",
-    description: "We stay at the cutting edge of AI technology to bring you the most advanced solutions.",
-  },
-  {
-    icon: Users,
-    title: "Client Partnership",
-    description: "We work as an extension of your team, understanding your unique challenges and goals.",
-  },
-  {
-    icon: Award,
-    title: "Excellence",
-    description: "We are committed to delivering exceptional quality in everything we do.",
-  },
+const CALENDLY = "https://calendly.com/starlightai306/30min"
+const WHATSAPP = "https://wa.me/923007657038"
+const EMAIL = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
+const INSTAGRAM = "https://www.instagram.com/starlight_.ai/"
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
 ]
+
+function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  return <motion.div className={className} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: .7, delay, ease: [0.22, 1, .36, 1] }}>{children}</motion.div>
+}
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-background relative">
-      <CinematicBackground />
-      <div className="relative z-10">
-        <Navbar />
+    <main>
+      <nav className="nav nav-scrolled">
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: "auto" }} /></a>
+        <div className="nav-links">{navItems.map(item => <a key={item.href} href={item.href} className={item.label === "About" ? "active" : ""}>{item.label}</a>)}</div>
+        <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 20px", fontSize: 14 }}>Let&apos;s talk ↗</a>
+      </nav>
 
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">About Us</span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mt-4 mb-6 text-balance">
-              Building the Future with{" "}
-              <span className="gradient-text">AI Innovation</span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              We help businesses harness the power of artificial intelligence to achieve real, measurable results.
-            </p>
-          </motion.div>
+      <section className="section" style={{ paddingTop: 170 }}>
+        <div className="section-head" style={{ justifyContent: "center", textAlign: "center" }}>
+          <Reveal><span className="eyebrow">ABOUT US</span><h1>Building the future<br />with <em className="gradient-text">AI innovation.</em></h1></Reveal>
+          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 480, margin: "16px auto 0" }}>We help businesses harness the power of artificial intelligence to achieve real, measurable results.</p></Reveal>
         </div>
+
+        <Reveal><div className="glass-card" style={{ padding: "36px 32px", marginBottom: 40 }}>
+          <span className="eyebrow">OUR MISSION</span>
+          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>At Starlight AI, we believe every business deserves access to powerful AI technology. Our mission is to make AI accessible, affordable, and impactful for businesses of all sizes.</p>
+          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>We combine cutting-edge technology with deep industry expertise to create AI solutions that solve real problems and deliver measurable results. Our approach is collaborative, transparent, and always focused on your success.</p>
+        </div></Reveal>
+
+        <Reveal delay={.1}><div className="glass-card" style={{ padding: "36px 32px", marginBottom: 80 }}>
+          <span className="eyebrow">FROM THE FOUNDER</span>
+          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable — a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.</p>
+          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>What began as one idea — that every business deserves the responsiveness of a company ten times its size — has grown into an automation practice trusted by businesses worldwide. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.</p>
+          <p style={{ marginTop: 18, color: "var(--cyan)", fontSize: 13 }}>— Aoun, Founder, Starlight AI</p>
+        </div></Reveal>
+
+        <div className="section-head" style={{ justifyContent: "center", textAlign: "center", marginBottom: 40 }}>
+          <Reveal><span className="eyebrow">OUR VALUES</span><h2>These core values guide<br />everything we do.</h2></Reveal>
+        </div>
+        <div className="feature-grid">
+          {[
+            ["Results-Driven", "We focus on delivering measurable outcomes that directly impact your bottom line."],
+            ["Innovation First", "We stay at the cutting edge of AI technology to bring you the most advanced solutions."],
+            ["Client Partnership", "We work as an extension of your team, understanding your unique challenges and goals."],
+            ["Excellence", "We are committed to delivering exceptional quality in everything we do."],
+          ].map(([title, desc], i) => (
+            <Reveal key={title} delay={i * .08}><div className="glass-card feature-card"><h3>{title}</h3><p>{desc}</p></div></Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={.2}><div className="glass-card" style={{ textAlign: "center", padding: "50px 32px", marginTop: 80 }}>
+          <h2 style={{ marginBottom: 10 }}>Ready to work with us?</h2>
+          <p style={{ color: "var(--muted)", marginBottom: 24 }}>Let us discuss how we can help transform your business with AI.</p>
+          <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14 }}>Book a Strategy Call ↗</a>
+        </div></Reveal>
       </section>
 
-      {/* Mission Section */}
-        <section className="py-24 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                Our Mission
-              </h2>
-              <p className="text-muted-foreground text-lg mb-6">
-                At Starlight AI, we believe every business deserves access to powerful AI technology. Our mission is to make AI accessible, affordable, and impactful for businesses of all sizes.
-              </p>
-              <p className="text-muted-foreground text-lg">
-                We combine cutting-edge technology with deep industry expertise to create AI solutions that solve real problems and deliver measurable results. Our approach is collaborative, transparent, and always focused on your success.
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex justify-center"
-            >
-              <Image
-                src="/images/starlight-logo.png"
-                alt="Starlight AI"
-                width={400}
-                height={100}
-                className="h-32 w-auto"
-              />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* Founder Section */}
-      <section className="py-24 relative">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="glass-card rounded-2xl p-8 sm:p-12"
-          >
-            <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">From the Founder</span>
-            <p className="text-muted-foreground text-lg mt-6 mb-4 leading-relaxed">
-              Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable — a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.
-            </p>
-            <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-              What began as one idea — that every business deserves the responsiveness of a company ten times its size — has grown into an automation practice trusted by businesses worldwide. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.
-            </p>
-            <p className="text-foreground font-semibold">— Aoun, Founder, Starlight AI</p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="py-24 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Our Values</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              These core values guide everything we do and shape how we work with our clients.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="glass-card rounded-2xl p-6 text-center"
-              >
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center mx-auto mb-4">
-                  <value.icon className="w-7 h-7 text-cyan-400" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{value.title}</h3>
-                <p className="text-muted-foreground text-sm">{value.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-        <section className="py-24 relative">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                Ready to Work With Us?
-              </h2>
-              <p className="text-muted-foreground text-lg mb-8">
-                Let us discuss how we can help transform your business with AI.
-              </p>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer">
-                  <Button
-                    size="lg"
-                    className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg"
-                  >
-                    Book a Strategy Call
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </a>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        <Footer />
-      </div>
+      <footer style={{ flexWrap: "wrap", gap: 16 }}>
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center" }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 20, width: "auto" }} /></a>
+        <span>© 2026 Starlight AI</span>
+        <div><a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+      </footer>
     </main>
   )
 }

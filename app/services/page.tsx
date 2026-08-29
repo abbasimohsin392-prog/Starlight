@@ -1,268 +1,120 @@
 "use client"
-
-import { motion } from "framer-motion"
-import { Bot, Workflow, Zap, Brain, Database, ArrowRight, PhoneCall, MessageCircle, Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { CinematicBackground } from "@/components/cinematic-background"
-import { UrgencyBanner } from "@/components/urgency-banner"
-import { FloatingCTA } from "@/components/floating-cta"
+import { motion, AnimatePresence } from "framer-motion"
 import { ChatbotDemoSection } from "@/components/chatbot-demo-section"
-import { TestimonialsSection } from "@/components/testimonials-section"
-import { PricingSection } from "@/components/pricing-section"
+const CALENDLY = "https://calendly.com/starlightai306/30min"
+const WHATSAPP = "https://wa.me/923007657038"
+const EMAIL = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
+const INSTAGRAM = "https://www.instagram.com/starlight_.ai/"
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
+]
 
-const WHATSAPP_LINK = "https://wa.me/923007657038"
-const CALENDLY_LINK = "https://calendly.com/starlightai306/30min"
-
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: "https://www.starlightai.site/" },
-    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.starlightai.site/services" },
-  ],
+function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  return <motion.div className={className} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: .7, delay, ease: [0.22, 1, .36, 1] }}>{children}</motion.div>
 }
-
-const featuredServices = [
-  {
-    icon: Bot,
-    title: "AI Chatbots & Assistants",
-    description: "Custom AI-powered chatbots that handle customer support, lead generation, and internal operations 24/7.",
-    details: [
-      "Natural language understanding",
-      "Multi-language support",
-      "Seamless CRM integration",
-      "Analytics dashboard",
-    ],
-  },
-  {
-    icon: PhoneCall,
-    title: "AI Receptionist",
-    description: "A 24/7 AI phone agent that answers every call, books appointments, and qualifies leads so you never miss a customer.",
-    details: [
-      "Answers calls day and night",
-      "Automatic appointment booking",
-      "Lead qualification & CRM logging",
-      "Call transcripts & analytics",
-    ],
-  },
-]
-
-const additionalServices = [
-  {
-    icon: Workflow,
-    title: "Workflow Automation",
-    description: "End-to-end automation solutions that eliminate manual tasks and streamline your business processes.",
-    details: ["Process mapping & optimization", "Custom automation scripts", "API integrations", "Real-time monitoring"],
-  },
-  {
-    icon: Zap,
-    title: "AI Integration",
-    description: "Seamlessly integrate AI capabilities into your existing systems and tech stack.",
-    details: ["Legacy system compatibility", "Cloud & on-premise options", "Custom API development", "Scalable architecture"],
-  },
-  {
-    icon: Brain,
-    title: "Custom AI Models",
-    description: "Tailored machine learning models trained on your data for specific business use cases.",
-    details: ["Data analysis & preparation", "Model training & tuning", "Performance optimization", "Continuous learning"],
-  },
-  {
-    icon: Database,
-    title: "Data Analytics & BI",
-    description: "Transform raw data into actionable insights with AI-powered analytics dashboards.",
-    details: ["Real-time data processing", "Custom visualizations", "Predictive analytics", "Automated reporting"],
-  },
-]
 
 export default function ServicesPage() {
   return (
-    <main className="min-h-screen bg-background relative">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      <CinematicBackground />
-      <UrgencyBanner />
-      <div className="relative z-10">
-        <Navbar />
+    <main>
+      <nav className="nav nav-scrolled">
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: "auto" }} /></a>
+        <div className="nav-links">{navItems.map(item => <a key={item.href} href={item.href} className={item.label === "Services" ? "active" : ""}>{item.label}</a>)}</div>
+        <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 20px", fontSize: 14 }}>Let&apos;s talk ↗</a>
+      </nav>
 
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
-            >
-              <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">Our Services</span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mt-4 mb-6 text-balance">
-                AI Solutions for Every{" "}
-                <span className="gradient-text">Business Need</span>
-              </h1>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
-                From chatbots to custom AI models, we deliver comprehensive AI solutions that drive real business results.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#live-demo">
-                  <Button size="lg" className="btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg">
-                    Try the Live Demo
-                    <Bot className="ml-2 h-5 w-5" />
-                  </Button>
-                </a>
-                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                  <Button size="lg" variant="outline" className="px-8 py-6 text-lg border-white/20 hover:bg-white/5">
-                    Chat on WhatsApp
-                    <MessageCircle className="ml-2 h-5 w-5" />
-                  </Button>
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Featured Services */}
-        <section className="py-16 relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12"
-            >
-              <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">Most Requested</span>
-              <h2 className="text-3xl sm:text-4xl font-bold mt-4 text-balance">What We Build Most Often</h2>
-            </motion.div>
-            <div className="grid md:grid-cols-2 gap-8">
-              {featuredServices.map((service, index) => (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card rounded-2xl p-8 relative border border-cyan-500/20"
-                >
-                  <div className="absolute -top-3 left-8 flex items-center gap-1 bg-gradient-to-r from-purple-500 to-cyan-500 text-xs font-semibold px-3 py-1 rounded-full text-white">
-                    <Star className="h-3 w-3 fill-white" /> Most Popular
-                  </div>
-                  <div className="flex items-start gap-6">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                      <service.icon className="w-8 h-8 text-cyan-400" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-semibold mb-3">{service.title}</h3>
-                      <p className="text-muted-foreground mb-4">{service.description}</p>
-                      <ul className="space-y-2">
-                      {service.details.map((detail) => (
-                        <li key={detail} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                </div>
-              </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Live Demo */}
-        <div id="live-demo">
-          <ChatbotDemoSection />
+      <section className="section" style={{ paddingTop: 170 }}>
+        <div className="section-head" style={{ justifyContent: "center", textAlign: "center" }}>
+          <Reveal><span className="eyebrow">OUR SERVICES</span><h1>AI solutions for<br /><em className="gradient-text">every business need.</em></h1></Reveal>
+          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 520, margin: "16px auto 0" }}>From chatbots to custom AI models, we deliver comprehensive AI solutions that drive real business results.</p></Reveal>
+          <Reveal delay={.2}><div style={{ display: "flex", gap: 14, justifyContent: "center", marginTop: 26, flexWrap: "wrap" }}>
+            <a href="/demo" className="inline-flex primary" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14 }}>Try the Live Demo ↗</a>
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14, border: "1px solid var(--line)" }}>Chat on WhatsApp</a>
+          </div></Reveal>
         </div>
 
-        {/* Proof */}
-        <TestimonialsSection />
+        <div className="section-head" style={{ justifyContent: "center", textAlign: "center", marginBottom: 34 }}>
+          <Reveal><span className="eyebrow">MOST REQUESTED</span><h2>What we build most often.</h2></Reveal>
+        </div>
+        <div className="feature-grid" style={{ marginBottom: 90 }}>
+          {[
+            { name: "AI Chatbots & Assistants", desc: "Custom AI-powered chatbots that handle customer support, lead generation, and internal operations 24/7.", features: ["Natural language understanding", "Multi-language support", "Seamless CRM integration", "Analytics dashboard"] },
+            { name: "AI Receptionist", desc: "A 24/7 AI phone agent that answers every call, books appointments, and qualifies leads so you never miss a customer.", features: ["Answers calls day and night", "Automatic appointment booking", "Lead qualification & CRM logging", "Call transcripts & analytics"] },
+          ].map((s, i) => (
+            <Reveal key={s.name} delay={i * .1}><div className="glass-card feature-card">
+              <span className="plan-badge" style={{ position: "static", display: "inline-block", marginBottom: 12 }}>Most Popular</span>
+              <h3>{s.name}</h3>
+              <p style={{ color: "var(--muted)", fontSize: 13, margin: "8px 0 16px" }}>{s.desc}</p>
+              <ul className="plan-features">{s.features.map(f => <li key={f} style={{ display: "flex", gap: 10, fontSize: 13, color: "var(--muted)" }}><span className="check">✓</span>{f}</li>)}</ul>
+            </div></Reveal>
+          ))}
+        </div>
+      </section>
 
-        {/* Additional Services */}
-        <section className="py-16 relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12"
-            >
-              <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">Also Available</span>
-              <h2 className="text-3xl sm:text-4xl font-bold mt-4 text-balance">Full-Stack AI, When You Need It</h2>
-            </motion.div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {additionalServices.map((service, index) => (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card rounded-2xl p-6"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center mb-4">
-                    <service.icon className="w-6 h-6 text-cyan-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{service.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{service.description}</p>
-                  <ul className="space-y-1.5">
-                    {service.details.map((detail) => (
-                      <li key={detail} className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <div className="w-1 h-1 rounded-full bg-cyan-400" />
-                      {detail}
-                      </li>
-                  ))}
-                </ul>
-                </motion.div>
-              ))}
-            </div>
+      <ChatbotDemoSection />
+
+      <section className="section">
+        <div className="section-head" style={{ justifyContent: "center", textAlign: "center", marginBottom: 34 }}>
+          <Reveal><span className="eyebrow">RESULTS</span><h2>Built for real business problems.</h2></Reveal>
+          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 480, margin: "16px auto 0" }}>We build AI systems tailored to your industry, not generic tools, but solutions designed around how your business actually works.</p></Reveal>
+        </div>
+        <div className="feature-grid" style={{ marginBottom: 90 }}>
+          {[
+            { icon: "🦷", name: "Dental Clinics", desc: "Automated patient enquiries, appointment reminders, and missed call follow-ups, freeing up front desk staff to focus on in-clinic care.", stat: "80% faster response time" },
+            { icon: "🏢", name: "Service Businesses", desc: "End-to-end lead handling from first contact to booked appointment, running 24/7 without any manual input from the team.", stat: "3x more leads captured" },
+            { icon: "🛒", name: "E-commerce & Retail", desc: "AI-powered customer support and order tracking automation that handles hundreds of enquiries simultaneously, around the clock.", stat: "Zero missed enquiries" },
+          ].map((r, i) => (
+            <Reveal key={r.name} delay={i * .1}><div className="glass-card feature-card">
+              <span style={{ fontSize: 28 }}>{r.icon}</span>
+              <h3 style={{ marginTop: 10 }}>{r.name}</h3>
+              <p style={{ color: "var(--muted)", fontSize: 13, margin: "8px 0 14px" }}>{r.desc}</p>
+              <span style={{ color: "var(--cyan)", fontSize: 12, fontWeight: 600 }}>{r.stat}</span>
+            </div></Reveal>
+          ))}
+        </div>
+
+        <div className="section-head" style={{ justifyContent: "center", textAlign: "center", marginBottom: 34 }}>
+          <Reveal><span className="eyebrow">ALSO AVAILABLE</span><h2>Full-stack AI, when you need it.</h2></Reveal>
+        </div>
+        <div className="feature-grid" style={{ marginBottom: 90 }}>
+          {[
+            { name: "Workflow Automation", desc: "End-to-end automation solutions that eliminate manual tasks and streamline your business processes.", features: ["Process mapping & optimization", "Custom automation scripts", "API integrations", "Real-time monitoring"] },
+            { name: "AI Integration", desc: "Seamlessly integrate AI capabilities into your existing systems and tech stack.", features: ["Legacy system compatibility", "Cloud & on-premise options", "Custom API development", "Scalable architecture"] },
+            { name: "Custom AI Models", desc: "Tailored machine learning models trained on your data for specific business use cases.", features: ["Data analysis & preparation", "Model training & tuning", "Performance optimization", "Continuous learning"] },
+            { name: "Data Analytics & BI", desc: "Transform raw data into actionable insights with AI-powered analytics dashboards.", features: ["Real-time data processing", "Custom visualizations", "Predictive analytics", "Automated reporting"] },
+          ].map((s, i) => (
+            <Reveal key={s.name} delay={i * .08}><div className="glass-card feature-card">
+              <h3>{s.name}</h3>
+              <p style={{ color: "var(--muted)", fontSize: 13, margin: "8px 0 16px" }}>{s.desc}</p>
+              <ul className="plan-features">{s.features.map(f => <li key={f} style={{ display: "flex", gap: 10, fontSize: 13, color: "var(--muted)" }}><span className="check">✓</span>{f}</li>)}</ul>
+            </div></Reveal>
+          ))}
+        </div>
+
+        <Reveal><div className="glass-card" style={{ textAlign: "center", padding: "50px 32px", marginBottom: 20 }}>
+          <h2 style={{ marginBottom: 8 }}>Simple, transparent pricing.</h2>
+          <p style={{ color: "var(--muted)", marginBottom: 22 }}>Every business is different — pricing depends on scope.</p>
+          <a href="/pricing" className="inline-flex primary" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14 }}>See full pricing →</a>
+        </div></Reveal>
+
+        <Reveal delay={.1}><div className="glass-card" style={{ textAlign: "center", padding: "50px 32px" }}>
+          <h2 style={{ marginBottom: 8 }}>Ready to transform your business?</h2>
+          <p style={{ color: "var(--muted)", marginBottom: 22 }}>Book a free strategy call, or message us on WhatsApp if that&apos;s faster for you.</p>
+          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+            <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14 }}>Get Your Proposal ↗</a>
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14, border: "1px solid var(--line)" }}>Chat on WhatsApp</a>
           </div>
-        </section>
+        </div></Reveal>
+      </section>
 
-        {/* Pricing */}
-        <PricingSection />
-
-        {/* CTA Section */}
-        <section className="py-24 relative">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
-              <p className="text-muted-foreground text-lg mb-8">
-                Book a free strategy call, or message us on WhatsApp if that's faster for you.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                    <Button size="lg" className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg">
-                      Get Your Proposal
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </a>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
-                    <Button size="lg" variant="outline" className="px-8 py-6 text-lg border-white/20 hover:bg-white/5">
-                      Chat on WhatsApp
-                      <MessageCircle className="ml-2 h-5 w-5" />
-                  </Button>
-                  </a>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        <Footer />
-      </div>
-      <FloatingCTA />
+      <footer style={{ flexWrap: "wrap", gap: 16 }}>
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center" }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 20, width: "auto" }} /></a>
+        <span>© 2026 Starlight AI</span>
+        <div><a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+      </footer>
     </main>
   )
 }
