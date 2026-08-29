@@ -1,322 +1,124 @@
 "use client"
 import { useState } from "react"
-import { motion } from "framer-motion"
-import { Check, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { CinematicBackground } from "@/components/cinematic-background"
+import { motion, AnimatePresence } from "framer-motion"
+
+const CALENDLY = "https://calendly.com/starlightai306/30min"
+const EMAIL = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
+const WHATSAPP = "https://wa.me/923007657038"
+const INSTAGRAM = "https://www.instagram.com/starlight_.ai/"
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
+]
+
+function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  return <motion.div className={className} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: .7, delay, ease: [0.22, 1, .36, 1] }}>{children}</motion.div>
+}
+
+function FaqItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false)
+  return <div className="glass-card faq-item">
+    <button className="faq-q" onClick={() => setOpen(o => !o)}>{q}<span style={{ transform: open ? "rotate(45deg)" : "none" }}>+</span></button>
+    <AnimatePresence>{open && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: .25 }} style={{ overflow: "hidden" }}><p className="faq-a">{a}</p></motion.div>}</AnimatePresence>
+  </div>
+}
+
 const plans = [
   {
     name: "Growth",
+    desc: "Perfect for small businesses getting started with AI",
     monthlyPrice: 297,
     annualPrice: 247,
-    description: "Perfect for small businesses getting started with AI",
-    features: [
-      "1 Custom AI Chatbot",
-      "Basic workflow automation",
-      "Email support",
-      "Monthly reporting",
-      "Up to 10k interactions/mo",
-    ],
+    features: ["1 Custom AI Chatbot", "Basic workflow automation", "Email support", "Monthly reporting", "Up to 10k interactions/mo"],
     popular: false,
-    link: "https://calendly.com/starlightai306/30min",
   },
   {
     name: "Professional",
+    desc: "For growing companies ready to scale with AI",
     monthlyPrice: 597,
     annualPrice: 497,
-    description: "For growing companies ready to scale with AI",
-    features: [
-      "3 Custom AI Solutions",
-      "Advanced automation workflows",
-      "Priority support (24/7)",
-      "Real-time analytics dashboard",
-      "Up to 100k interactions/mo",
-      "Custom integrations",
-      "Dedicated account manager",
-    ],
+    features: ["3 Custom AI Solutions", "Advanced automation workflows", "Priority support (24/7)", "Real-time analytics dashboard", "Up to 100k interactions/mo", "Custom integrations", "Dedicated account manager"],
     popular: true,
-    link: "https://calendly.com/starlightai306/30min",
   },
   {
     name: "Enterprise",
+    desc: "Tailored solutions for large-scale operations",
     monthlyPrice: null,
     annualPrice: null,
-    description: "Tailored solutions for large-scale operations",
-    features: [
-      "Unlimited AI Solutions",
-      "Enterprise-grade security",
-      "24/7 phone & Slack support",
-      "Custom ML model development",
-      "Unlimited interactions",
-      "On-premise deployment option",
-      "SLA guarantee",
-      "Executive business reviews",
-    ],
+    features: ["Unlimited AI Solutions", "Enterprise-grade security", "24/7 phone & Slack support", "Custom ML model development", "Unlimited interactions", "On-premise deployment option", "SLA guarantee", "Executive business reviews"],
     popular: false,
-    link: "https://calendly.com/starlightai306/30min",
   },
 ]
-const faqs = [
-  {
-    question: "Are all plans monthly subscriptions?",
-    answer: "Yes — Growth, Professional, and AI Receptionist run as monthly subscriptions covering ongoing usage, support, and updates, with pricing scoped to your setup during your proposal call. There's no long-term lock-in; you can cancel anytime with notice.",
-  },
-  {
-    question: "Are there any ongoing costs?",
-    answer: "Your monthly plan covers usage, support, and maintenance. Optional premium support, extra training, or major upgrades may have separate costs, but those are always discussed upfront.",
-  },
-  {
-    question: "Can I upgrade my plan later?",
-    answer: "Yes, you can upgrade to a higher tier at any time. You will only pay the difference between your current plan and the new plan.",
-  },
-  {
-    question: "Do you offer refunds?",
-    answer: "We offer a 30-day satisfaction guarantee. If you are not happy with your solution, we will work with you to make it right or provide a full refund.",
-  },
+
+const faqs: [string, string][] = [
+  ["Are all plans monthly subscriptions?", "Yes — Growth and Professional run as monthly subscriptions covering ongoing usage, support, and updates. There's no long-term lock-in; you can cancel anytime with notice."],
+  ["Are there any ongoing costs?", "Your monthly plan covers usage, support, and maintenance. Optional premium support, extra training, or major upgrades may have separate costs, but those are always discussed upfront."],
+  ["Can I upgrade my plan later?", "Yes, you can upgrade to a higher tier at any time. You will only pay the difference between your current plan and the new plan."],
+  ["Do you offer refunds?", "We offer a 30-day satisfaction guarantee. If you are not happy with your solution, we will work with you to make it right or provide a full refund."],
 ]
+
 export default function PricingPage() {
   const [billing, setBilling] = useState<"monthly" | "annual">("monthly")
   return (
-    <main className="min-h-screen bg-background relative">
-      <CinematicBackground />
-      <div className="relative z-10">
-        <Navbar />
-        
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">Pricing</span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mt-4 mb-6 text-balance">
-              Simple, Transparent{" "}
-              <span className="gradient-text">Pricing</span>
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Every business is different — pricing depends on scope. Get a proposal built around your setup.
-            </p>
-            <div className="flex items-center justify-center gap-3 mt-8">
-              <button
-                onClick={() => setBilling("monthly")}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition ${
-                  billing === "monthly" ? "bg-gradient-to-r from-purple-500 to-cyan-500 text-white" : "text-muted-foreground"
-                }`}
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setBilling("annual")}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition ${
-                  billing === "annual" ? "bg-gradient-to-r from-purple-500 to-cyan-500 text-white" : "text-muted-foreground"
-                }`}
-              >
-                Annual <span className="text-xs opacity-80">(save ~17%)</span>
-              </button>
-            </div>
-          </motion.div>
+    <main>
+      <nav className="nav nav-scrolled">
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: "auto" }} /></a>
+        <div className="nav-links">{navItems.map(item => <a key={item.href} href={item.href} className={item.label === "Pricing" ? "active" : ""}>{item.label}</a>)}</div>
+        <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 20px", fontSize: 14 }}>Let&apos;s talk ↗</a>
+      </nav>
+
+      <section className="section" style={{ paddingTop: 170 }}>
+        <div className="section-head" style={{ justifyContent: "center", textAlign: "center" }}>
+          <Reveal><span className="eyebrow">PRICING</span><h1>Simple, transparent<br /><em className="gradient-text">pricing.</em></h1></Reveal>
+          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 460, margin: "16px auto 0" }}>Every business is different — pricing depends on scope. Get a proposal built around your setup.</p></Reveal>
         </div>
-      </section>
-      {/* Pricing Cards */}
-      <section className="py-16 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8">
-            {plans.map((plan, index) => (
-              <motion.div
-                key={plan.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                className={`relative rounded-2xl p-8 ${
-                  plan.popular
-                    ? "glass-card border-purple-500/50 glow-purple"
-                    : "glass-card"
-                }`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-purple-500 to-cyan-500 text-foreground text-sm font-medium px-4 py-1 rounded-full">
-                      Most Popular
-                    </span>
+
+        <Reveal delay={.15}><div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 60 }}>
+          <button onClick={() => setBilling("monthly")} className="inline-flex" style={{ borderRadius: 999, padding: "10px 20px", fontSize: 13, fontWeight: 500, border: "1px solid var(--line)", background: billing === "monthly" ? "linear-gradient(135deg, var(--purple), var(--cyan))" : "transparent", color: billing === "monthly" ? "#fff" : "var(--muted)", cursor: "pointer" }}>Monthly</button>
+          <button onClick={() => setBilling("annual")} className="inline-flex" style={{ borderRadius: 999, padding: "10px 20px", fontSize: 13, fontWeight: 500, border: "1px solid var(--line)", background: billing === "annual" ? "linear-gradient(135deg, var(--purple), var(--cyan))" : "transparent", color: billing === "annual" ? "#fff" : "var(--muted)", cursor: "pointer" }}>Annual <span style={{ opacity: .8, fontSize: 11 }}>(save ~17%)</span></button>
+        </div></Reveal>
+
+        <div className="pricing-grid">
+          {plans.map((p, i) => (
+            <Reveal key={p.name} delay={i * .1}>
+              <div className={`glass-card plan-card ${p.popular ? "popular" : ""}`} style={{ position: "relative" }}>
+                {p.popular && <span className="plan-badge">Most Popular</span>}
+                <h3>{p.name}</h3>
+                <p className="plan-desc">{p.desc}</p>
+                {p.monthlyPrice ? (
+                  <div style={{ margin: "0 0 22px" }}>
+                    <span style={{ fontSize: 34, fontWeight: 700 }}>${billing === "monthly" ? p.monthlyPrice : p.annualPrice}</span>
+                    <span style={{ color: "var(--muted)", fontSize: 13 }}>/mo</span>
+                    {billing === "annual" && <div style={{ color: "var(--cyan)", fontSize: 12, marginTop: 4 }}>Billed annually</div>}
                   </div>
+                ) : (
+                  <span className="plan-tag">Tailored Quote</span>
                 )}
-                <div className="text-center mb-8">
-                  <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
-                  <div className="flex items-center justify-center gap-1">
-                    {plan.monthlyPrice ? (
-                      <>
-                        <span className="text-3xl font-bold">${billing === "monthly" ? plan.monthlyPrice : plan.annualPrice}</span>
-                        <span className="text-sm text-muted-foreground">/mo</span>
-                      </>
-                    ) : (
-                      <span className="text-sm text-cyan-400 font-semibold uppercase tracking-wider">Tailored Quote</span>
-                    )}
-                  </div>
-                  {plan.monthlyPrice && billing === "annual" && (
-                    <p className="text-xs text-cyan-400 mt-1">Billed annually</p>
-                  )}
-                </div>
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                        <Check className="w-3 h-3 text-cyan-400" />
-                      </div>
-                      <span className="text-sm text-muted-foreground">{feature}</span>
-                    </li>
-                  ))}
+                <ul className="plan-features">
+                  {p.features.map(f => <li key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: "var(--muted)" }}><span className="check">✓</span>{f}</li>)}
                 </ul>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <a href={plan.link} target="_blank" rel="noopener noreferrer">
-                    <Button
-                      className="w-full btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground"
-                    >
-                      "Request Your Proposal"
-                    </Button>
-                  </a>
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* AI Receptionist Add-on */}
-      <section className="py-16 relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-10"
-          >
-            <span className="text-cyan-400 text-sm font-medium uppercase tracking-wider">New</span>
-            <h2 className="text-3xl sm:text-4xl font-bold mt-4 mb-4 text-balance">
-              AI <span className="gradient-text">Receptionist</span>
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-              Never miss a call again. A 24/7 AI phone agent that answers, books appointments, and qualifies leads automatically.
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="glass-card border-cyan-500/50 glow-purple rounded-2xl p-8 md:flex md:items-center md:justify-between gap-10"
-          >
-            <div className="md:flex-1">
-              <div className="flex items-baseline gap-1 mb-4">
-                <span className="text-4xl font-bold">$499</span>
-                <span className="text-muted-foreground">/month</span>
+                <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="plan-cta">Get Started</a>
               </div>
-              <ul className="space-y-3 mb-6 md:mb-0">
-                {[
-                  "24/7 call answering, no missed leads",
-                  "Automatic appointment booking & calendar sync",
-                  "Lead qualification & CRM logging",
-                  "~500 minutes/month included",
-                  "Custom voice, script & business knowledge base",
-                  "Call transcripts & analytics dashboard",
-                ].map((feature) => (
-                  <li key={feature} className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                      <Check className="w-3 h-3 text-cyan-400" />
-                    </div>
-                    <span className="text-sm text-muted-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-8 md:mt-0 md:flex-shrink-0">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer">
-                  <Button
-                    size="lg"
-                    className="w-full md:w-auto btn-glow bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8"
-                  >
-                    Book a Demo Call
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </a>
-              </motion.div>
-              <p className="text-xs text-muted-foreground text-center md:text-left mt-3">Live walkthrough before you commit</p>
-            </div>
-          </motion.div>
+            </Reveal>
+          ))}
         </div>
       </section>
-      {/* FAQ Section */}
-        <section className="py-24 relative">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-muted-foreground">
-              Have questions about our pricing? We have answers.
-            </p>
-          </motion.div>
-          <div className="space-y-6">
-            {faqs.map((faq, index) => (
-              <motion.div
-                key={faq.question}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="glass-card rounded-xl p-6"
-              >
-                <h3 className="font-semibold mb-2">{faq.question}</h3>
-                <p className="text-muted-foreground text-sm">{faq.answer}</p>
-              </motion.div>
-            ))}
-          </div>
+
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="section-head" style={{ justifyContent: "center", textAlign: "center" }}>
+          <Reveal><span className="eyebrow">FAQ</span><h2>Frequently asked<br /><em>questions.</em></h2></Reveal>
         </div>
+        <div className="faq-list">{faqs.map(([q, a]) => <FaqItem key={q} q={q} a={a} />)}</div>
       </section>
-      {/* CTA Section */}
-        <section className="py-24 relative">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                Ready to Get Started?
-              </h2>
-              <p className="text-muted-foreground text-lg mb-8">
-                Book a free strategy call to discuss your needs and find the perfect plan.
-              </p>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer">
-                  <Button
-                    size="lg"
-                    className="btn-glow btn-pulse bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-foreground font-semibold px-8 py-6 text-lg"
-                  >
-                    Get Your Proposal
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </a>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-        <Footer />
-      </div>
+
+      <footer style={{ flexWrap: "wrap", gap: 16 }}>
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center" }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 20, width: "auto" }} /></a>
+        <span>© 2026 Starlight AI</span>
+        <div><a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+      </footer>
     </main>
   )
 }
