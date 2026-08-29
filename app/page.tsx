@@ -175,7 +175,7 @@ export default function Page() {
     <JarvisWelcome />
     <main>
       <nav className={`nav ${scrolled ? 'nav-scrolled' : ''}`}>
-        <a href="#top" className="logo" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 44, width: 'auto' }} /></a>
+        <a href="#top" className="logo" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: 'auto' }} /></a>
         <div className="nav-links">{nav.map(item => <a key={item} href={`#${item.toLowerCase()}`} className={active === item ? 'active' : ''}>{item}</a>)}</div>
         <Magnetic href={CALENDLY}>Let&apos;s talk</Magnetic>
       </nav>
