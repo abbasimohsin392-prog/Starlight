@@ -114,7 +114,7 @@ export default function AboutPage() {
               Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable — a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.
             </p>
             <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-              What began as one idea — that every business deserves the responsiveness of a company ten times its size — has grown into an automation practice trusted across the US, UK, and Kuwait. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.
+              What began as one idea — that every business deserves the responsiveness of a company ten times its size — has grown into an automation practice trusted by businesses worldwide. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.
             </p>
             <p className="text-foreground font-semibold">— Aoun, Founder, Starlight AI</p>
           </motion.div>
