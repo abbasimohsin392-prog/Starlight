@@ -6,9 +6,9 @@ export function CinematicBackground() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       <GradientWaves
-        horizonColor="#140a28"
-        waveColor="#9333ea"
-        crestColor="#67e8f9"
+        horizonColor="#0a0a0a"
+        waveColor="#a855f7"
+        crestColor="#06b6d4"
         speed={0.35}
         amplitude={2.2}
         waveScale={0.5}
