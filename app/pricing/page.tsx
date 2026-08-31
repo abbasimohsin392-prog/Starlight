@@ -92,7 +92,11 @@ export default function PricingPage() {
                   <div style={{ margin: "0 0 22px" }}>
                     <span style={{ fontSize: 34, fontWeight: 700 }}>${billing === "monthly" ? p.monthlyPrice : p.annualPrice}</span>
                     <span style={{ color: "var(--muted)", fontSize: 13 }}>/mo</span>
-                    {billing === "annual" && <div style={{ color: "var(--cyan)", fontSize: 12, marginTop: 4 }}>Billed annually</div>}
+                    {billing === "annual" && (
+                      <div style={{ color: "var(--cyan)", fontSize: 12, marginTop: 4 }}>
+                        ${(p.annualPrice as number) * 12} billed once, annually
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <span className="plan-tag">Tailored Quote</span>
