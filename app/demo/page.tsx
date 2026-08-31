@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { PhoneOff, PhoneIncoming, CalendarCheck, Sparkles } from "lucide-react"
 
+import { VoiceDemoSection } from "@/components/voice-demo-section"
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
@@ -119,6 +120,8 @@ function DemoContent() {
         <div className="nav-links">{navItems.map(item => <a key={item.href} href={item.href}>{item.label}</a>)}</div>
         <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 20px", fontSize: 14 }}>Let&apos;s talk ↗</a>
       </nav>
+
+      <VoiceDemoSection />
 
         {/* Hero */}
         <section className="relative pt-32 pb-10">
