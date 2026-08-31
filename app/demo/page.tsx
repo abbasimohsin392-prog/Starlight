@@ -19,13 +19,13 @@ const CALENDLY_LINK = "https://calendly.com/starlightai306/30min"
 type Msg = { role: "system" | "in" | "out"; text: string }
 
 const SCRIPT: Msg[] = [
-  { role: "system", text: "2:47 PM — incoming call, rang out" },
+  { role: "system", text: "2:47 PM: incoming call, rang out" },
   { role: "out", text: "Hey, sorry we missed your call! What can we help with?" },
   { role: "in", text: "Hi, my water heater's leaking, need someone today if possible" },
-  { role: "out", text: "Got it — a leaking water heater. We have a slot at 5:30 PM today or 8:00 AM tomorrow. Which works better?" },
+  { role: "out", text: "Got it, a leaking water heater. We have a slot at 5:30 PM today or 8:00 AM tomorrow. Which works better?" },
   { role: "in", text: "5:30 works" },
   { role: "out", text: "Booked for 5:30 PM. You'll get a text 30 min before arrival. Anything else before then?" },
-  { role: "system", text: "✓ job booked — added to calendar" },
+  { role: "system", text: "✓ job booked, added to calendar" },
 ]
 
 /** Card that tilts in 3D toward the cursor, matching a "premium hardware" feel */
@@ -305,7 +305,7 @@ function DemoContent() {
               transition={{ duration: 0.6 }}
             >
               <p className="text-muted-foreground text-lg mb-6">
-                This is what's on the table for <span className="text-foreground font-medium">{biz}</span> — trained on your services and pricing, live in about a week.
+                This is what's on the table for <span className="text-foreground font-medium">{biz}</span>, trained on your services and pricing, live in about a week.
               </p>
               <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                 <motion.span

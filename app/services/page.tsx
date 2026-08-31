@@ -96,7 +96,7 @@ export default function ServicesPage() {
 
         <Reveal><div className="glass-card" style={{ textAlign: "center", padding: "50px 32px", marginBottom: 20 }}>
           <h2 style={{ marginBottom: 8 }}>Simple, transparent pricing.</h2>
-          <p style={{ color: "var(--muted)", marginBottom: 22 }}>Every business is different — pricing depends on scope.</p>
+          <p style={{ color: "var(--muted)", marginBottom: 22 }}>Every business is different, and pricing depends on scope.</p>
           <a href="/pricing" className="inline-flex primary" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14 }}>See full pricing →</a>
         </div></Reveal>
 

@@ -8,7 +8,7 @@ type Line = { speaker: "ai" | "caller"; text: string }
 const SCRIPT: Line[] = [
   { speaker: "ai", text: "Thank you for calling Sunset Realty, this is your AI assistant. How can I help you today?" },
   { speaker: "caller", text: "Hi, I saw the 3-bedroom listing on Palm Street. Is it still available?" },
-  { speaker: "ai", text: "Yes, it's still available. I can schedule a viewing — are you free this Thursday at 4 PM?" },
+  { speaker: "ai", text: "Yes, it's still available. I can schedule a viewing. Are you free this Thursday at 4 PM?" },
   { speaker: "caller", text: "Yes, that works for me." },
   { speaker: "ai", text: "Perfect, you're booked for Thursday at 4 PM. I've sent a confirmation text with the address. Anything else?" },
   { speaker: "caller", text: "No, that's it. Thanks!" },
@@ -67,7 +67,7 @@ export function VoiceDemoSection() {
         <span className="eyebrow">HEAR IT WORK</span>
         <h2>Press play. Listen to a real call.</h2>
         <p className="section-intro" style={{ maxWidth: 480, margin: "16px auto 0" }}>
-          This is a simulated call script with real synthesized voice — a preview of how your AI receptionist sounds and thinks. Your live version listens and responds to real callers in real time.
+          This is a simulated call script with real synthesized voice, a preview of how your AI receptionist sounds and thinks. Your live version listens and responds to real callers in real time.
         </p>
       </div>
 
@@ -75,7 +75,7 @@ export function VoiceDemoSection() {
         <div className="chat-head">
           <div className="chat-avatar"><Phone size={16} color="#fff" /></div>
           <div>
-            <p style={{ fontSize: 13, fontWeight: 500, margin: 0 }}>Sunset Realty — AI Receptionist</p>
+            <p style={{ fontSize: 13, fontWeight: 500, margin: 0 }}>Sunset Realty AI Receptionist</p>
             <p style={{ fontSize: 11, color: "var(--muted)", margin: "2px 0 0" }}>
               {status === "idle" && "Ready to call"}
               {status === "calling" && (speaking ? "Speaking..." : "Listening...")}

@@ -40,9 +40,9 @@ export default function AboutPage() {
 
         <Reveal delay={.1}><div className="glass-card" style={{ padding: "36px 32px", marginBottom: 80 }}>
           <span className="eyebrow">FROM THE FOUNDER</span>
-          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable — a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.</p>
-          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>What began as one idea — that every business deserves the responsiveness of a company ten times its size — has grown into an automation practice trusted by businesses worldwide. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.</p>
-          <p style={{ marginTop: 18, color: "var(--cyan)", fontSize: 13 }}>— Aoun, Founder, Starlight AI</p>
+          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable: a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.</p>
+          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>What began as one idea, that every business deserves the responsiveness of a company ten times its size, has grown into an automation practice trusted by businesses worldwide. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.</p>
+          <p style={{ marginTop: 18, color: "var(--cyan)", fontSize: 13 }}>Aoun, Founder, Starlight AI</p>
         </div></Reveal>
 
         <div className="section-head" style={{ justifyContent: "center", textAlign: "center", marginBottom: 40 }}>

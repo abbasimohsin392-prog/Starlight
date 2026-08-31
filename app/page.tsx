@@ -284,7 +284,7 @@ export default function Page() {
         <Reveal><div className="glass-card story-card">
           <span className="eyebrow">FROM THE FOUNDER</span>
           <p style={{ marginTop: 18 }}>Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable, a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.</p>
-          <p className="sign">— Aoun, Founder, Starlight AI</p>
+          <p className="sign">Aoun, Founder, Starlight AI</p>
           <a href="/about" style={{ color: 'var(--cyan)', fontSize: 13 }}>Read the full story →</a>
         </div></Reveal>
       </section>

@@ -47,7 +47,7 @@ export function LiveDemoPopup() {
             <p style={{ fontSize: 13, fontWeight: 600, margin: 0 }}>Hear it in action</p>
           </div>
           <p style={{ fontSize: 12.5, color: "var(--muted)", lineHeight: 1.5, margin: "0 0 14px" }}>
-            Press play and listen to a real AI receptionist book an appointment — takes 30 seconds.
+            Press play and listen to a real AI receptionist book an appointment in 30 seconds.
           </p>
           <a
             href="/demo"

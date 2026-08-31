@@ -54,7 +54,7 @@ const plans = [
 ]
 
 const faqs: [string, string][] = [
-  ["Are all plans monthly subscriptions?", "Yes — Growth and Professional run as monthly subscriptions covering ongoing usage, support, and updates. There's no long-term lock-in; you can cancel anytime with notice."],
+  ["Are all plans monthly subscriptions?", "Yes. Growth and Professional run as monthly subscriptions covering ongoing usage, support, and updates. There's no long-term lock-in; you can cancel anytime with notice."],
   ["Are there any ongoing costs?", "Your monthly plan covers usage, support, and maintenance. Optional premium support, extra training, or major upgrades may have separate costs, but those are always discussed upfront."],
   ["Can I upgrade my plan later?", "Yes, you can upgrade to a higher tier at any time. You will only pay the difference between your current plan and the new plan."],
   ["Do you offer refunds?", "We offer a 30-day satisfaction guarantee. If you are not happy with your solution, we will work with you to make it right or provide a full refund."],
@@ -73,7 +73,7 @@ export default function PricingPage() {
       <section className="section" style={{ paddingTop: 170 }}>
         <div className="section-head" style={{ justifyContent: "center", textAlign: "center" }}>
           <Reveal><span className="eyebrow">PRICING</span><h1>Simple, transparent<br /><em className="gradient-text">pricing.</em></h1></Reveal>
-          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 460, margin: "16px auto 0" }}>Every business is different — pricing depends on scope. Get a proposal built around your setup.</p></Reveal>
+          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 460, margin: "16px auto 0" }}>Every business is different, and pricing depends on scope. Get a proposal built around your setup.</p></Reveal>
         </div>
 
         <Reveal delay={.15}><div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 60 }}>
