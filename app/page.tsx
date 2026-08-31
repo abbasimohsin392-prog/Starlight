@@ -8,6 +8,7 @@ import { FloatingCTA } from '@/components/floating-cta'
 import { UrgencyBanner } from '@/components/urgency-banner'
 import { JarvisWelcome } from '@/components/jarvis-welcome'
 import { LiveStatsTicker } from '@/components/live-stats-ticker'
+import { LiveDemoPopup } from '@/components/live-demo-popup'
 
 const nav = ['Services', 'Solutions', 'Pricing', 'FAQ', 'About']
 
@@ -173,6 +174,7 @@ export default function Page() {
     <UrgencyBanner />
     <FloatingCTA />
     <JarvisWelcome />
+    <LiveDemoPopup />
     <main>
       <nav className={`nav ${scrolled ? 'nav-scrolled' : ''}`}>
         <a href="#top" className="logo" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: 'auto' }} /></a>
