@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 
 /**
- * Small always-on activity ticker for the hero — three counters that
+ * Small always-on activity ticker for the hero, three counters that
  * increment continuously on their own random cadence, purely decorative.
  * Labeled "(live simulation)" so it never reads as a real, verified metric.
  */

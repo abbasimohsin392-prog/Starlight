@@ -20,7 +20,7 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["what is starlight", "who are you", "what do you do", "about starlight", "what is this"],
     answer:
-      "Starlight AI builds custom AI chatbots, AI receptionists, and workflow automation for businesses that don't want to keep losing customers to slow response times. Think 24/7 AI that answers, qualifies, and books — not just a script.",
+      "Starlight AI builds custom AI chatbots, AI receptionists, and workflow automation for businesses that don't want to keep losing customers to slow response times. Think 24/7 AI that answers, qualifies, and books, not just a script.",
   },
   {
     keywords: ["service", "what can you build", "what do you offer", "what do you make"],
@@ -31,7 +31,7 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["receptionist", "phone", "answer calls", "answer my calls", "missed call"],
     answer:
-      "The AI Receptionist is a 24/7 phone agent — it answers calls, books appointments, and qualifies leads so nothing falls through after hours or during a busy shift.",
+      "The AI Receptionist is a 24/7 phone agent, it answers calls, books appointments, and qualifies leads so nothing falls through after hours or during a busy shift.",
   },
   {
     keywords: ["custom model", "machine learning", "ml model", "train"],
@@ -41,28 +41,28 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["analytics", "dashboard", "data insight", "report"],
     answer:
-      "We also build AI-powered analytics dashboards that turn your raw business data into something you can actually act on — included from the Professional tier up, with monthly reporting even on Growth.",
+      "We also build AI-powered analytics dashboards that turn your raw business data into something you can actually act on, included from the Professional tier up, with monthly reporting even on Growth.",
   },
   {
     keywords: ["price", "cost", "how much", "pricing", "plan"],
     answer:
-      "Three tiers: Growth (one custom AI chatbot, basic automation, up to 10k interactions/mo), Professional (3 AI solutions, 24/7 priority support, custom integrations, up to 100k interactions/mo), and Enterprise (unlimited scale). Every plan is priced around your setup — which sounds closest to your business?",
+      "Three tiers: Growth (one custom AI chatbot, basic automation, up to 10k interactions/mo), Professional (3 AI solutions, 24/7 priority support, custom integrations, up to 100k interactions/mo), and Enterprise (unlimited scale). Every plan is priced around your setup, which sounds closest to your business?",
     sets: "pricingPlan",
   },
   {
     keywords: ["growth plan", "growth tier", "297"],
     answer:
-      "Growth gets you 1 custom AI chatbot, basic workflow automation, email support, monthly reporting, and up to 10k interactions a month — it's the starting point for small businesses, priced around your setup.",
+      "Growth gets you 1 custom AI chatbot, basic workflow automation, email support, monthly reporting, and up to 10k interactions a month, it's the starting point for small businesses, priced around your setup.",
   },
   {
     keywords: ["professional plan", "professional tier", "997"],
     answer:
-      "Professional is our most popular — 3 custom AI solutions, advanced automation, 24/7 priority support, real-time analytics, custom integrations, a dedicated account manager, and up to 100k interactions/mo. Pricing is scoped to your business on a quick call.",
+      "Professional is our most popular, 3 custom AI solutions, advanced automation, 24/7 priority support, real-time analytics, custom integrations, a dedicated account manager, and up to 100k interactions/mo. Pricing is scoped to your business on a quick call.",
   },
   {
     keywords: ["enterprise"],
     answer:
-      "Enterprise is custom-quoted — unlimited AI solutions, enterprise-grade security, 24/7 phone & Slack support, custom ML development, unlimited interactions, and on-premise deployment if you need it. Best discussed on a call so we can scope it right.",
+      "Enterprise is custom-quoted, unlimited AI solutions, enterprise-grade security, 24/7 phone & Slack support, custom ML development, unlimited interactions, and on-premise deployment if you need it. Best discussed on a call so we can scope it right.",
   },
   {
     keywords: ["payment", "pay", "invoice", "wire", "bank transfer", "how do i pay"],
@@ -77,7 +77,7 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["technical", "do i need to know", "coding", "setup myself"],
     answer:
-      "Zero technical knowledge needed on your end. We handle setup and deployment end to end — once it's live it runs on autopilot, with a simple dashboard so you can check performance anytime.",
+      "Zero technical knowledge needed on your end. We handle setup and deployment end to end, once it's live it runs on autopilot, with a simple dashboard so you can check performance anytime.",
   },
   {
     keywords: ["integrat", "whatsapp", "instagram", "crm", "connect to"],
@@ -92,12 +92,12 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["industr", "what businesses", "who do you work with", "what kind of business"],
     answer:
-      "All kinds — salons, dental clinics, real estate agencies, law firms, e-commerce, restaurants, SaaS companies, and home service businesses too. If you have customers, we can automate how you serve them.",
+      "All kinds, salons, dental clinics, real estate agencies, law firms, e-commerce, restaurants, SaaS companies, and home service businesses too. If you have customers, we can automate how you serve them.",
   },
   {
     keywords: ["not satisfied", "guarantee", "refund", "revision"],
     answer:
-      "We offer revisions until you're happy with the system — the goal is a result that actually works for your business, not just a checkbox delivery.",
+      "We offer revisions until you're happy with the system, the goal is a result that actually works for your business, not just a checkbox delivery.",
   },
   {
     keywords: ["support", "help after"],
@@ -107,13 +107,13 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["book", "call", "demo", "get started", "talk to someone", "human", "speak to", "sales"],
     answer:
-      "The fastest next step is a free 15-minute strategy call — no pressure, just a quick chat about your setup. Want the direct link?",
+      "The fastest next step is a free 15-minute strategy call, no pressure, just a quick chat about your setup. Want the direct link?",
     sets: "bookingLink",
   },
   {
     keywords: ["contract", "commit", "lock in", "cancel", "cancellation", "minimum term", "how long do i have to"],
     answer:
-      "Every plan is a straightforward monthly subscription — no long lock-in contracts. You can cancel anytime; we just ask for notice so we can hand things off cleanly.",
+      "Every plan is a straightforward monthly subscription, no long lock-in contracts. You can cancel anytime; we just ask for notice so we can hand things off cleanly.",
   },
   {
     keywords: ["trial", "free trial", "test it first", "try before"],
@@ -128,32 +128,32 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["competitor", "vs zapier", "vs other", "why you", "why starlight", "different from"],
     answer:
-      "The difference is we don't hand you a generic tool and walk away — we build, train, and manage the whole system around your business, and you get a real person (not a ticket queue) if something needs adjusting.",
+      "The difference is we don't hand you a generic tool and walk away, we build, train, and manage the whole system around your business, and you get a real person (not a ticket queue) if something needs adjusting.",
   },
   {
     keywords: ["multilingual", "language", "spanish", "other languages"],
     answer:
-      "Yes, the AI can handle multiple languages including Spanish — just let us know which ones your customers use and we'll set it up.",
+      "Yes, the AI can handle multiple languages including Spanish, just let us know which ones your customers use and we'll set it up.",
   },
   {
     keywords: ["setup fee", "onboarding fee", "hidden fee", "extra cost", "additional cost"],
     answer:
-      "No hidden fees — the plan price covers setup and the ongoing system. Anything beyond your plan's scope (like extra interaction volume) would be discussed upfront, never billed as a surprise.",
+      "No hidden fees, the plan price covers setup and the ongoing system. Anything beyond your plan's scope (like extra interaction volume) would be discussed upfront, never billed as a surprise.",
   },
   {
     keywords: ["maintenance", "who manages", "updates", "who maintains", "ongoing work"],
     answer:
-      "We handle all the ongoing maintenance and updates on our end — you're not left to manage settings or fix things yourself.",
+      "We handle all the ongoing maintenance and updates on our end, you're not left to manage settings or fix things yourself.",
   },
   {
     keywords: ["website", "build a website", "landing page", "do you build sites"],
     answer:
-      "We're focused on AI chatbots, receptionists, and automation rather than website design — but if you already have a site, we plug straight into it.",
+      "We're focused on AI chatbots, receptionists, and automation rather than website design, but if you already have a site, we plug straight into it.",
   },
   {
     keywords: ["seo", "marketing", "social media", "ads", "digital marketing"],
     answer:
-      "Our core focus is AI automation, but we also offer digital marketing support — happy to cover that on a strategy call if it's something you need.",
+      "Our core focus is AI automation, but we also offer digital marketing support, happy to cover that on a strategy call if it's something you need.",
   },
   {
     keywords: ["own my data", "who owns", "data ownership", "export my data"],
@@ -173,22 +173,22 @@ const KNOWLEDGE: KnowledgeEntry[] = [
   {
     keywords: ["personality", "customize", "sound like", "brand voice", "tone"],
     answer:
-      "We tune the tone and personality to match your brand — friendly and casual, or more formal, whatever fits how your business talks to customers.",
+      "We tune the tone and personality to match your brand, friendly and casual, or more formal, whatever fits how your business talks to customers.",
   },
   {
     keywords: ["who built", "who made", "who is starlight", "founder", "company"],
     answer:
-      "Starlight AI is a small, hands-on AI automation studio — you work directly with the team building your system, not a big impersonal agency.",
+      "Starlight AI is a small, hands-on AI automation studio, you work directly with the team building your system, not a big impersonal agency.",
   },
   {
     keywords: ["hi", "hello", "hey", "yo", "sup"],
     answer:
-      "Hey! Happy to help — ask me about pricing, timelines, what we build, or how payment works. What's on your mind?",
+      "Hey! Happy to help, ask me about pricing, timelines, what we build, or how payment works. What's on your mind?",
   },
   {
     keywords: ["thanks", "thank you", "appreciate"],
     answer:
-      "Anytime! If you're ready, the next step is a free 15-minute strategy call — just scroll down to book one.",
+      "Anytime! If you're ready, the next step is a free 15-minute strategy call, just scroll down to book one.",
   },
   {
     keywords: ["bye", "goodbye", "see you"],
@@ -198,25 +198,25 @@ const KNOWLEDGE: KnowledgeEntry[] = [
 ]
 
 const FALLBACKS = [
-  "Good question — I don't have that pinned down exactly, but a free 15-minute strategy call is the fastest way to get a precise answer for your business. Want the booking link?",
-  "That's a bit outside what I can nail down here, but the team can answer it directly on a quick call — want me to point you to the booking section?",
-  "I want to give you a real answer, not a guess — that's best covered on a free strategy call. Should I point you there?",
+  "Good question, I don't have that pinned down exactly, but a free 15-minute strategy call is the fastest way to get a precise answer for your business. Want the booking link?",
+  "That's a bit outside what I can nail down here, but the team can answer it directly on a quick call, want me to point you to the booking section?",
+  "I want to give you a real answer, not a guess, that's best covered on a free strategy call. Should I point you there?",
 ]
 
 const FOLLOWUPS: Record<FollowUpId, string> = {
   servicesDetail:
-    "Sure — which one: AI Chatbots & Assistants, AI Receptionist, Workflow Automation, AI Integrations, Custom AI Models, or Analytics Dashboards? Just name one.",
+    "Sure, which one: AI Chatbots & Assistants, AI Receptionist, Workflow Automation, AI Integrations, Custom AI Models, or Analytics Dashboards? Just name one.",
   pricingPlan:
-    "Growth fits a single chatbot and basic automation. Professional is our most popular — 3 AI solutions and a dedicated account manager. Enterprise is fully custom. Every plan is priced around your setup — want a tailored proposal?",
+    "Growth fits a single chatbot and basic automation. Professional is our most popular, 3 AI solutions and a dedicated account manager. Enterprise is fully custom. Every plan is priced around your setup, want a tailored proposal?",
   bookingLink:
-    "Here's the direct link: calendly.com/starlightai306/30min — or scroll down to the booking section on this page. Takes 15 minutes, no pressure.",
+    "Here's the direct link: calendly.com/starlightai306/30min, or scroll down to the booking section on this page. Takes 15 minutes, no pressure.",
 }
 
 const AFFIRMATIVE = /^(yes|yeah|yep|yup|sure|ok|okay|please|pls|definitely|absolutely|of course|go ahead)[.!]?$/i
 const NEGATIVE = /^(no|nah|nope|not really|not now|maybe later)[.!]?$/i
 
 const NUDGE =
-  "Happy to help — what would you like more on: pricing, services, timelines, or booking a call?"
+  "Happy to help, what would you like more on: pricing, services, timelines, or booking a call?"
 
 function getReply(input: string, pending: FollowUpId | null): { text: string; nextPending: FollowUpId | null } {
   const t = input.toLowerCase().trim()
@@ -278,7 +278,7 @@ export function ChatbotDemoSection() {
           <span className="eyebrow">SEE IT WORK</span>
           <h2 style={{ marginTop: 16 }}>This is the assistant that <span className="gradient-text">answers your calls.</span></h2>
           <p className="about-copy" style={{ margin: '18px 0' }}>
-            Type a question like a real visitor would. This demo runs on canned logic — your live version
+            Type a question like a real visitor would. This demo runs on canned logic, your live version
             connects to your calendar and CRM to actually book the job.
           </p>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
