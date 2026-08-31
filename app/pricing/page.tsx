@@ -28,18 +28,26 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 const plans = [
   {
+    name: "Starter",
+    desc: "For solo businesses trying AI for the first time",
+    monthlyPrice: 97,
+    annualPrice: 77,
+    features: ["1 AI Chatbot or Receptionist", "Basic workflow automation", "Email support", "Up to 5k interactions/mo"],
+    popular: false,
+  },
+  {
     name: "Growth",
     desc: "Perfect for small businesses getting started with AI",
-    monthlyPrice: 297,
-    annualPrice: 247,
+    monthlyPrice: 197,
+    annualPrice: 157,
     features: ["1 Custom AI Chatbot", "Basic workflow automation", "Email support", "Monthly reporting", "Up to 10k interactions/mo"],
     popular: false,
   },
   {
     name: "Professional",
     desc: "For growing companies ready to scale with AI",
-    monthlyPrice: 597,
-    annualPrice: 497,
+    monthlyPrice: 397,
+    annualPrice: 327,
     features: ["3 Custom AI Solutions", "Advanced automation workflows", "Priority support (24/7)", "Real-time analytics dashboard", "Up to 100k interactions/mo", "Custom integrations", "Dedicated account manager"],
     popular: true,
   },
@@ -48,7 +56,7 @@ const plans = [
     desc: "Tailored solutions for large-scale operations",
     monthlyPrice: null,
     annualPrice: null,
-    features: ["Unlimited AI Solutions", "Enterprise-grade security", "24/7 phone & Slack support", "Custom ML model development", "Unlimited interactions", "On-premise deployment option", "SLA guarantee", "Executive business reviews"],
+    features: ["Unlimited AI Solutions", "Enterprise-grade security", "24/7 phone & Slack support", "Custom ML model development", "Unlimited interactions", "On-premise deployment option", "SLA guarantee"],
     popular: false,
   },
 ]
@@ -94,7 +102,7 @@ export default function PricingPage() {
                     <span style={{ color: "var(--muted)", fontSize: 13 }}>/mo</span>
                     {billing === "annual" && (
                       <div style={{ color: "var(--cyan)", fontSize: 12, marginTop: 4 }}>
-                        ${(p.annualPrice as number) * 12} billed once, annually
+                        Billed monthly, 12-month plan
                       </div>
                     )}
                   </div>
