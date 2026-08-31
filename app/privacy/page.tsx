@@ -1,6 +1,3 @@
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { CinematicBackground } from "@/components/cinematic-background"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -17,10 +14,13 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicy() {
   return (
-    <main className="min-h-screen bg-background relative">
-      <CinematicBackground />
-      <Navbar />
-      <div className="relative z-10 pt-32 pb-24 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main>
+      <nav className="nav nav-scrolled">
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: "auto" }} /></a>
+        <div className="nav-links"><a href="/">Home</a><a href="/services">Services</a><a href="/solutions">Solutions</a><a href="/pricing">Pricing</a><a href="/about">About</a></div>
+        <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 20px", fontSize: 14 }}>Let&apos;s talk ↗</a>
+      </nav>
+      <div className="section" style={{ paddingTop: 170, maxWidth: 720, margin: "0 auto" }}>
         <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
         <p className="text-muted-foreground mb-6">Last updated: June 2026</p>
 
@@ -61,7 +61,11 @@ export default function PrivacyPolicy() {
           </section>
         </div>
       </div>
-      <Footer />
+      <footer style={{ flexWrap: "wrap", gap: 16 }}>
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center" }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 20, width: "auto" }} /></a>
+        <span>© 2026 Starlight AI</span>
+        <div><a href="https://www.instagram.com/starlight_.ai/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry" target="_blank" rel="noopener noreferrer">Email</a><a href="https://wa.me/923007657038" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+      </footer>
     </main>
   )
 }

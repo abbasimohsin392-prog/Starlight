@@ -1,11 +1,8 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { blogPosts } from '@/lib/blog-posts'
-import { Navbar } from '@/components/navbar'
-import { Footer } from '@/components/footer'
-
 export const metadata: Metadata = {
-  title: 'Blog — Starlight AI',
+  title: 'Blog | Starlight AI',
   description: 'Practical guides on AI receptionists, chatbots, and automation for small businesses.',
   alternates: { canonical: '/blog' },
 }
@@ -13,7 +10,11 @@ export const metadata: Metadata = {
 export default function BlogIndexPage() {
   return (
     <main style={{ minHeight: '100vh' }}>
-      <Navbar />
+      <nav className="nav nav-scrolled">
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: "auto" }} /></a>
+        <div className="nav-links"><a href="/">Home</a><a href="/services">Services</a><a href="/solutions">Solutions</a><a href="/pricing">Pricing</a><a href="/about">About</a></div>
+        <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 20px", fontSize: 14 }}>Let&apos;s talk ↗</a>
+      </nav>
       <section className="section" style={{ paddingTop: 180 }}>
         <div className="section-head">
           <div><span className="eyebrow">BLOG</span><h2>Ideas worth<br /><em>automating around.</em></h2></div>
@@ -29,7 +30,11 @@ export default function BlogIndexPage() {
           ))}
         </div>
       </section>
-      <Footer />
+      <footer style={{ flexWrap: "wrap", gap: 16 }}>
+        <a href="/" className="logo" style={{ display: "flex", alignItems: "center" }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 20, width: "auto" }} /></a>
+        <span>© 2026 Starlight AI</span>
+        <div><a href="https://www.instagram.com/starlight_.ai/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry" target="_blank" rel="noopener noreferrer">Email</a><a href="https://wa.me/923007657038" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+      </footer>
     </main>
   )
 }
