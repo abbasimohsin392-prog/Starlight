@@ -32,7 +32,7 @@ const plans = [
     desc: "For solo businesses trying AI for the first time",
     monthlyPrice: 97,
     annualPrice: 77,
-    features: ["1 AI Chatbot or Receptionist", "Basic workflow automation", "Email support", "Up to 5k interactions/mo"],
+    features: ["1 AI Chatbot or Receptionist", "Basic workflow automation", "Email support", "Up to 5,000 chat messages/mo", "Up to 100 call minutes/mo"],
     popular: false,
   },
   {
@@ -40,7 +40,7 @@ const plans = [
     desc: "Perfect for small businesses getting started with AI",
     monthlyPrice: 197,
     annualPrice: 157,
-    features: ["1 Custom AI Chatbot", "Basic workflow automation", "Email support", "Monthly reporting", "Up to 10k interactions/mo"],
+    features: ["1 Custom AI Chatbot", "Basic workflow automation", "Email support", "Monthly reporting", "Up to 10,000 chat messages/mo", "Up to 300 call minutes/mo"],
     popular: false,
   },
   {
@@ -48,7 +48,7 @@ const plans = [
     desc: "For growing companies ready to scale with AI",
     monthlyPrice: 397,
     annualPrice: 327,
-    features: ["3 Custom AI Solutions", "Advanced automation workflows", "Priority support (24/7)", "Real-time analytics dashboard", "Up to 100k interactions/mo", "Custom integrations", "Dedicated account manager"],
+    features: ["3 Custom AI Solutions", "Advanced automation workflows", "Priority support (24/7)", "Real-time analytics dashboard", "Up to 100,000 chat messages/mo", "Up to 1,500 call minutes/mo", "Custom integrations", "Dedicated account manager"],
     popular: true,
   },
   {
@@ -56,7 +56,7 @@ const plans = [
     desc: "Tailored solutions for large-scale operations",
     monthlyPrice: null,
     annualPrice: null,
-    features: ["Unlimited AI Solutions", "Enterprise-grade security", "24/7 phone & Slack support", "Custom ML model development", "Unlimited interactions", "On-premise deployment option", "SLA guarantee"],
+    features: ["Unlimited AI Solutions", "Enterprise-grade security", "24/7 phone & Slack support", "Custom ML model development", "Usage limits scoped to your call volume", "On-premise deployment option", "SLA guarantee"],
     popular: false,
   },
 ]
@@ -66,6 +66,7 @@ const faqs: [string, string][] = [
   ["Are there any ongoing costs?", "Your monthly plan covers usage, support, and maintenance. Optional premium support, extra training, or major upgrades may have separate costs, but those are always discussed upfront."],
   ["Can I upgrade my plan later?", "Yes, you can upgrade to a higher tier at any time. You will only pay the difference between your current plan and the new plan."],
   ["Do you offer refunds?", "We offer a 30-day satisfaction guarantee. If you are not happy with your solution, we will work with you to make it right or provide a full refund."],
+  ["What happens if I go over my plan's usage?", "We will give you a heads-up before you hit your limit. From there you can move up a tier or add simple per-minute or per-message overage pricing, agreed in advance. No surprise bills."],
 ]
 
 export default function PricingPage() {
