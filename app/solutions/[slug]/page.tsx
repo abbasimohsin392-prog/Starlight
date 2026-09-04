@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: `${niche.metaTitle} | Starlight AI`,
       description: niche.metaDescription,
-      url: `https://www.starlightai.site/solutions/${niche.slug}`,
+      url: `https://starlightai.site/solutions/${niche.slug}`,
     },
     twitter: {
       card: "summary_large_image",
