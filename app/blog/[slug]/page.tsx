@@ -10,13 +10,22 @@ export function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }))
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const post = blogPosts.find((p) => p.slug === params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const post = blogPosts.find((p) => p.slug === slug)
   if (!post) return {}
   return {
     title: post.metaTitle,
     description: post.metaDescription,
     alternates: { canonical: `/blog/${post.slug}` },
+    openGraph: {
+      title: post.metaTitle,
+      description: post.metaDescription,
+      url: `https://starlightai.site/blog/${post.slug}`,
+      type: 'article',
+      publishedTime: post.date,
+      images: [{ url: 'https://starlightai.site/images/og-banner.jpg', alt: post.title }],
+    },
   }
 }
 
@@ -26,13 +35,40 @@ function Block({ block }: { block: BlogContentBlock }) {
   return <p style={{ color: 'var(--muted)', fontSize: 16, lineHeight: 1.75, margin: '0 0 18px' }}>{block.text}</p>
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = blogPosts.find((p) => p.slug === params.slug)
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = blogPosts.find((p) => p.slug === slug)
   if (!post) notFound()
   const relatedNiche = niches.find((n) => n.slug === post.relatedNicheSlug)
 
+  const pageUrl = `https://starlightai.site/blog/${post.slug}`
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.metaDescription,
+      datePublished: post.date,
+      dateModified: post.date,
+      author: { '@type': 'Organization', name: 'Starlight AI', url: 'https://starlightai.site' },
+      publisher: { '@type': 'Organization', name: 'Starlight AI', url: 'https://starlightai.site' },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
+      image: 'https://starlightai.site/images/og-banner.jpg',
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://starlightai.site/' },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://starlightai.site/blog' },
+        { '@type': 'ListItem', position: 3, name: post.title, item: pageUrl },
+      ],
+    },
+  ]
+
   return (
     <main style={{ minHeight: '100vh' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <Navbar />
       <article className="section" style={{ paddingTop: 180, maxWidth: 760 }}>
         <span className="eyebrow">{post.category.toUpperCase()} · {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
