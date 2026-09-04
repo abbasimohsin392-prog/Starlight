@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://www.starlightai.site/sitemap.xml',
+    sitemap: 'https://starlightai.site/sitemap.xml',
   }
 }
