@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'About Starlight AI',
     description:
       'Learn about Starlight AI - an AI automation agency helping businesses scale with custom chatbots, workflow automation, and AI integrations.',
-    url: 'https://www.starlightai.site/about',
+    url: 'https://starlightai.site/about',
   },
 }
 

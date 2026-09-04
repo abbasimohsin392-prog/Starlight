@@ -48,6 +48,21 @@ export function NicheContent({ niche, otherNiches }: { niche: Niche; otherNiches
           ))}
         </div>
 
+        <section aria-labelledby="workflow-heading" style={{ marginBottom: 60 }}>
+          <div className="section-head" style={{ justifyContent: "center", textAlign: "center", marginBottom: 28 }}>
+            <Reveal><span className="eyebrow">A PRACTICAL WORKFLOW</span><h2 id="workflow-heading">How it fits into your {niche.name.toLowerCase()}</h2></Reveal>
+          </div>
+          <div className="feature-grid">
+            {[
+              ["Capture every inquiry", "Answer calls and messages when your team is busy or offline."],
+              ["Qualify and route", "Collect the right details, answer common questions, and route urgent or complex requests to your team."],
+              ["Book the next step", "Turn a qualified inquiry into an appointment, showing, consultation, or estimate request."],
+            ].map(([title, description], i) => (
+              <Reveal key={title} delay={i * .06}><div className="glass-card feature-card"><h3>{title}</h3><p>{description}</p></div></Reveal>
+            ))}
+          </div>
+        </section>
+
         <Reveal><div className="glass-card" style={{ textAlign: "center", padding: "44px 32px", marginBottom: 60 }}>
           <h2 style={{ marginBottom: 10 }}>See how it would work for your {niche.name.toLowerCase().replace(/s$/, "")}</h2>
           <p style={{ color: "var(--muted)", marginBottom: 22, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>No pressure, no generic pitch. We&apos;ll look at how you currently handle calls and inquiries and tell you honestly whether this would help.</p>

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Pricing - Starlight AI',
     description:
       'Simple, transparent pricing for AI automation, chatbots, and custom AI solutions. Find the perfect plan for your business and book a free strategy call.',
-    url: 'https://www.starlightai.site/pricing',
+    url: 'https://starlightai.site/pricing',
   },
 }
 

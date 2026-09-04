@@ -17,7 +17,7 @@ export default function BlogIndexPage() {
       </nav>
       <section className="section" style={{ paddingTop: 180 }}>
         <div className="section-head">
-          <div><span className="eyebrow">BLOG</span><h2>Ideas worth<br /><em>automating around.</em></h2></div>
+          <div><span className="eyebrow">BLOG</span><h1>Ideas worth<br /><em>automating around.</em></h1></div>
           <p className="section-intro">Practical, no-fluff guides on where AI actually saves businesses time and money.</p>
         </div>
         <div style={{ display: 'grid', gap: 18 }}>

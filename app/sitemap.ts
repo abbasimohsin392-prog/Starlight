@@ -3,7 +3,7 @@ import { niches } from '@/lib/niches'
 import { blogPosts } from '@/lib/blog-posts'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.starlightai.site'
+  const baseUrl = 'https://starlightai.site'
 
   const nicheUrls: MetadataRoute.Sitemap = niches.map((niche) => ({
     url: `${baseUrl}/solutions/${niche.slug}`,
