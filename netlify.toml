@@ -19,12 +19,18 @@
 
 [[redirects]]
   from = "http://starlightai.site/*"
-  to = "https://www.starlightai.site/:splat"
+  to = "https://starlightai.site/:splat"
   status = 301
   force = true
 
 [[redirects]]
   from = "http://www.starlightai.site/*"
   to = "https://www.starlightai.site/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.starlightai.site/*"
+  to = "https://starlightai.site/:splat"
   status = 301
   force = true
