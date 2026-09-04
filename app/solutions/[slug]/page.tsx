@@ -38,15 +38,28 @@ export default async function NichePage({ params }: { params: Promise<{ slug: st
     "@context": "https://schema.org",
     "@type": "Service",
     serviceType: niche.metaTitle,
-    provider: { "@type": "Organization", name: "Starlight AI", url: "https://www.starlightai.site" },
+    provider: { "@type": "Organization", name: "Starlight AI", url: "https://starlightai.site" },
+    url: `https://starlightai.site/solutions/${niche.slug}`,
+    areaServed: niche.name,
     audience: { "@type": "Audience", audienceType: niche.name },
     description: niche.metaDescription,
   }
   const otherNiches = niches.filter((n) => n.slug !== niche.slug).slice(0, 4)
 
+  const pageUrl = `https://starlightai.site/solutions/${niche.slug}`
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://starlightai.site/" },
+      { "@type": "ListItem", position: 2, name: "Solutions", item: "https://starlightai.site/solutions" },
+      { "@type": "ListItem", position: 3, name: niche.name, item: pageUrl },
+    ],
+  }
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([serviceJsonLd, breadcrumbJsonLd]) }} />
       <NicheContent niche={niche} otherNiches={otherNiches} />
     </>
   )
