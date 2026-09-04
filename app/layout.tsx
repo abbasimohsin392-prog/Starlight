@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description: 'Starlight AI builds intelligent systems, workflow automation and digital growth engines for ambitious businesses.',
   generator: 'Starlight AI',
   metadataBase: new URL('https://starlightai.site'),
+  alternates: { canonical: '/' },
   openGraph: {
     title: 'Starlight AI',
     description: 'Intelligent systems for ambitious businesses.',
@@ -25,5 +26,22 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { colorScheme: 'dark', themeColor: '#0a0a0a', userScalable: true }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className="bg-background"><body className="antialiased">{children}{process.env.NODE_ENV === 'production' && <Analytics />}</body></html>
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Starlight AI',
+      url: 'https://starlightai.site',
+      logo: 'https://starlightai.site/starlight-logo.png',
+      sameAs: ['https://www.instagram.com/starlight_.ai/'],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Starlight AI',
+      url: 'https://starlightai.site',
+    },
+  ]
+
+  return <html lang="en" className="bg-background"><body className="antialiased">{children}{process.env.NODE_ENV === 'production' && <Analytics />}<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>
 }
