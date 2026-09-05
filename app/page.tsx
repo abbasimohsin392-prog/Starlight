@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
-import ClickSpark from '@/components/click-spark'
 import dynamic from 'next/dynamic'
-import { LiveStatsTicker } from '@/components/live-stats-ticker'
+
+const LiveStatsTicker = dynamic(() => import('@/components/live-stats-ticker').then((m) => m.LiveStatsTicker), { ssr: false, loading: () => null })
 
 const FloatingCTA = dynamic(() => import('@/components/floating-cta').then((m) => m.FloatingCTA), { ssr: false, loading: () => null })
 const UrgencyBanner = dynamic(() => import('@/components/urgency-banner').then((m) => m.UrgencyBanner), { ssr: false, loading: () => null })
@@ -68,89 +68,6 @@ const faqs = [
   ["What if I'm not satisfied with the result?", 'We offer revisions until you’re happy with the system. Our goal is real results for your business, not just a finished product.'],
 ]
 
-// Chatbot demo knowledge base, sourced from the site's own services/pricing/FAQ copy
-type KEntry = { keywords: string[]; answer: string; sets?: FollowUp }
-type FollowUp = 'services' | 'pricing' | 'booking'
-
-const KNOWLEDGE: KEntry[] = [
-  { keywords: ['what is starlight', 'who are you', 'what do you do', 'about starlight'], answer: "Starlight AI builds custom AI chatbots, AI receptionists, and workflow automation for businesses that don't want to keep losing customers to slow response times." },
-  { keywords: ['service', 'what can you build', 'what do you offer'], answer: 'Six core things: AI Chatbots & Assistants, an AI Receptionist, Workflow Automation, AI Integration, Custom AI Models, and Data Analytics dashboards. Want detail on any of those?', sets: 'services' },
-  { keywords: ['receptionist', 'phone', 'answer calls', 'missed call'], answer: 'The AI Receptionist is a 24/7 phone agent, it answers calls, books appointments, and qualifies leads so nothing falls through after hours.' },
-  { keywords: ['price', 'cost', 'how much', 'pricing', 'plan'], answer: 'Three tiers: Growth (1 chatbot, up to 10k interactions/mo), Professional (3 AI solutions, dedicated account manager, up to 100k/mo), and Enterprise (unlimited, custom). Every plan is priced around your setup, want a proposal?', sets: 'pricing' },
-  { keywords: ['payment', 'pay', 'invoice', 'wire', 'bank transfer'], answer: 'Three steps: we book a call and agree a plan, we send a USD invoice by email, then you pay via international bank wire transfer.' },
-  { keywords: ['how long', 'timeline', 'how fast', 'turnaround'], answer: 'Most clients are live within 2 weeks. A basic chatbot can go live in 5-7 days.' },
-  { keywords: ['technical', 'coding', 'setup myself'], answer: 'Zero technical knowledge needed on your end, we handle setup and deployment end to end.' },
-  { keywords: ['integrat', 'whatsapp', 'instagram', 'crm'], answer: "We integrate with WhatsApp, Instagram, your website, CRMs, booking systems, and most tools you're already using." },
-  { keywords: ['secure', 'security', 'privacy', 'gdpr'], answer: "Everything's encrypted end-to-end and we never share your data with third parties." },
-  { keywords: ['industr', 'what businesses', 'what kind of business'], answer: 'All kinds, salons, dental clinics, real estate, law firms, e-commerce, restaurants, and home service businesses too.' },
-  { keywords: ['book', 'call', 'demo', 'get started', 'talk to someone'], answer: 'The fastest next step is a free 15-minute strategy call. Want the direct link?', sets: 'booking' },
-  { keywords: ['hi', 'hello', 'hey'], answer: "Hey! Ask me about pricing, timelines, what we build, or how payment works." },
-  { keywords: ['thanks', 'thank you'], answer: "Anytime! If you're ready, scroll down to book a free strategy call." },
-]
-const FALLBACKS = [
-  "Good question, I don't have that pinned down exactly, but a free 15-minute strategy call is the fastest way to get a precise answer. Want the booking link?",
-  "That's best answered directly on a quick call, want me to point you to the booking section?",
-]
-const FOLLOWUPS: Record<FollowUp, string> = {
-  services: 'Sure, which one: AI Chatbots, AI Receptionist, Workflow Automation, AI Integrations, Custom AI Models, or Analytics? Just name one.',
-  pricing: 'Growth fits a single chatbot. Professional is most popular, 3 AI solutions and a dedicated manager. Enterprise is fully custom. Want a tailored proposal?',
-  booking: 'Here’s the direct link: calendly.com/starlightai306/30min, or scroll down to the booking section below.',
-}
-const AFFIRM = /^(yes|yeah|yep|sure|ok|okay|please|definitely|go ahead)[.!]?$/i
-function getReply(input: string, pending: FollowUp | null): { text: string; next: FollowUp | null } {
-  const t = input.toLowerCase().trim()
-  if (pending && AFFIRM.test(t)) return { text: FOLLOWUPS[pending], next: null }
-  for (const e of KNOWLEDGE) if (e.keywords.some(k => t.includes(k))) return { text: e.answer, next: e.sets ?? null }
-  return { text: FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)], next: null }
-}
-
-const CALENDLY = 'https://calendly.com/starlightai306/30min'
-const EMAIL = 'https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry'
-const WHATSAPP = 'https://wa.me/923007657038'
-const INSTAGRAM = 'https://www.instagram.com/starlight_.ai/'
-
-function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const [motionEnabled, setMotionEnabled] = useState(false)
-  useEffect(() => { setMotionEnabled(window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) }, [])
-  if (!motionEnabled) return <div className={className}>{children}</div>
-  return <motion.div className={className} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: .7, delay, ease: [0.22, 1, .36, 1] }}>{children}</motion.div>
-}
-
-function Magnetic({ children, href = '#contact', dark = false }: { children: React.ReactNode; href?: string; dark?: boolean }) {
-  const x = useMotionValue(0), y = useMotionValue(0)
-  const sx = useSpring(x, { stiffness: 250, damping: 18 }), sy = useSpring(y, { stiffness: 250, damping: 18 })
-  return <motion.a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener noreferrer' : undefined} style={{ x: sx, y: sy }} onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); x.set((e.clientX - r.left - r.width / 2) * .13); y.set((e.clientY - r.top - r.height / 2) * .13) }} onMouseLeave={() => { x.set(0); y.set(0) }} className={`group inline-flex items-center gap-3 rounded-full px-5 py-3 text-sm font-medium transition-colors ${dark ? 'bg-foreground text-background hover:bg-cyan' : 'bg-white/10 text-foreground hover:bg-cyan hover:text-background'}`}>{children}<span className="transition-transform group-hover:translate-x-1">↗</span></motion.a>
-}
-
-function ChatDemo() {
-  const [messages, setMessages] = useState<{ role: 'bot' | 'user'; text: string }[]>([{ role: 'bot', text: 'Hi! I can help book a call or answer a quick question about what we build. What are you trying to solve?' }])
-  const [input, setInput] = useState('')
-  const [typing, setTyping] = useState(false)
-  const [pending, setPending] = useState<FollowUp | null>(null)
-  const scrollRef = useRef<HTMLDivElement>(null)
-  useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' }) }, [messages, typing])
-  function send() {
-    const val = input.trim()
-    if (!val) return
-    setMessages(m => [...m, { role: 'user', text: val }])
-    setInput('')
-    setTyping(true)
-    const { text, next } = getReply(val, pending)
-    setTimeout(() => { setTyping(false); setMessages(m => [...m, { role: 'bot', text }]); setPending(next) }, 800)
-  }
-  return <div className="glass-card chat-demo">
-    <div className="chat-head"><div className="chat-avatar">✦</div><div><strong>Starlight Assistant</strong><small>Demo mode</small></div><span className="chat-dot" /></div>
-    <div ref={scrollRef} className="chat-body">
-      {messages.map((m, i) => <div key={i} className={`bubble ${m.role}`}>{m.text}</div>)}
-      {typing && <div className="typing-dots"><span /><span /><span /></div>}
-    </div>
-    <div className="chat-input">
-      <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="Ask about pricing, timelines..." />
-      <button onClick={send} aria-label="Send">↑</button>
-    </div>
-  </div>
-}
-
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return <div className="glass-card faq-item">
@@ -194,7 +111,7 @@ export default function Page() {
   useEffect(() => { const t = setInterval(() => setTestimonial(i => (i + 1) % testimonials.length), 5500); return () => clearInterval(t) }, [])
   const current = useMemo(() => testimonials[testimonial], [testimonial])
 
-  return <ClickSpark sparkColor="#06b6d4" sparkCount={8} sparkRadius={16}>
+  return <div>
     <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 120, width: 'auto', marginBottom: 22 }} /><p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 22 }}>Build the future. Automate the now.</p><div style={{ width: 160, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.1)', overflow: 'hidden', margin: '0 auto' }}><motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, var(--purple), var(--cyan))' }} /></div></motion.div></motion.div>}</AnimatePresence>
     <motion.div className="cursor" animate={{ x: cursor.x, y: cursor.y }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
     <UrgencyBanner />
@@ -339,7 +256,7 @@ export default function Page() {
         <div className="section-head" style={{ justifyContent: 'center', textAlign: 'center' }}>
           <Reveal><span className="eyebrow">09 / NEXT STEP</span><h2>Book a <em>15-minute call.</em></h2></Reveal>
         </div>
-        <Reveal delay={.15}><div className="glass-card booking-frame"><iframe src={`${CALENDLY}?hide_gdpr_banner=1&background_color=0d0d0f&text_color=f5f5f5&primary_color=a855f7`} title="Book a call with Starlight AI" /></div></Reveal>
+        <Reveal delay={.15}><div className="glass-card booking-frame"><iframe loading="lazy" src={`${CALENDLY}?hide_gdpr_banner=1&background_color=0d0d0f&text_color=f5f5f5&primary_color=a855f7`} title="Book a call with Starlight AI" /></div></Reveal>
       </section>
 
       <section id="contact" className="contact">
@@ -355,5 +272,5 @@ export default function Page() {
         <div><a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
       </footer>
     </main>
-  </ClickSpark>
+  </div>
 }
