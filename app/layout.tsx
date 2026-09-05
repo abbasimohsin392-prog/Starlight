@@ -34,12 +34,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       url: 'https://starlightai.site',
       logo: 'https://starlightai.site/starlight-logo.png',
       sameAs: ['https://www.instagram.com/starlight_.ai/'],
+      contactPoint: { '@type': 'ContactPoint', contactType: 'sales', email: 'hello@starlightai.site', availableLanguage: ['English'] },
+      knowsAbout: ['AI receptionists', 'AI chatbots', 'workflow automation', 'lead capture', 'appointment booking'],
     },
     {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'Starlight AI',
       url: 'https://starlightai.site',
+      inLanguage: 'en',
     },
   ]
 
