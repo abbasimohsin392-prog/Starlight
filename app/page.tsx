@@ -68,6 +68,14 @@ const faqs = [
   ["What if I'm not satisfied with the result?", 'We offer revisions until you’re happy with the system. Our goal is real results for your business, not just a finished product.'],
 ]
 
+function Reveal({ children, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+  return <div className={className}>{children}</div>
+}
+
+function Magnetic({ children, href = '#contact', dark = false }: { children: React.ReactNode; href?: string; dark?: boolean }) {
+  return <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener noreferrer' : undefined} className={`group inline-flex items-center gap-3 rounded-full px-5 py-3 text-sm font-medium transition-colors ${dark ? 'bg-foreground text-background hover:bg-cyan' : 'bg-white/10 text-foreground hover:bg-cyan hover:text-background'}`}>{children}<span className="transition-transform group-hover:translate-x-1">↗</span></a>
+}
+
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return <div className="glass-card faq-item">
