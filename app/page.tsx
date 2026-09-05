@@ -89,12 +89,14 @@ export default function Page() {
   const [testimonial, setTestimonial] = useState(0)
   const [active, setActive] = useState('Services')
   const [scrolled, setScrolled] = useState(false)
+  const [enhancementsReady, setEnhancementsReady] = useState(false)
   const [cursor, setCursor] = useState({ x: -100, y: -100 })
   useEffect(() => {
     if (!window.matchMedia('(pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setIntro(false); return }
     if (sessionStorage.getItem('starlight-intro')) setIntro(false)
     else { sessionStorage.setItem('starlight-intro', '1'); const t = setTimeout(() => setIntro(false), 1500); return () => clearTimeout(t) }
   }, [])
+  useEffect(() => { const t = window.setTimeout(() => setEnhancementsReady(true), 7000); return () => window.clearTimeout(t) }, [])
   useEffect(() => {
     if (!window.matchMedia('(pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let cancelled = false
@@ -122,10 +124,12 @@ export default function Page() {
   return <div>
     <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 120, width: 'auto', marginBottom: 22 }} /><p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 22 }}>Build the future. Automate the now.</p><div style={{ width: 160, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.1)', overflow: 'hidden', margin: '0 auto' }}><motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, var(--purple), var(--cyan))' }} /></div></motion.div></motion.div>}</AnimatePresence>
     <motion.div className="cursor" animate={{ x: cursor.x, y: cursor.y }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
-    <UrgencyBanner />
-    <FloatingCTA />
-    <JarvisWelcome />
-    <LiveDemoPopup />
+    {enhancementsReady && <>
+      <UrgencyBanner />
+      <FloatingCTA />
+      <JarvisWelcome />
+      <LiveDemoPopup />
+    </>}
     <main>
       <nav className={`nav ${scrolled ? 'nav-scrolled' : ''}`}>
         <a href="#top" className="logo" style={{ display: 'flex', alignItems: 'center', gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: 'auto' }} /></a>
