@@ -63,6 +63,24 @@ export function NicheContent({ niche, otherNiches }: { niche: Niche; otherNiches
           </div>
         </section>
 
+        <section aria-labelledby="faq-heading" style={{ marginBottom: 60 }}>
+          <div className="section-head" style={{ justifyContent: "center", textAlign: "center", marginBottom: 28 }}>
+            <Reveal><span className="eyebrow">COMMON QUESTIONS</span><h2 id="faq-heading">FAQs for {niche.name.toLowerCase()}</h2></Reveal>
+          </div>
+          <div style={{ display: "grid", gap: 14 }}>
+            {[
+              ["What can Starlight AI handle for " + niche.name.toLowerCase() + "?", "It can capture enquiries, answer approved routine questions, collect the right details, and route or book the next step when your team is busy or offline."],
+              ["Will it replace our team?", "No. It provides non-clinical administrative support and follows your approved information while routing complex or urgent matters to your team."],
+              ["How quickly can we see whether it helps?", "We start with a focused workflow review, identify one high-value enquiry path, and recommend a practical implementation plan before any build begins."],
+            ].map(([question, answer], i) => (
+              <Reveal key={question} delay={i * .05}><details className="glass-card" style={{ padding: "18px 22px" }}>
+                <summary style={{ cursor: "pointer", fontWeight: 600 }}>{question}</summary>
+                <p style={{ color: "var(--muted)", lineHeight: 1.7, margin: "12px 0 0" }}>{answer}</p>
+              </details></Reveal>
+            ))}
+          </div>
+        </section>
+
         <Reveal><div className="glass-card" style={{ textAlign: "center", padding: "44px 32px", marginBottom: 60 }}>
           <h2 style={{ marginBottom: 10 }}>See how it would work for your {niche.name.toLowerCase().replace(/s$/, "")}</h2>
           <p style={{ color: "var(--muted)", marginBottom: 22, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>No pressure, no generic pitch. We&apos;ll look at how you currently handle calls and inquiries and tell you honestly whether this would help.</p>
