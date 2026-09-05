@@ -6,6 +6,11 @@ import dynamic from 'next/dynamic'
 
 const LiveStatsTicker = dynamic(() => import('@/components/live-stats-ticker').then((m) => m.LiveStatsTicker), { ssr: false, loading: () => null })
 
+const CALENDLY = 'https://calendly.com/starlightai306/30min'
+const EMAIL = 'mailto:hello@starlightai.site'
+const WHATSAPP = 'https://wa.me/923007657038'
+const INSTAGRAM = 'https://www.instagram.com/starlight_.ai/'
+
 const FloatingCTA = dynamic(() => import('@/components/floating-cta').then((m) => m.FloatingCTA), { ssr: false, loading: () => null })
 const UrgencyBanner = dynamic(() => import('@/components/urgency-banner').then((m) => m.UrgencyBanner), { ssr: false, loading: () => null })
 const JarvisWelcome = dynamic(() => import('@/components/jarvis-welcome').then((m) => m.JarvisWelcome), { ssr: false, loading: () => null })
