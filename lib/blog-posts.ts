@@ -195,5 +195,123 @@ export const blogPosts: BlogPost[] = [
         text: "Most shops can have an AI receptionist live on their existing shop number within one to two weeks, answering calls and booking estimates the same day it goes live.",
       },
     ],
+  },,
+
+  {
+    slug: "ai-tenant-assistant-for-property-management",
+    title: "AI Tenant Assistant for Property Management: A Practical Guide",
+    metaTitle: "AI Tenant Assistant for Property Management Companies (2026)",
+    metaDescription:
+      "How an AI tenant assistant handles rental enquiries, maintenance requests, unit tours, and resident questions for property management companies.",
+    date: "2026-09-05",
+    category: "Real Estate",
+    excerpt:
+      "Property managers handle tenant requests and leasing enquiries at the same time. Here is how an AI tenant assistant helps keep both workflows moving.",
+    relatedNicheSlug: "property-management",
+    content: [
+      {
+        type: "p",
+        text: "Property management teams are expected to respond quickly to two different audiences: existing residents who need help and prospective tenants who want to know whether a unit is available. When both arrive through the same phone line or inbox, something gets delayed. An AI tenant assistant gives each enquiry a clear first response without asking the property team to be available every hour of the day.",
+      },
+      { type: "h2", text: "What an AI tenant assistant can handle" },
+      {
+        type: "ul",
+        items: [
+          "Answer routine questions about rent, amenities, policies, and availability",
+          "Capture and route maintenance requests with the right details",
+          "Qualify prospective tenants before a leasing coordinator follows up",
+          "Schedule unit tours and other approved appointments",
+          "Follow up with prospective tenants who asked about a property but did not apply",
+        ],
+      },
+      { type: "h2", text: "Protecting leasing enquiries while serving residents" },
+      {
+        type: "p",
+        text: "A resident maintenance request and a new leasing enquiry should not compete for the same delayed callback. The assistant can collect the information needed for routine requests, route urgent matters according to the property manager's rules, and keep a prospective tenant moving toward a tour or application.",
+      },
+      { type: "h2", text: "Start with one property workflow" },
+      {
+        type: "p",
+        text: "The safest rollout is usually one focused workflow, such as after-hours leasing enquiries or maintenance-request intake. Once the team can see which questions are repeated and which handoffs need judgment, the assistant can be connected to the calendar, inbox, CRM, or property-management system already in use.",
+      },
+    ],
+  },
+  {
+    slug: "ai-chatbot-for-gyms-and-fitness-studios",
+    title: "AI Chatbot for Gyms and Fitness Studios: How It Helps",
+    metaTitle: "AI Chatbot for Gyms & Fitness Studios: Lead and Booking Guide (2026)",
+    metaDescription:
+      "How an AI chatbot answers gym membership questions, books trial classes, and follows up with fitness leads when staff are busy or offline.",
+    date: "2026-09-05",
+    category: "Fitness",
+    excerpt:
+      "A gym lead often asks a simple question before joining. An AI chatbot can answer quickly, book the next step, and keep the lead from going cold.",
+    relatedNicheSlug: "gyms-fitness-studios",
+    content: [
+      {
+        type: "p",
+        text: "Gym and fitness-studio enquiries rarely arrive only when the front desk is quiet. People compare memberships before work, after work, and during the weekend. If a question about a trial class or membership stays unanswered until the next staffed shift, the prospect may already have visited another studio.",
+      },
+      { type: "h2", text: "Questions the chatbot can answer" },
+      {
+        type: "ul",
+        items: [
+          "Membership options, trial classes, opening hours, and location details",
+          "Class schedules and approved booking rules",
+          "What a new member should bring to a first visit",
+          "Whether the gym offers personal training or specific facilities",
+          "How to request a tour or speak with a membership advisor",
+        ],
+      },
+      { type: "h2", text: "From first question to booked trial" },
+      {
+        type: "p",
+        text: "The useful outcome is not just a faster reply. The chatbot should collect the visitor's goal, preferred time, and contact details, then guide them to a trial class, tour, or human conversation. That gives staff a warmer enquiry instead of another unstructured message to chase.",
+      },
+      { type: "h2", text: "Keep the experience human" },
+      {
+        type: "p",
+        text: "A good fitness chatbot handles approved routine information and hands off anything personal, sensitive, or outside its rules. The gym team remains responsible for the relationship; the assistant simply makes sure the first step does not depend on catching someone at the perfect moment.",
+      },
+    ],
+  },
+  {
+    slug: "ai-receptionist-for-veterinary-clinics",
+    title: "AI Receptionist for Veterinary Clinics: A Practical Guide",
+    metaTitle: "AI Receptionist for Veterinary Clinics: Calls, Bookings and Triage (2026)",
+    metaDescription:
+      "How an AI receptionist helps veterinary clinics answer routine calls, book appointments, capture pet details, and route urgent requests safely.",
+    date: "2026-09-05",
+    category: "Healthcare",
+    excerpt:
+      "Veterinary teams need to protect urgent calls while reducing routine phone interruptions. Here is where an AI receptionist can help safely.",
+    relatedNicheSlug: "veterinary-clinics",
+    content: [
+      {
+        type: "p",
+        text: "Veterinary clinics handle a difficult mix of routine bookings, medication and vaccination questions, anxious pet owners, and genuinely urgent situations. An AI receptionist should not try to diagnose animals. Its role is to answer approved administrative questions, capture the right details, and route urgent or uncertain matters to the clinic's defined process.",
+      },
+      { type: "h2", text: "Useful administrative workflows" },
+      {
+        type: "ul",
+        items: [
+          "Book routine consultations and follow-up appointments",
+          "Capture the pet's name, species, owner details, and reason for calling",
+          "Answer approved questions about opening hours, services, and appointment preparation",
+          "Send vaccination, appointment, and pickup reminders",
+          "Route urgent calls according to the clinic's own escalation instructions",
+        ],
+      },
+      { type: "h2", text: "Safety comes before automation" },
+      {
+        type: "p",
+        text: "The clinic should define exactly what the assistant may say, what it must never advise, and when a person or emergency service must take over. Clear escalation language and human handoff are more important than trying to automate every conversation.",
+      },
+      { type: "h2", text: "Start with routine demand" },
+      {
+        type: "p",
+        text: "A practical first phase is routine appointment booking, reminders, and basic clinic information. That reduces interruptions for the veterinary team while creating a clear evidence base for deciding whether more workflows should be added later.",
+      },
+    ],
   },
 ]
