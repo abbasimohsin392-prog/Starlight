@@ -3,14 +3,16 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Starlight AI — Build the future. Automate the now.',
-  description: 'Starlight AI builds intelligent systems, workflow automation and digital growth engines for ambitious businesses.',
+  title: 'AI Automation Agency | AI Receptionists & Workflow Automation | Starlight AI',
+  description: 'Starlight AI builds AI receptionists, chatbots, and workflow automation that answer enquiries, qualify leads, and reduce repetitive admin for growing businesses.',
   generator: 'Starlight AI',
+  keywords: ['AI automation agency', 'AI receptionist', 'AI chatbot', 'workflow automation', 'business process automation'],
+  robots: { index: true, follow: true },
   metadataBase: new URL('https://starlightai.site'),
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'Starlight AI',
-    description: 'Intelligent systems for ambitious businesses.',
+    title: 'AI Automation Agency | Starlight AI',
+    description: 'AI receptionists, chatbots, and workflow automation for growing businesses.',
     type: 'website',
     url: 'https://starlightai.site',
     images: [{ url: '/images/og-banner.jpg', width: 1200, height: 630, alt: 'Starlight AI' }],
