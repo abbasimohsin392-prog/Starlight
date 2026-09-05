@@ -55,7 +55,7 @@ export function JarvisWelcome() {
           <p className="text-sm text-muted-foreground font-medium">
             <span className="text-cyan-400">JARVIS</span> - {played ? "Starlight AI Online" : "Click to Initialize"}
           </p>
-          <button className="text-muted-foreground hover:text-foreground transition-colors ml-1">
+          <button aria-label={muted ? "Unmute Jarvis" : "Mute Jarvis"} className="text-muted-foreground hover:text-foreground transition-colors ml-1">
             {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
         </motion.div>
