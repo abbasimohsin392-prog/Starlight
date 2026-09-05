@@ -106,7 +106,7 @@ function BookingFrame() {
   }, [])
 
   return <div ref={frameRef} className="glass-card booking-frame" style={{ minHeight: 680 }}>
-    {ready ? <iframe src={`${CALENDLY}?hide_gdpr_banner=1&background_color=0d0d0f&text_color=f5f5f5&primary_color=a855f7`} title="Book a call with Starlight AI" /> : <div style={{ minHeight: 680 }} aria-label="Booking calendar loads when you reach this section" />}
+    {ready ? <iframe src={`${CALENDLY}?hide_gdpr_banner=1&background_color=0d0d0f&text_color=f5f5f5&primary_color=a855f7`} title="Book a call with Starlight AI" /> : <div style={{ minHeight: 680 }} />}
   </div>
 }
 
