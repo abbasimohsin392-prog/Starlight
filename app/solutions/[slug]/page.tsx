@@ -57,9 +57,24 @@ export default async function NichePage({ params }: { params: Promise<{ slug: st
     ],
   }
 
+  const faqItems = [
+    { question: "What can Starlight AI handle for " + niche.name.toLowerCase() + "?", answer: "It can capture enquiries, answer approved routine questions, collect the right details, and route or book the next step when your team is busy or offline." },
+    { question: "Will it replace our team?", answer: "No. It provides non-clinical administrative support and follows your approved information while routing complex or urgent matters to your team." },
+    { question: "How quickly can we see whether it helps?", answer: "We start with a focused workflow review, identify one high-value enquiry path, and recommend a practical implementation plan before any build begins." },
+  ]
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  }
+
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([serviceJsonLd, breadcrumbJsonLd]) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([serviceJsonLd, breadcrumbJsonLd, faqJsonLd]) }} />
       <NicheContent niche={niche} otherNiches={otherNiches} />
     </>
   )
