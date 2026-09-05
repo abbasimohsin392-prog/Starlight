@@ -214,7 +214,7 @@ export default function Page() {
           <Reveal><div className="availability"><i /> AI automation for businesses worldwide <span>→</span></div></Reveal>
           <LiveStatsTicker />
           <Reveal delay={.1}><h1>Build the future.<br /><em>Automate</em> the now.</h1></Reveal>
-          <Reveal delay={.2}><p>We design intelligent systems that turn ambitious businesses into effortless operations, with digital marketing to match.</p></Reveal>
+          <Reveal delay={.2}><p>Most businesses do not need another dashboard. They need every new enquiry answered, qualified, and moved to the next step without adding headcount. We design the workflow that makes that happen.</p></Reveal>
           <Reveal delay={.3}><Magnetic dark href={CALENDLY}>Start a conversation</Magnetic></Reveal>
         </div>
         <div className="hero-meta"><span>AI AUTOMATION / DIGITAL GROWTH</span><span>SCROLL TO EXPLORE ↓</span></div>
@@ -225,6 +225,18 @@ export default function Page() {
       <section className="trust-strip">
         <Reveal><span className="eyebrow">BUILT FOR</span></Reveal>
         <Reveal delay={.1}><div className="trust-chips">{['Real Estate', 'Healthcare', 'E-commerce', 'Law Firms', 'Finance', 'SaaS'].map(n => <span key={n} className="glass-card trust-chip">{n}</span>)}</div></Reveal>
+      </section>
+
+      <section className="section" aria-labelledby="problem-heading">
+        <div className="section-head">
+          <Reveal><span className="eyebrow">THE PROBLEM WE SOLVE</span><h2 id="problem-heading">Revenue leaks hide in<br /><em>ordinary moments.</em></h2></Reveal>
+          <Reveal delay={.15}><p className="section-intro">A missed call, an unanswered form, or a lead waiting until tomorrow is not just an admin issue. It is a customer choosing the business that replied first.</p></Reveal>
+        </div>
+        <div className="feature-grid">
+          <Reveal><article className="glass-card feature-card"><div className="eyebrow">01 / MISSED ENQUIRIES</div><h4>Calls and messages go unanswered</h4><p>We give every new enquiry a fast first response, even when your team is serving customers, driving, or offline.</p></article></Reveal>
+          <Reveal delay={.08}><article className="glass-card feature-card"><div className="eyebrow">02 / ADMIN OVERLOAD</div><h4>Your team repeats the same work</h4><p>We automate approved questions, data capture, reminders, and routing so people spend more time on work that needs judgment.</p></article></Reveal>
+          <Reveal delay={.16}><article className="glass-card feature-card"><div className="eyebrow">03 / COLD LEADS</div><h4>Interested prospects lose momentum</h4><p>We build follow-up paths that keep the conversation moving toward a booking, quote, consultation, or human handoff.</p></article></Reveal>
+        </div>
       </section>
 
       <section id="services" className="section services">
@@ -239,7 +251,7 @@ export default function Page() {
       <section className="section" style={{ paddingTop: 0 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 70 }} className="about">
           <Reveal><span className="eyebrow">02 / WHY CHOOSE US</span><h2 style={{ marginTop: 22 }}>The future of business<br />is <em>AI-powered.</em></h2>
-            <p className="about-copy" style={{ fontSize: 16 }}>We combine cutting-edge AI technology with deep industry expertise to deliver solutions that transform how you do business.</p>
+            <p className="about-copy" style={{ fontSize: 16 }}>We do not start with a tool. We start with the expensive problem: missed demand, slow response, repetitive admin, or a handoff that breaks. Then we design the smallest useful system around your existing operation.</p>
             <ul className="benefit-list">{benefits.map(b => <li key={b}><span className="dot">✓</span>{b}</li>)}</ul>
           </Reveal>
           <Reveal delay={.15}><div className="feature-grid">{featureCards.map(([t, d]) => <div key={t} className="glass-card feature-card"><div style={{ fontSize: 20 }}>✦</div><h4>{t}</h4><p>{d}</p></div>)}</div></Reveal>
@@ -273,6 +285,14 @@ export default function Page() {
       <section id="process" className="section process">
         <Reveal><span className="eyebrow">05 / HOW WE WORK</span><h2>From first thought<br />to <em>full flight.</em></h2></Reveal>
         <div className="process-grid">{[['Discover', 'Find the real opportunity hiding in plain sight.'], ['Design', 'Shape an experience your team will actually use.'], ['Build', 'Make it real with craft, care and the right technology.'], ['Launch', 'Ship with confidence. Learn fast. Keep growing.']].map(([t, d], i) => <Reveal key={t} delay={i * .1}><div className="process-item"><span>0{i + 1}</span><div><h3>{t}</h3><p>{d}</p></div></div></Reveal>)}</div>
+      </section>
+
+      <section className="section" aria-labelledby="rollout-heading">
+        <Reveal><span className="eyebrow">WHAT YOU GET</span><h2 id="rollout-heading">Start with one workflow.<br /><em>Measure the difference.</em></h2></Reveal>
+        <div className="process-grid">
+          {[["Map the leak", "We review where enquiries slow down, what your team repeats, and which handoffs cost the most opportunities."], ["Build the first win", "We launch one focused workflow around your highest-value enquiry path instead of forcing a risky all-at-once change."], ["Connect the tools", "We connect the assistant to the calendar, CRM, inbox, or booking flow your team already uses."], ["Improve with evidence", "You see the conversations, handoffs, and bookings that matter, then we refine what is not working."]].map(([t, d], i) => <Reveal key={t} delay={i * .08}><div className="process-item"><span>0{i + 1}</span><div><h3>{t}</h3><p>{d}</p></div></div></Reveal>)}
+        </div>
+        <Reveal delay={.2}><div style={{ textAlign: 'center', marginTop: 30 }}><Magnetic dark href={CALENDLY}>Get a workflow review</Magnetic></div></Reveal>
       </section>
 
       <section className="quote-section">
