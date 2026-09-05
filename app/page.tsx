@@ -2,13 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
-import Lenis from 'lenis'
 import ClickSpark from '@/components/click-spark'
-import { FloatingCTA } from '@/components/floating-cta'
-import { UrgencyBanner } from '@/components/urgency-banner'
-import { JarvisWelcome } from '@/components/jarvis-welcome'
+import dynamic from 'next/dynamic'
 import { LiveStatsTicker } from '@/components/live-stats-ticker'
-import { LiveDemoPopup } from '@/components/live-demo-popup'
+
+const FloatingCTA = dynamic(() => import('@/components/floating-cta').then((m) => m.FloatingCTA), { ssr: false, loading: () => null })
+const UrgencyBanner = dynamic(() => import('@/components/urgency-banner').then((m) => m.UrgencyBanner), { ssr: false, loading: () => null })
+const JarvisWelcome = dynamic(() => import('@/components/jarvis-welcome').then((m) => m.JarvisWelcome), { ssr: false, loading: () => null })
+const LiveDemoPopup = dynamic(() => import('@/components/live-demo-popup').then((m) => m.LiveDemoPopup), { ssr: false, loading: () => null })
 
 const nav = ['Services', 'Solutions', 'Pricing', 'FAQ', 'About']
 
@@ -109,6 +110,9 @@ const WHATSAPP = 'https://wa.me/923007657038'
 const INSTAGRAM = 'https://www.instagram.com/starlight_.ai/'
 
 function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const [motionEnabled, setMotionEnabled] = useState(false)
+  useEffect(() => { setMotionEnabled(window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) }, [])
+  if (!motionEnabled) return <div className={className}>{children}</div>
   return <motion.div className={className} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: .7, delay, ease: [0.22, 1, .36, 1] }}>{children}</motion.div>
 }
 
@@ -161,10 +165,32 @@ export default function Page() {
   const [active, setActive] = useState('Services')
   const [scrolled, setScrolled] = useState(false)
   const [cursor, setCursor] = useState({ x: -100, y: -100 })
-  useEffect(() => { if (sessionStorage.getItem('starlight-intro')) setIntro(false); else { sessionStorage.setItem('starlight-intro', '1'); const t = setTimeout(() => setIntro(false), 1500); return () => clearTimeout(t) } }, [])
-  useEffect(() => { const lenis = new Lenis(); let raf = 0; const loop = (t: number) => { lenis.raf(t); raf = requestAnimationFrame(loop) }; raf = requestAnimationFrame(loop); return () => { cancelAnimationFrame(raf); lenis.destroy() } }, [])
+  useEffect(() => {
+    if (!window.matchMedia('(pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setIntro(false); return }
+    if (sessionStorage.getItem('starlight-intro')) setIntro(false)
+    else { sessionStorage.setItem('starlight-intro', '1'); const t = setTimeout(() => setIntro(false), 1500); return () => clearTimeout(t) }
+  }, [])
+  useEffect(() => {
+    if (!window.matchMedia('(pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let cancelled = false
+    let raf = 0
+    let destroy = () => {}
+    import('lenis').then(({ default: Lenis }) => {
+      if (cancelled) return
+      const lenis = new Lenis()
+      const loop = (t: number) => { lenis.raf(t); raf = requestAnimationFrame(loop) }
+      raf = requestAnimationFrame(loop)
+      destroy = () => lenis.destroy()
+    })
+    return () => { cancelled = true; cancelAnimationFrame(raf); destroy() }
+  }, [])
   useEffect(() => { const onScroll = () => { setScrolled(window.scrollY > 40); for (const id of ['services', 'solutions', 'pricing', 'faq', 'about']) { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 180) setActive(id[0].toUpperCase() + id.slice(1)) } }; window.addEventListener('scroll', onScroll); return () => window.removeEventListener('scroll', onScroll) }, [])
-  useEffect(() => { const move = (e: MouseEvent) => setCursor({ x: e.clientX, y: e.clientY }); window.addEventListener('mousemove', move); return () => window.removeEventListener('mousemove', move) }, [])
+  useEffect(() => {
+    if (!window.matchMedia('(pointer: fine)').matches) return
+    const move = (e: MouseEvent) => setCursor({ x: e.clientX, y: e.clientY })
+    window.addEventListener('mousemove', move)
+    return () => window.removeEventListener('mousemove', move)
+  }, [])
   useEffect(() => { const t = setInterval(() => setTestimonial(i => (i + 1) % testimonials.length), 5500); return () => clearInterval(t) }, [])
   const current = useMemo(() => testimonials[testimonial], [testimonial])
 
