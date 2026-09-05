@@ -84,6 +84,27 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   </div>
 }
 
+function BookingFrame() {
+  const frameRef = useRef<HTMLDivElement>(null)
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    const el = frameRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      setReady(true)
+      observer.disconnect()
+    }, { rootMargin: '200px' })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return <div ref={frameRef} className="glass-card booking-frame" style={{ minHeight: 680 }}>
+    {ready ? <iframe src={`${CALENDLY}?hide_gdpr_banner=1&background_color=0d0d0f&text_color=f5f5f5&primary_color=a855f7`} title="Book a call with Starlight AI" /> : <div style={{ minHeight: 680 }} aria-label="Booking calendar loads when you reach this section" />}
+  </div>
+}
+
 export default function Page() {
   const [intro, setIntro] = useState(true)
   const [testimonial, setTestimonial] = useState(0)
@@ -96,7 +117,17 @@ export default function Page() {
     if (sessionStorage.getItem('starlight-intro')) setIntro(false)
     else { sessionStorage.setItem('starlight-intro', '1'); const t = setTimeout(() => setIntro(false), 1500); return () => clearTimeout(t) }
   }, [])
-  useEffect(() => { const t = window.setTimeout(() => setEnhancementsReady(true), 7000); return () => window.clearTimeout(t) }, [])
+  useEffect(() => {
+    const enable = () => setEnhancementsReady(true)
+    const timer = window.setTimeout(enable, 15000)
+    window.addEventListener('scroll', enable, { once: true, passive: true })
+    window.addEventListener('pointerdown', enable, { once: true, passive: true })
+    return () => {
+      window.clearTimeout(timer)
+      window.removeEventListener('scroll', enable)
+      window.removeEventListener('pointerdown', enable)
+    }
+  }, [])
   useEffect(() => {
     if (!window.matchMedia('(pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let cancelled = false
@@ -268,7 +299,7 @@ export default function Page() {
         <div className="section-head" style={{ justifyContent: 'center', textAlign: 'center' }}>
           <Reveal><span className="eyebrow">09 / NEXT STEP</span><h2>Book a <em>15-minute call.</em></h2></Reveal>
         </div>
-        <Reveal delay={.15}><div className="glass-card booking-frame"><iframe loading="lazy" src={`${CALENDLY}?hide_gdpr_banner=1&background_color=0d0d0f&text_color=f5f5f5&primary_color=a855f7`} title="Book a call with Starlight AI" /></div></Reveal>
+        <Reveal delay={.15}><BookingFrame /></Reveal>
       </section>
 
       <section id="contact" className="contact">
