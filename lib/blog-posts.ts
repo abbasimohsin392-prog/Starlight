@@ -195,7 +195,7 @@ export const blogPosts: BlogPost[] = [
         text: "Most shops can have an AI receptionist live on their existing shop number within one to two weeks, answering calls and booking estimates the same day it goes live.",
       },
     ],
-  },,
+  },
 
   {
     slug: "ai-tenant-assistant-for-property-management",
