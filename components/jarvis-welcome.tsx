@@ -11,21 +11,16 @@ export function JarvisWelcome() {
   const [played, setPlayed] = useState(false)
 
   useEffect(() => {
-    const audio = new Audio("/jarvis-welcome.mp3")
-    audioRef.current = audio
-    audio.volume = 0.7
-
-    const hideTimer = setTimeout(() => {
-      setVisible(false)
-    }, 30000)
-
-    return () => {
-      clearTimeout(hideTimer)
-      audio.pause()
-    }
+    const hideTimer = setTimeout(() => setVisible(false), 30000)
+    return () => clearTimeout(hideTimer)
   }, [])
 
   const handleClick = () => {
+    if (!audioRef.current) {
+      const audio = new Audio("/jarvis-welcome.mp3")
+      audio.volume = 0.7
+      audioRef.current = audio
+    }
     if (audioRef.current && !played) {
       audioRef.current
         .play()
