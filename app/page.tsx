@@ -73,6 +73,26 @@ const faqs = [
   ["What if I'm not satisfied with the result?", 'We offer revisions until you’re happy with the system. Our goal is real results for your business, not just a finished product.'],
 ]
 
+const homepageStructuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'AI Automation Agency | Starlight AI',
+    url: 'https://starlightai.site/',
+    description: 'AI receptionists, chatbots, and workflow automation that answer enquiries, qualify leads, and reduce repetitive admin.',
+    isPartOf: { '@type': 'WebSite', name: 'Starlight AI', url: 'https://starlightai.site/' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(([question, answer]) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
+    })),
+  },
+]
+
 function Reveal({ children, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   return <div className={className}>{children}</div>
 }
@@ -158,6 +178,7 @@ export default function Page() {
   const current = useMemo(() => testimonials[testimonial], [testimonial])
 
   return <div>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageStructuredData) }} />
     <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo-256.png" alt="Starlight AI" style={{ height: 120, width: 'auto', marginBottom: 22 }} /><p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 22 }}>Build the future. Automate the now.</p><div style={{ width: 160, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.1)', overflow: 'hidden', margin: '0 auto' }}><motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, var(--purple), var(--cyan))' }} /></div></motion.div></motion.div>}</AnimatePresence>
     <motion.div className="cursor" animate={{ x: cursor.x, y: cursor.y }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
     {enhancementsReady && <>
