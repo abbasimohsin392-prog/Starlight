@@ -6,7 +6,7 @@ const siteUrl = 'https://starlightai.site'
 const siteTitle = 'Starlight AI: AI Automation Agency & AI Receptionists'
 const siteDescription = 'Starlight AI builds AI receptionists, chatbots, and workflow automation that answer enquiries, qualify leads, and reduce repetitive admin for growing businesses.'
 const socialImage = siteUrl + '/images/og-banner.jpg'
-const faviconImage = siteUrl + '/favicon.svg'
+const faviconImage = siteUrl + '/starlight-ai-favicon.png'
 
 export const metadata: Metadata = {
   title: siteTitle,
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   alternates: { canonical: '/' },
   icons: {
-    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
-    shortcut: '/favicon.svg',
+    icon: [{ url: '/starlight-ai-favicon.png', type: 'image/png', sizes: '512x512' }],
+    shortcut: '/starlight-ai-favicon.ico',
     apple: [{ url: '/starlight-ai-apple-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
