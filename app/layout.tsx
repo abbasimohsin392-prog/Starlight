@@ -18,11 +18,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   alternates: { canonical: '/' },
   icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.png', type: 'image/png', sizes: '512x512' },
-    ],
-    shortcut: '/favicon.ico',
+    icon: [{ url: '/favicon.png', type: 'image/png', sizes: '512x512' }],
+    shortcut: '/favicon.png',
     apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
