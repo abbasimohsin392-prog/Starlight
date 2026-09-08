@@ -2,26 +2,42 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
+const siteUrl = 'https://starlightai.site'
+const siteTitle = 'Starlight AI: AI Automation Agency & AI Receptionists'
+const siteDescription = 'Starlight AI builds AI receptionists, chatbots, and workflow automation that answer enquiries, qualify leads, and reduce repetitive admin for growing businesses.'
+const socialImage = siteUrl + '/images/og-banner.jpg'
+const faviconImage = siteUrl + '/favicon.png'
+
 export const metadata: Metadata = {
-  title: 'AI Automation Agency | AI Receptionists & Workflow Automation | Starlight AI',
-  description: 'Starlight AI builds AI receptionists, chatbots, and workflow automation that answer enquiries, qualify leads, and reduce repetitive admin for growing businesses.',
+  title: siteTitle,
+  description: siteDescription,
   generator: 'Starlight AI',
+  applicationName: 'Starlight AI',
   keywords: ['AI automation agency', 'AI receptionist', 'AI chatbot', 'workflow automation', 'business process automation'],
   robots: { index: true, follow: true },
-  metadataBase: new URL('https://starlightai.site'),
+  metadataBase: new URL(siteUrl),
   alternates: { canonical: '/' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png', sizes: '512x512' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
   openGraph: {
-    title: 'AI Automation Agency | Starlight AI',
+    title: siteTitle,
     description: 'AI receptionists, chatbots, and workflow automation for growing businesses.',
     type: 'website',
-    url: 'https://starlightai.site',
-    images: [{ url: '/images/og-banner.jpg', width: 1200, height: 630, alt: 'Starlight AI' }],
+    url: siteUrl,
+    siteName: 'Starlight AI',
+    images: [{ url: socialImage, width: 1200, height: 630, type: 'image/jpeg', alt: 'Starlight AI — AI automation for growing businesses' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Starlight AI',
-    description: 'Intelligent systems for ambitious businesses.',
-    images: ['/images/og-banner.jpg'],
+    title: siteTitle,
+    description: 'AI receptionists, chatbots, and workflow automation for growing businesses.',
+    images: [{ url: socialImage, alt: 'Starlight AI — AI automation for growing businesses' }],
   },
 }
 
@@ -32,9 +48,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     {
       '@context': 'https://schema.org',
       '@type': 'Organization',
+      '@id': siteUrl + '/#organization',
       name: 'Starlight AI',
-      url: 'https://starlightai.site',
-      logo: 'https://starlightai.site/starlight-logo.png',
+      url: siteUrl,
+      description: siteDescription,
+      logo: { '@type': 'ImageObject', url: faviconImage, width: 512, height: 512 },
+      image: faviconImage,
       sameAs: ['https://www.instagram.com/starlight_.ai/'],
       contactPoint: { '@type': 'ContactPoint', contactType: 'sales', email: 'hello@starlightai.site', availableLanguage: ['English'] },
       knowsAbout: ['AI receptionists', 'AI chatbots', 'workflow automation', 'lead capture', 'appointment booking'],
@@ -42,9 +61,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
+      '@id': siteUrl + '/#website',
       name: 'Starlight AI',
-      url: 'https://starlightai.site',
+      url: siteUrl,
       inLanguage: 'en',
+      publisher: { '@id': siteUrl + '/#organization' },
     },
   ]
 
