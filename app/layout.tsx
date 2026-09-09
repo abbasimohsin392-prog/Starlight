@@ -6,7 +6,7 @@ const siteUrl = 'https://starlightai.site'
 const siteTitle = 'Starlight AI: AI Automation Agency & AI Receptionists'
 const siteDescription = 'Starlight AI builds AI receptionists, chatbots, and workflow automation that answer enquiries, qualify leads, and reduce repetitive admin for growing businesses.'
 const socialImage = siteUrl + '/images/og-banner.jpg'
-const faviconImage = siteUrl + '/icon.svg'
+const faviconImage = siteUrl + '/favicon.png'
 
 export const metadata: Metadata = {
   title: siteTitle,
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   alternates: { canonical: '/' },
   icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml', sizes: '447x447' }],
-    shortcut: '/icon.svg',
+    icon: [{ url: '/favicon.png', type: 'image/png', sizes: '512x512' }],
+    shortcut: '/favicon.png',
     apple: [{ url: '/starlight-ai-apple-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
@@ -49,7 +49,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       name: 'Starlight AI',
       url: siteUrl,
       description: siteDescription,
-      logo: { '@type': 'ImageObject', url: faviconImage, width: 447, height: 447 },
+      logo: { '@type': 'ImageObject', url: faviconImage, width: 512, height: 512 },
       image: faviconImage,
       sameAs: ['https://www.instagram.com/starlight_.ai/'],
       contactPoint: { '@type': 'ContactPoint', contactType: 'sales', email: 'hello@starlightai.site', availableLanguage: ['English'] },
