@@ -42,7 +42,7 @@ export default function AboutPage() {
         <Reveal delay={.1}><div className="glass-card" style={{ padding: "36px 32px", marginBottom: 80 }}>
           <span className="eyebrow">FROM THE FOUNDER</span>
           <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>Starlight AI started with a simple observation: small businesses lose revenue every day to something completely preventable: a missed call, a slow reply, a lead that goes cold. I founded Starlight AI to close that gap.</p>
-          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>What began as one idea, that every business deserves the responsiveness of a company ten times its size, has grown into an automation practice trusted by businesses worldwide. Every system we build is designed around how your business actually runs, so nothing falls through the cracks.</p>
+          <p style={{ marginTop: 14, color: "var(--muted)", lineHeight: 1.7 }}>What began as one idea, that every business deserves a more responsive first step, is becoming a founder-led automation practice for businesses with repetitive enquiries and admin handoffs. Every system is designed around how the business actually runs, with clear limits and human fallback.</p>
           <p style={{ marginTop: 18, color: "var(--cyan)", fontSize: 13 }}>Aoun, Founder, Starlight AI</p>
         </div></Reveal>
 
@@ -53,7 +53,7 @@ export default function AboutPage() {
           {[
             ["Results-Driven", "We focus on delivering measurable outcomes that directly impact your bottom line."],
             ["Innovation First", "We stay at the cutting edge of AI technology to bring you the most advanced solutions."],
-            ["Client Partnership", "We work as an extension of your team, understanding your unique challenges and goals."],
+            ["Founder-led Collaboration", "We work closely with you to understand the workflow, the limits, and the outcome that matters."],
             ["Excellence", "We are committed to delivering exceptional quality in everything we do."],
           ].map(([title, desc], i) => (
             <Reveal key={title} delay={i * .08}><div className="glass-card feature-card"><h3>{title}</h3><p>{desc}</p></div></Reveal>
