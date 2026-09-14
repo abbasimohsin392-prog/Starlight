@@ -5,14 +5,14 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Instagram, Mail, Phone } from "lucide-react"
 
-const GMAIL_LINK = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
+const EMAIL_LINK = "mailto:hello@starlightai.site"
 const WHATSAPP_LINK = "https://wa.me/923007657038"
 const CALENDLY_LINK = "https://calendly.com/starlightai306/30min"
 const INSTAGRAM_LINK = "https://www.instagram.com/starlight_.ai/"
 
 const socialLinks = [
   { icon: Instagram, href: INSTAGRAM_LINK, label: "Instagram" },
-  { icon: Mail, href: GMAIL_LINK, label: "Email" },
+  { icon: Mail, href: EMAIL_LINK, label: "Email" },
   { icon: Phone, href: WHATSAPP_LINK, label: "WhatsApp" },
 ]
 
@@ -65,6 +65,7 @@ export function Footer() {
               <li><Link href="/services" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Services</Link></li>
               <li><Link href="/blog" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Blog</Link></li>
               <li><Link href="/solutions" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Solutions by Industry</Link></li>
+              <li><Link href="/#faq" className="text-muted-foreground hover:text-foreground transition-colors text-sm">FAQ</Link></li>
               <li><Link href="/pricing" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Pricing</Link></li>
               <li><Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors text-sm">About</Link></li>
             </ul>
@@ -74,7 +75,7 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-3">
               <li><a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Talk to a Strategist</a></li>
-              <li><a href={GMAIL_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Email Us</a></li>
+              <li><a href={EMAIL_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Email Us</a></li>
               <li><a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors text-sm">WhatsApp</a></li>
             </ul>
           </div>
