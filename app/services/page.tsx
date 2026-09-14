@@ -3,13 +3,14 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ChatbotDemoSection } from "@/components/chatbot-demo-section"
 const CALENDLY = "https://calendly.com/starlightai306/30min"
 const WHATSAPP = "https://wa.me/923007657038"
-const EMAIL = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
+const EMAIL = "mailto:hello@starlightai.site"
 const INSTAGRAM = "https://www.instagram.com/starlight_.ai/"
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Solutions", href: "/solutions" },
   { label: "Pricing", href: "/pricing" },
+  { label: "FAQ", href: "/#faq" },
   { label: "About", href: "/about" },
 ]
 
@@ -29,7 +30,7 @@ export default function ServicesPage() {
       <section className="section" style={{ paddingTop: 170 }}>
         <div className="section-head" style={{ justifyContent: "center", textAlign: "center" }}>
           <Reveal><span className="eyebrow">OUR SERVICES</span><h1>AI solutions for<br /><em className="gradient-text">every business need.</em></h1></Reveal>
-          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 520, margin: "16px auto 0" }}>From chatbots to custom AI models, we deliver comprehensive AI solutions that drive real business results.</p></Reveal>
+          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 520, margin: "16px auto 0" }}>From chatbots to connected workflows, we deliver practical AI solutions shaped around the business problem and the available tools.</p></Reveal>
           <Reveal delay={.2}><div style={{ display: "flex", gap: 14, justifyContent: "center", marginTop: 26, flexWrap: "wrap" }}>
             <a href="/demo" className="inline-flex primary" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14 }}>Try the Live Demo ↗</a>
             <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="inline-flex" style={{ borderRadius: 999, padding: "14px 28px", fontSize: 14, border: "1px solid var(--line)" }}>Chat on WhatsApp</a>
@@ -63,9 +64,9 @@ export default function ServicesPage() {
         </div>
         <div className="feature-grid" style={{ marginBottom: 90 }}>
           {[
-            { icon: "🦷", name: "Dental Clinics", desc: "Automated patient enquiries, appointment reminders, and missed call follow-ups, freeing up front desk staff to focus on in-clinic care.", stat: "80% faster response time" },
-            { icon: "🏢", name: "Service Businesses", desc: "End-to-end lead handling from first contact to booked appointment, running 24/7 without any manual input from the team.", stat: "3x more leads captured" },
-            { icon: "🛒", name: "E-commerce & Retail", desc: "AI-powered customer support and order tracking automation that handles hundreds of enquiries simultaneously, around the clock.", stat: "Zero missed enquiries" },
+            { icon: "🦷", name: "Dental Clinics", desc: "Automated patient enquiries, appointment reminders, and missed call follow-ups, freeing up front desk staff to focus on in-clinic care.", stat: "Faster first response" },
+            { icon: "🏢", name: "Service Businesses", desc: "End-to-end lead handling from first contact to booked appointment, with routine replies and human handoffs defined in advance.", stat: "Designed to capture more enquiries" },
+            { icon: "🛒", name: "E-commerce & Retail", desc: "AI-powered customer support and order tracking automation that handles hundreds of enquiries simultaneously, around the clock.", stat: "Fewer missed enquiries" },
           ].map((r, i) => (
             <Reveal key={r.name} delay={i * .1}><div className="glass-card feature-card">
               <span style={{ fontSize: 28 }}>{r.icon}</span>
@@ -82,8 +83,8 @@ export default function ServicesPage() {
         <div className="feature-grid" style={{ marginBottom: 90 }}>
           {[
             { name: "Workflow Automation", desc: "End-to-end automation solutions that eliminate manual tasks and streamline your business processes.", features: ["Process mapping & optimization", "Custom automation scripts", "API integrations", "Real-time monitoring"] },
-            { name: "AI Integration", desc: "Seamlessly integrate AI capabilities into your existing systems and tech stack.", features: ["Legacy system compatibility", "Cloud & on-premise options", "Custom API development", "Scalable architecture"] },
-            { name: "Custom AI Models", desc: "Tailored machine learning models trained on your data for specific business use cases.", features: ["Data analysis & preparation", "Model training & tuning", "Performance optimization", "Continuous learning"] },
+            { name: "AI Integration", desc: "Connect approved AI workflows to the systems and tools your business already uses.", features: ["Legacy system review", "Deployment options reviewed", "Custom API development where appropriate", "Scalable architecture"] },
+            { name: "Custom AI Workflows", desc: "Tailored workflow systems shaped around your approved business information and operating process.", features: ["Process and data review", "Workflow design and testing", "Tool and API connections", "Evidence-led improvement"] },
             { name: "Data Analytics & BI", desc: "Transform raw data into actionable insights with AI-powered analytics dashboards.", features: ["Real-time data processing", "Custom visualizations", "Predictive analytics", "Automated reporting"] },
           ].map((s, i) => (
             <Reveal key={s.name} delay={i * .08}><div className="glass-card feature-card">

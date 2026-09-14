@@ -11,6 +11,7 @@ const navItems = [
   { label: "Services", href: "/services" },
   { label: "Solutions", href: "/solutions" },
   { label: "Pricing", href: "/pricing" },
+  { label: "FAQ", href: "/#faq" },
   { label: "About", href: "/about" },
 ]
 
@@ -325,7 +326,7 @@ function DemoContent() {
       <footer style={{ flexWrap: "wrap", gap: 16 }}>
         <a href="/" className="logo" style={{ display: "flex", alignItems: "center" }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 20, width: "auto" }} /></a>
         <span>© 2026 Starlight AI</span>
-        <div><a href="https://www.instagram.com/starlight_.ai/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry" target="_blank" rel="noopener noreferrer">Email</a><a href="https://wa.me/923007657038" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+        <div><a href="https://www.instagram.com/starlight_.ai/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="mailto:hello@starlightai.site" target="_blank" rel="noopener noreferrer">Email</a><a href="https://wa.me/923007657038" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
       </footer>
     </div>
   )
