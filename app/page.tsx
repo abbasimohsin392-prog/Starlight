@@ -211,9 +211,9 @@ export default function Page() {
           <Reveal delay={.15}><p className="section-intro">A missed call, an unanswered form, or a lead waiting until tomorrow is not just an admin issue. It is a customer choosing the business that replied first.</p></Reveal>
         </div>
         <div className="feature-grid">
-          <Reveal><article className="glass-card feature-card"><div className="eyebrow">01 / MISSED ENQUIRIES</div><h4>Calls and messages go unanswered</h4><p>We give every new enquiry a fast first response, even when your team is serving customers, driving, or offline.</p></article></Reveal>
-          <Reveal delay={.08}><article className="glass-card feature-card"><div className="eyebrow">02 / ADMIN OVERLOAD</div><h4>Your team repeats the same work</h4><p>We automate approved questions, data capture, reminders, and routing so people spend more time on work that needs judgment.</p></article></Reveal>
-          <Reveal delay={.16}><article className="glass-card feature-card"><div className="eyebrow">03 / COLD LEADS</div><h4>Interested prospects lose momentum</h4><p>We build follow-up paths that keep the conversation moving toward a booking, quote, consultation, or human handoff.</p></article></Reveal>
+          <Reveal><article className="glass-card feature-card"><div className="eyebrow">01 / MISSED ENQUIRIES</div><h3>Calls and messages go unanswered</h3><p>We give every new enquiry a fast first response, even when your team is serving customers, driving, or offline.</p></article></Reveal>
+          <Reveal delay={.08}><article className="glass-card feature-card"><div className="eyebrow">02 / ADMIN OVERLOAD</div><h3>Your team repeats the same work</h3><p>We automate approved questions, data capture, reminders, and routing so people spend more time on work that needs judgment.</p></article></Reveal>
+          <Reveal delay={.16}><article className="glass-card feature-card"><div className="eyebrow">03 / COLD LEADS</div><h3>Interested prospects lose momentum</h3><p>We build follow-up paths that keep the conversation moving toward a booking, quote, consultation, or human handoff.</p></article></Reveal>
         </div>
       </section>
 
@@ -232,7 +232,7 @@ export default function Page() {
             <p className="about-copy" style={{ fontSize: 16 }}>We do not start with a tool. We start with the expensive problem: missed demand, slow response, repetitive admin, or a handoff that breaks. Then we design the smallest useful system around your existing operation.</p>
             <ul className="benefit-list">{benefits.map(b => <li key={b}><span className="dot">✓</span>{b}</li>)}</ul>
           </Reveal>
-          <Reveal delay={.15}><div className="feature-grid">{featureCards.map(([t, d]) => <div key={t} className="glass-card feature-card"><div style={{ fontSize: 20 }}>✦</div><h4>{t}</h4><p>{d}</p></div>)}</div></Reveal>
+          <Reveal delay={.15}><div className="feature-grid">{featureCards.map(([t, d]) => <div key={t} className="glass-card feature-card"><div style={{ fontSize: 20 }}>✦</div><h3>{t}</h3><p>{d}</p></div>)}</div></Reveal>
         </div>
       </section>
 
@@ -241,7 +241,7 @@ export default function Page() {
           <Reveal><span className="eyebrow">03 / SOLUTIONS BY INDUSTRY</span><h2>Built around<br />your <em>business.</em></h2></Reveal>
           <Reveal delay={.15}><p className="section-intro">Every niche has its own missed calls and slow replies. We build for how your industry actually runs.</p></Reveal>
         </div>
-        <Reveal><div className="solutions-grid">{solutions.map(([name, cat]) => <div key={name} className="solution-card"><span className="eyebrow">{cat.toUpperCase()}</span><h4>{name}</h4></div>)}</div></Reveal>
+        <Reveal><div className="solutions-grid">{solutions.map(([name, cat]) => <div key={name} className="solution-card"><span className="eyebrow">{cat.toUpperCase()}</span><h3>{name}</h3></div>)}</div></Reveal>
         <Reveal delay={.1}><div style={{ textAlign: 'center', marginTop: 26 }}><a href="/solutions" style={{ color: 'var(--cyan)', fontSize: 13 }}>View all industries in detail →</a></div></Reveal>
       </section>
 
