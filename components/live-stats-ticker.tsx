@@ -59,7 +59,7 @@ export function LiveStatsTicker() {
           {m.label}
         </span>
       ))}
-      <span className="opacity-50">(live simulation)</span>
+      <span className="opacity-80">(live simulation)</span>
     </div>
   )
 }
