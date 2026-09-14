@@ -3,7 +3,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const CALENDLY = "https://calendly.com/starlightai306/30min"
-const EMAIL = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
+const EMAIL = "mailto:hello@starlightai.site"
 const WHATSAPP = "https://wa.me/923007657038"
 const INSTAGRAM = "https://www.instagram.com/starlight_.ai/"
 const navItems = [
@@ -11,6 +11,7 @@ const navItems = [
   { label: "Services", href: "/services" },
   { label: "Solutions", href: "/solutions" },
   { label: "Pricing", href: "/pricing" },
+  { label: "FAQ", href: "/#faq" },
   { label: "About", href: "/about" },
 ]
 
@@ -48,7 +49,7 @@ const plans = [
     desc: "For growing companies ready to scale with AI",
     monthlyPrice: 397,
     annualPrice: 327,
-    features: ["3 Custom AI Solutions", "Advanced automation workflows", "Priority support (24/7)", "Real-time analytics dashboard", "Up to 100,000 chat messages/mo", "Up to 1,500 call minutes/mo", "Custom integrations", "Dedicated account manager"],
+    features: ["3 Custom AI Solutions", "Advanced automation workflows", "Support scope agreed in proposal", "Real-time analytics dashboard", "Up to 100,000 chat messages/mo", "Up to 1,500 call minutes/mo", "Custom integrations", "Custom integrations"],
     popular: true,
   },
   {
@@ -56,13 +57,13 @@ const plans = [
     desc: "Tailored solutions for large-scale operations",
     monthlyPrice: null,
     annualPrice: null,
-    features: ["Unlimited AI Solutions", "Enterprise-grade security", "24/7 phone & Slack support", "Custom ML model development", "Usage limits scoped to your call volume", "On-premise deployment option", "SLA guarantee"],
+    features: ["Custom workflow scope", "Security and deployment requirements reviewed", "Usage limits agreed in proposal", "Support and reporting scope agreed upfront"],
     popular: false,
   },
 ]
 
 const faqs: [string, string][] = [
-  ["Are all plans monthly subscriptions?", "Yes. Growth and Professional run as monthly subscriptions covering ongoing usage, support, and updates. There's no long-term lock-in; you can cancel anytime with notice."],
+  ["Are all plans monthly subscriptions?", "Yes. All listed plans are monthly subscriptions covering the scope and usage described on this page. There's no long-term lock-in; you can cancel anytime with notice."],
   ["Are there any ongoing costs?", "Your monthly plan covers usage, support, and maintenance. Optional premium support, extra training, or major upgrades may have separate costs, but those are always discussed upfront."],
   ["Can I upgrade my plan later?", "Yes, you can upgrade to a higher tier at any time. You will only pay the difference between your current plan and the new plan."],
   ["Do you offer refunds?", "We offer a 30-day satisfaction guarantee. If you are not happy with your solution, we will work with you to make it right or provide a full refund."],
