@@ -18,18 +18,12 @@ const LiveDemoPopup = dynamic(() => import('@/components/live-demo-popup').then(
 
 const nav = ['Services', 'Solutions', 'Pricing', 'FAQ', 'About']
 
-const testimonials = [
-  { quote: 'Starlight gave our team back 15 hours every week. The system feels like it was built inside our business.', name: 'Maya Al-Sabah', role: 'Founder, Kanso Studio' },
-  { quote: 'We went from scattered tools to one calm, intelligent workflow. Our leads now get a response in under a minute.', name: 'Oliver Reed', role: 'Director, Northline Homes' },
-  { quote: 'They understood the commercial problem first, then made the technology disappear behind a beautiful experience.', name: 'Sarah Mitchell', role: 'COO, Meridian & Co.' },
-]
-
 const services = [
   ['01', 'AI CHATBOTS & ASSISTANTS', 'Custom AI-powered chatbots that handle customer support, lead generation, and internal operations 24/7.'],
   ['02', 'AI RECEPTIONIST', 'A 24/7 AI phone agent that answers calls, books appointments, and qualifies leads so you never miss a customer.'],
   ['03', 'WORKFLOW AUTOMATION', 'End-to-end automation that eliminates manual tasks and streamlines your business processes.'],
   ['04', 'AI INTEGRATION', 'Seamlessly integrate AI capabilities into your existing systems and tech stack.'],
-  ['05', 'CUSTOM AI MODELS', 'Tailored machine learning models trained on your data for specific business use cases.'],
+  ['05', 'AI KNOWLEDGE SYSTEMS', 'Practical knowledge and workflow systems shaped around approved business information.'],
   ['06', 'DATA ANALYTICS & BI', 'Transform raw data into actionable insights with AI-powered analytics dashboards.'],
 ]
 
@@ -41,36 +35,37 @@ const solutions = [
 ]
 
 const benefits = [
-  'Custom AI solutions tailored to your industry',
-  'Seamless integration with existing systems',
-  'Enterprise-grade security and compliance',
-  'Continuous learning and optimization',
-  'Real-time analytics and reporting',
-  'Dedicated account management',
+  'Custom AI workflows shaped around your business',
+  'Connects to the tools you already use',
+  'Clear handoffs when a person needs human judgment',
+  'Usage and outcomes reviewed with evidence',
+  'Practical analytics and reporting',
+  'Founder-led implementation and support',
 ]
 
 const featureCards = [
-  ['10x Faster Deployment', 'Launch AI solutions in weeks, not months.'],
-  ['24/7 Availability', 'AI systems that never sleep, always ready to serve.'],
-  ['Scalable Architecture', 'Built to grow with your business demands.'],
-  ['Dedicated Support', 'Expert team available whenever you need help.'],
+  ['Always-on first response', 'Approved enquiries can receive a reply even when your team is busy or offline.'],
+  ['Scalable workflows', 'Start with one focused workflow and expand when the evidence supports it.'],
+  ['Human handoff', 'Sensitive, urgent, or uncertain requests can move to a person using agreed rules.'],
+  ['Clear reporting', 'Review conversations, handoffs, and outcomes instead of relying on vague promises.'],
 ]
 
 const plans = [
-  { name: 'Growth', desc: 'Perfect for small businesses getting started with AI', price: '$297/mo', features: ['1 Custom AI Chatbot', 'Basic workflow automation', 'Email support', 'Monthly reporting', 'Up to 10k interactions/mo'], popular: false },
-  { name: 'Professional', desc: 'For growing companies ready to scale with AI', price: '$597/mo', features: ['3 Custom AI Solutions', 'Advanced automation workflows', 'Priority support (24/7)', 'Real-time analytics dashboard', 'Up to 100k interactions/mo', 'Custom integrations', 'Dedicated account manager'], popular: true },
-  { name: 'Enterprise', desc: 'Tailored solutions for large-scale operations', price: 'Tailored Quote', features: ['Unlimited AI Solutions', 'Enterprise-grade security', '24/7 phone & Slack support', 'Custom ML model development', 'Unlimited interactions', 'On-premise deployment option', 'SLA guarantee'], popular: false },
+  { name: 'Starter', desc: 'For solo businesses trying AI for the first time', price: '$97/mo', features: ['1 AI Chatbot or Receptionist', 'Basic workflow automation', 'Email support', 'Up to 5,000 chat messages/mo', 'Up to 100 call minutes/mo'], popular: false },
+  { name: 'Growth', desc: 'Perfect for small businesses getting started with AI', price: '$197/mo', features: ['1 Custom AI Chatbot', 'Basic workflow automation', 'Email support', 'Monthly reporting', 'Up to 10,000 chat messages/mo', 'Up to 300 call minutes/mo'], popular: false },
+  { name: 'Professional', desc: 'For growing companies ready to scale with AI', price: '$397/mo', features: ['3 Custom AI Solutions', 'Advanced automation workflows', 'Support scope agreed in proposal', 'Real-time analytics dashboard', 'Up to 100,000 chat messages/mo', 'Up to 1,500 call minutes/mo', 'Custom integrations'], popular: true },
+  { name: 'Enterprise', desc: 'Tailored solutions for large-scale operations', price: 'Tailored Quote', features: ['Custom workflow scope', 'Security and deployment requirements reviewed', 'Usage limits agreed in proposal', 'Support and reporting scope agreed upfront'], popular: false },
 ]
 
 const faqs = [
-  ['How long does it take to get my AI system up and running?', 'Most clients are live within 2 weeks. A basic AI chatbot can be deployed in as little as 5-7 days. More complex automations or custom builds typically take 2-4 weeks depending on requirements.'],
-  ['Do I need any technical knowledge to use the system?', "Zero technical knowledge required. We handle everything from setup to deployment. Once it's live, your AI system runs on autopilot, with a simple dashboard so you can monitor performance anytime."],
-  ['What exactly is included in the Growth plan?', 'A fully custom AI chatbot built for your business, integrated directly into your website or platform, plus basic workflow automation. It handles customer queries, lead capture, and appointment booking 24/7, with up to 10k interactions per month.'],
-  ['What if I want ongoing support or updates?', 'Our Professional plan includes priority 24/7 support, real-time analytics, custom integrations, and a dedicated account manager to keep your AI systems improving over time.'],
-  ['Can the AI integrate with my existing tools and software?', "Yes. We integrate with WhatsApp, Instagram, websites, CRMs, booking systems, email platforms and more. If you use a specific tool, just let us know and we'll make it work."],
-  ['Is my business data safe and secure?', 'All data is encrypted end-to-end and we never share your data with third parties. Your business information stays private and under your control at all times.'],
-  ['What kind of businesses do you work with?', 'Businesses across every industry: salons, dental clinics, real estate agencies, law firms, e-commerce stores, restaurants, SaaS companies and more.'],
-  ["What if I'm not satisfied with the result?", 'We offer revisions until you’re happy with the system. Our goal is real results for your business, not just a finished product.'],
+  ['How long does it take to get my AI system up and running?', 'Timing depends on the workflow and integrations. We scope the first useful workflow before committing to a delivery date.'],
+  ['Do I need any technical knowledge to use the system?', 'No. We handle the agreed setup and explain the workflow in practical terms, with a human handoff when your team needs to take over.'],
+  ['What exactly is included in the Growth plan?', 'The Growth plan is $197/month and includes one custom AI chatbot, basic workflow automation, email support, monthly reporting, up to 10,000 chat messages, and up to 300 call minutes per month.'],
+  ['What if I want ongoing support or updates?', 'Support and update scope is defined before work begins. Professional and Enterprise proposals can include broader review, reporting, and improvement work where appropriate.'],
+  ['Can the AI integrate with my existing tools and software?', 'Usually, yes, depending on the tools and access available. We review the required integrations and any limits before promising a workflow.'],
+  ['Is my business data safe and secure?', 'Data handling depends on the tools and workflow. We discuss access, retention, permissions, and escalation requirements before implementation rather than making blanket security claims.'],
+  ['What kind of businesses do you work with?', 'We focus on businesses with repetitive enquiries, missed calls, lead follow-up, appointment booking, or admin handoffs that can be improved with a carefully scoped workflow.'],
+  ["What if I'm not satisfied with the result?", 'The agreed scope, review points, and change process are set out before implementation so expectations are clear.'],
 ]
 
 const homepageStructuredData = [
@@ -132,7 +127,6 @@ function BookingFrame() {
 
 export default function Page() {
   const [intro, setIntro] = useState(true)
-  const [testimonial, setTestimonial] = useState(0)
   const [active, setActive] = useState('Services')
   const [scrolled, setScrolled] = useState(false)
   const [enhancementsReady, setEnhancementsReady] = useState(false)
@@ -174,9 +168,7 @@ export default function Page() {
     window.addEventListener('mousemove', move)
     return () => window.removeEventListener('mousemove', move)
   }, [])
-  useEffect(() => { const t = setInterval(() => setTestimonial(i => (i + 1) % testimonials.length), 5500); return () => clearInterval(t) }, [])
-  const current = useMemo(() => testimonials[testimonial], [testimonial])
-
+  
   return <div>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageStructuredData) }} />
     <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo-256.png" alt="Starlight AI" style={{ height: 120, width: 'auto', marginBottom: 22 }} /><p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 22 }}>Build the future. Automate the now.</p><div style={{ width: 160, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.1)', overflow: 'hidden', margin: '0 auto' }}><motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, var(--purple), var(--cyan))' }} /></div></motion.div></motion.div>}</AnimatePresence>
@@ -281,12 +273,6 @@ export default function Page() {
         <Reveal delay={.2}><div style={{ textAlign: 'center', marginTop: 30 }}><Magnetic dark href={CALENDLY}>Get a workflow review</Magnetic></div></Reveal>
       </section>
 
-      <section className="quote-section">
-        <div className="quote-mark">"</div>
-        <AnimatePresence mode="wait"><motion.div key={testimonial} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }} transition={{ duration: .45 }}><p className="quote">{current.quote}</p><div className="quote-by"><span>{current.name}</span><span>{current.role}</span></div></motion.div></AnimatePresence>
-        <div className="dots">{testimonials.map((_, i) => <button aria-label={`Show testimonial ${i + 1}`} key={i} onClick={() => setTestimonial(i)} className={i === testimonial ? 'selected' : ''} />)}</div>
-      </section>
-
       <section id="pricing" className="section pricing">
         <div className="section-head">
           <Reveal><span className="eyebrow">06 / PRICING</span><h2>Simple, transparent<br /><em>pricing.</em></h2></Reveal>
@@ -307,8 +293,8 @@ export default function Page() {
       <section id="about" className="section about">
         <div><Reveal><span className="eyebrow">08 / THE STUDIO</span><h2>Not an agency.<br /><em>A thinking partner.</em></h2></Reveal></div>
         <Reveal delay={.15}>
-          <p className="about-copy">Starlight is a small, senior team for businesses ready to move with intention. We blend the imagination of a design studio with the rigour of an engineering team, so your growth system feels as considered as your brand.</p>
-          <div className="stats"><div><strong>12<span>+</span></strong><small>Automations launched</small></div><div><strong>4<span>x</span></strong><small>Average ROI on systems</small></div><div><strong>24<span>/7</span></strong><small>Ideas in motion</small></div></div>
+          <p className="about-copy">Starlight is a founder-led practice for businesses ready to move with intention. We combine thoughtful design with practical engineering, so your growth system fits the way your business actually runs.</p>
+          <div className="stats"><div><strong>1</strong><small>Focused workflow to start</small></div><div><strong>Clear</strong><small>Scope before build</small></div><div><strong>Human</strong><small>Handoff when needed</small></div></div>
         </Reveal>
       </section>
 
