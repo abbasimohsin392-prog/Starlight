@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 
 const LiveStatsTicker = dynamic(() => import('@/components/live-stats-ticker').then((m) => m.LiveStatsTicker), { ssr: false, loading: () => null })
