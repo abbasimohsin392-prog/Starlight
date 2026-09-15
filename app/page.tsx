@@ -317,7 +317,7 @@ export default function Page() {
       <section id="contact" className="contact">
         <div className="contact-inner">
           <Reveal><span className="eyebrow">10 / YOUR NEXT MOVE</span><h2>Let&apos;s make<br /><em>something happen.</em></h2><p>Tell us where you want to go. We&apos;ll help you map the way there.</p><Magnetic dark href={EMAIL}>hello@starlightai.site</Magnetic></Reveal>
-          <div className="contact-side"><span>Based in</span><strong>Pakistan · Serving US · UK · Kuwait</strong><span>Reach us on</span><strong><a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit' }}>WhatsApp</a></strong></div>
+          <div className="contact-side"><span>Based in</span><strong>Pakistan · Serving clients worldwide</strong><span>Reach us on</span><strong><a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit' }}>WhatsApp</a></strong></div>
         </div>
       </section>
 
