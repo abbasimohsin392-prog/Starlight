@@ -57,11 +57,19 @@ export default async function NichePage({ params }: { params: Promise<{ slug: st
     ],
   }
 
-  const faqItems = [
-    { question: "What can Starlight AI handle for " + niche.name.toLowerCase() + "?", answer: "It can capture enquiries, answer approved routine questions, collect the right details, and route or book the next step when your team is busy or offline." },
-    { question: "Will it replace our team?", answer: "No. It provides non-clinical administrative support and follows your approved information while routing complex or urgent matters to your team." },
-    { question: "How quickly can we see whether it helps?", answer: "We start with a focused workflow review, identify one high-value enquiry path, and recommend a practical implementation plan before any build begins." },
-  ]
+  const faqItems = slug === "property-management"
+    ? [
+        { question: "Is this a live property-management integration?", answer: "No. This page describes a proposed workflow and the interactive journey is a labelled simulation. It does not claim a live property feed, inbox, CRM, calendar, or maintenance system connection." },
+        { question: "What does the free 3-point enquiry audit include?", answer: "We review three moments where property enquiries can lose momentum: first response, qualification, and handoff. You receive practical observations and a suggested pilot scope without a commitment to build." },
+        { question: "Can the workflow use our approved property information?", answer: "Yes, in a scoped implementation. We would first agree the source of truth, escalation rules, tone, and information that must never be guessed." },
+        { question: "Will it replace property managers or letting teams?", answer: "No. The aim is to reduce repetitive admin and make handoffs clearer. Your team keeps control of exceptions, sensitive issues, decisions, and relationship-led conversations." },
+        { question: "How does pricing work?", answer: "Pricing depends on the enquiry paths, channels, knowledge sources, and handoff requirements. The audit is the right starting point; the pricing page explains the broader engagement model." },
+      ]
+    : [
+        { question: "What can Starlight AI handle for " + niche.name.toLowerCase() + "?", answer: "It can capture enquiries, answer approved routine questions, collect the right details, and route or book the next step when your team is busy or offline." },
+        { question: "Will it replace our team?", answer: "No. It provides non-clinical administrative support and follows your approved information while routing complex or urgent matters to your team." },
+        { question: "How quickly can we see whether it helps?", answer: "We start with a focused workflow review, identify one high-value enquiry path, and recommend a practical implementation plan before any build begins." },
+      ]
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
