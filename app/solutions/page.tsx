@@ -4,13 +4,14 @@ import { niches } from "@/lib/niches"
 import Link from "next/link"
 const CALENDLY = "https://calendly.com/starlightai306/30min"
 const WHATSAPP = "https://wa.me/923007657038"
-const EMAIL = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
+const EMAIL = "mailto:hello@starlightai.site"
 const INSTAGRAM = "https://www.instagram.com/starlight_.ai/"
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Solutions", href: "/solutions" },
   { label: "Pricing", href: "/pricing" },
+  { label: "FAQ", href: "/#faq" },
   { label: "About", href: "/about" },
 ]
 

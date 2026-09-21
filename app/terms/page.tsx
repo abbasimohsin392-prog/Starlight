@@ -17,7 +17,7 @@ export default function TermsOfService() {
     <main>
       <nav className="nav nav-scrolled">
         <a href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: 8 }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 60, width: "auto" }} /></a>
-        <div className="nav-links"><a href="/">Home</a><a href="/services">Services</a><a href="/solutions">Solutions</a><a href="/pricing">Pricing</a><a href="/about">About</a></div>
+        <div className="nav-links"><a href="/">Home</a><a href="/services">Services</a><a href="/solutions">Solutions</a><a href="/pricing">Pricing</a><a href="/#faq">FAQ</a><a href="/about">About</a></div>
         <a href="https://calendly.com/starlightai306/30min" target="_blank" rel="noopener noreferrer" className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 20px", fontSize: 14 }}>Let&apos;s talk ↗</a>
       </nav>
       <div className="section" style={{ paddingTop: 170, maxWidth: 720, margin: "0 auto" }}>
