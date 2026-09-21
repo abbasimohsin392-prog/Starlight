@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
 import dynamic from 'next/dynamic'
 
@@ -18,11 +18,6 @@ const LiveDemoPopup = dynamic(() => import('@/components/live-demo-popup').then(
 
 const nav = ['Services', 'Solutions', 'Pricing', 'FAQ', 'About']
 
-const testimonials = [
-  { quote: 'Starlight gave our team back 15 hours every week. The system feels like it was built inside our business.', name: 'Maya Al-Sabah', role: 'Founder, Kanso Studio' },
-  { quote: 'We went from scattered tools to one calm, intelligent workflow. Our leads now get a response in under a minute.', name: 'Oliver Reed', role: 'Director, Northline Homes' },
-  { quote: 'They understood the commercial problem first, then made the technology disappear behind a beautiful experience.', name: 'Sarah Mitchell', role: 'COO, Meridian & Co.' },
-]
 
 const services = [
   ['01', 'AI CHATBOTS & ASSISTANTS', 'Custom AI-powered chatbots that handle customer support, lead generation, and internal operations 24/7.'],
@@ -132,7 +127,6 @@ function BookingFrame() {
 
 export default function Page() {
   const [intro, setIntro] = useState(true)
-  const [testimonial, setTestimonial] = useState(0)
   const [active, setActive] = useState('Services')
   const [scrolled, setScrolled] = useState(false)
   const [enhancementsReady, setEnhancementsReady] = useState(false)
@@ -174,8 +168,6 @@ export default function Page() {
     window.addEventListener('mousemove', move)
     return () => window.removeEventListener('mousemove', move)
   }, [])
-  useEffect(() => { const t = setInterval(() => setTestimonial(i => (i + 1) % testimonials.length), 5500); return () => clearInterval(t) }, [])
-  const current = useMemo(() => testimonials[testimonial], [testimonial])
 
   return <div>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageStructuredData) }} />
@@ -334,7 +326,7 @@ export default function Page() {
       <footer style={{ flexWrap: 'wrap', gap: 16 }}>
         <a href="#top" className="logo" style={{ display: 'flex', alignItems: 'center' }}><img src="/starlight-logo-256.png" alt="Starlight AI" style={{ height: 20, width: 'auto' }} /></a>
         <span>© 2026 Starlight AI</span>
-        <div><a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+        <div><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
       </footer>
     </main>
   </div>
