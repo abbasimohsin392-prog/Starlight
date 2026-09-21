@@ -5,13 +5,11 @@ import { motion, AnimatePresence } from "framer-motion"
 const CALENDLY = "https://calendly.com/starlightai306/30min"
 const EMAIL = "mailto:hello@starlightai.site"
 const WHATSAPP = "https://wa.me/923007657038"
-const INSTAGRAM = "https://www.instagram.com/starlight_.ai/"
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Solutions", href: "/solutions" },
   { label: "Pricing", href: "/pricing" },
-  { label: "FAQ", href: "/#faq" },
   { label: "About", href: "/about" },
 ]
 
@@ -22,7 +20,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return <div className="glass-card faq-item">
-    <button className="faq-q" onClick={() => setOpen(o => !o)}>{q}<span style={{ transform: open ? "rotate(45deg)" : "none" }}>+</span></button>
+    <button type="button" className="faq-q" onClick={() => setOpen(o => !o)}>{q}<span style={{ transform: open ? "rotate(45deg)" : "none" }}>+</span></button>
     <AnimatePresence>{open && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: .25 }} style={{ overflow: "hidden" }}><p className="faq-a">{a}</p></motion.div>}</AnimatePresence>
   </div>
 }
@@ -49,7 +47,7 @@ const plans = [
     desc: "For growing companies ready to scale with AI",
     monthlyPrice: 397,
     annualPrice: 327,
-    features: ["3 Custom AI Solutions", "Advanced automation workflows", "Support scope agreed in proposal", "Real-time analytics dashboard", "Up to 100,000 chat messages/mo", "Up to 1,500 call minutes/mo", "Custom integrations", "Custom integrations"],
+    features: ["Up to 3 scoped AI solutions", "Workflow scope agreed in proposal", "Support hours and channels agreed in proposal", "Reporting scope agreed in proposal", "Usage limits agreed in proposal", "Custom integrations subject to scope", "Named point of contact subject to plan"],
     popular: true,
   },
   {
@@ -57,16 +55,16 @@ const plans = [
     desc: "Tailored solutions for large-scale operations",
     monthlyPrice: null,
     annualPrice: null,
-    features: ["Custom workflow scope", "Security and deployment requirements reviewed", "Usage limits agreed in proposal", "Support and reporting scope agreed upfront"],
+    features: ["Custom workflow scope", "Security requirements reviewed in proposal", "Support hours and channels agreed in proposal", "Custom model work assessed case by case", "Usage limits agreed in proposal", "Deployment options assessed case by case", "Service levels agreed in proposal"],
     popular: false,
   },
 ]
 
 const faqs: [string, string][] = [
-  ["Are all plans monthly subscriptions?", "Yes. All listed plans are monthly subscriptions covering the scope and usage described on this page. There's no long-term lock-in; you can cancel anytime with notice."],
+  ["Are all plans monthly subscriptions?", "Monthly plans can be cancelled with notice. The annual option is a discounted 12-month commitment billed monthly; the exact cancellation terms are shown in the proposal before approval."],
   ["Are there any ongoing costs?", "Your monthly plan covers usage, support, and maintenance. Optional premium support, extra training, or major upgrades may have separate costs, but those are always discussed upfront."],
   ["Can I upgrade my plan later?", "Yes, you can upgrade to a higher tier at any time. You will only pay the difference between your current plan and the new plan."],
-  ["Do you offer refunds?", "We offer a 30-day satisfaction guarantee. If you are not happy with your solution, we will work with you to make it right or provide a full refund."],
+  ["Do you offer refunds?", "We begin with a scoped workflow review and agree the pilot deliverables before build. Any refund or cancellation terms are stated in the proposal so there are no hidden assumptions."],
   ["What happens if I go over my plan's usage?", "We will give you a heads-up before you hit your limit. From there you can move up a tier or add simple per-minute or per-message overage pricing, agreed in advance. No surprise bills."],
 ]
 
@@ -83,12 +81,12 @@ export default function PricingPage() {
       <section className="section" style={{ paddingTop: 170 }}>
         <div className="section-head" style={{ justifyContent: "center", textAlign: "center" }}>
           <Reveal><span className="eyebrow">PRICING</span><h1>Simple, transparent<br /><em className="gradient-text">pricing.</em></h1></Reveal>
-          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 460, margin: "16px auto 0" }}>Every business is different, and pricing depends on scope. Get a proposal built around your setup.</p></Reveal>
+          <Reveal delay={.1}><p className="section-intro" style={{ maxWidth: 460, margin: "16px auto 0" }}>For property-management companies, start with a free 3-point enquiry audit. We will review first response, qualification, and handoff before recommending a pilot or subscription.</p></Reveal>
         </div>
 
         <Reveal delay={.15}><div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 60 }}>
-          <button onClick={() => setBilling("monthly")} className="inline-flex" style={{ borderRadius: 999, padding: "10px 20px", fontSize: 13, fontWeight: 500, border: "1px solid var(--line)", background: billing === "monthly" ? "linear-gradient(135deg, var(--purple), var(--cyan))" : "transparent", color: billing === "monthly" ? "#fff" : "var(--muted)", cursor: "pointer" }}>Monthly</button>
-          <button onClick={() => setBilling("annual")} className="inline-flex" style={{ borderRadius: 999, padding: "10px 20px", fontSize: 13, fontWeight: 500, border: "1px solid var(--line)", background: billing === "annual" ? "linear-gradient(135deg, var(--purple), var(--cyan))" : "transparent", color: billing === "annual" ? "#fff" : "var(--muted)", cursor: "pointer" }}>Annual <span style={{ opacity: .8, fontSize: 11 }}>(save ~17%)</span></button>
+          <button type="button" onClick={() => setBilling("monthly")} className="inline-flex" style={{ borderRadius: 999, padding: "10px 20px", fontSize: 13, fontWeight: 500, border: "1px solid var(--line)", background: billing === "monthly" ? "linear-gradient(135deg, var(--purple), var(--cyan))" : "transparent", color: billing === "monthly" ? "#fff" : "var(--muted)", cursor: "pointer" }}>Monthly</button>
+          <button type="button" onClick={() => setBilling("annual")} className="inline-flex" style={{ borderRadius: 999, padding: "10px 20px", fontSize: 13, fontWeight: 500, border: "1px solid var(--line)", background: billing === "annual" ? "linear-gradient(135deg, var(--purple), var(--cyan))" : "transparent", color: billing === "annual" ? "#fff" : "var(--muted)", cursor: "pointer" }}>Annual <span style={{ opacity: .8, fontSize: 11 }}>(12-month commitment)</span></button>
         </div></Reveal>
 
         <div className="pricing-grid">
@@ -104,7 +102,7 @@ export default function PricingPage() {
                     <span style={{ color: "var(--muted)", fontSize: 13 }}>/mo</span>
                     {billing === "annual" && (
                       <div style={{ color: "var(--cyan)", fontSize: 12, marginTop: 4 }}>
-                        Billed monthly, 12-month plan
+                        Billed monthly for a 12-month commitment
                       </div>
                     )}
                   </div>
@@ -114,7 +112,7 @@ export default function PricingPage() {
                 <ul className="plan-features">
                   {p.features.map(f => <li key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: "var(--muted)" }}><span className="check">✓</span>{f}</li>)}
                 </ul>
-                <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="plan-cta">Get Started</a>
+                <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="plan-cta">Discuss this plan</a>
               </div>
             </Reveal>
           ))}
@@ -131,7 +129,7 @@ export default function PricingPage() {
       <footer style={{ flexWrap: "wrap", gap: 16 }}>
         <a href="/" className="logo" style={{ display: "flex", alignItems: "center" }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 20, width: "auto" }} /></a>
         <span>© 2026 Starlight AI</span>
-        <div><a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+        <div><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
       </footer>
     </main>
   )

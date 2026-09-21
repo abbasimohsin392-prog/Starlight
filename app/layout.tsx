@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
@@ -50,7 +51,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       description: siteDescription,
       logo: { '@type': 'ImageObject', url: faviconImage, width: 512, height: 512 },
       image: faviconImage,
-      sameAs: ['https://www.instagram.com/starlight_.ai/'],
       contactPoint: { '@type': 'ContactPoint', contactType: 'sales', email: 'hello@starlightai.site', availableLanguage: ['English'] },
       knowsAbout: ['AI receptionists', 'AI chatbots', 'workflow automation', 'lead capture', 'appointment booking'],
     },
@@ -65,5 +65,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     },
   ]
 
-  return <html lang="en" className="bg-background"><body className="antialiased">{children}<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>
+  return <html lang="en" className="bg-background"><body className="antialiased">{children}{process.env.NODE_ENV === 'production' && <Analytics />}<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>
 }

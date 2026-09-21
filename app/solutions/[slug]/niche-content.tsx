@@ -2,6 +2,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import type { Niche } from "@/lib/niches"
+import { PropertyManagementContent } from "./property-management-content"
 const CALENDLY = "https://calendly.com/starlightai306/30min"
 const WHATSAPP = "https://wa.me/923007657038"
 const EMAIL = "https://mail.google.com/mail/?view=cm&fs=1&to=hello@starlightai.site&su=Business%20Enquiry"
@@ -19,6 +20,7 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
 }
 
 export function NicheContent({ niche, otherNiches }: { niche: Niche; otherNiches: Niche[] }) {
+  if (niche.slug === "property-management") return <PropertyManagementContent niche={niche} otherNiches={otherNiches} />
   return (
     <main>
       <nav className="nav nav-scrolled">

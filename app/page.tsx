@@ -1,15 +1,15 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
 import dynamic from 'next/dynamic'
 
 const LiveStatsTicker = dynamic(() => import('@/components/live-stats-ticker').then((m) => m.LiveStatsTicker), { ssr: false, loading: () => null })
 
-const CALENDLY = 'https://calendly.com/starlightai306/30min'
+const CALENDLY = 'https://calendly.com/starlightai306/30min?utm_source=homepage&utm_medium=property_management&utm_campaign=enquiry_audit'
+const AUDIT_EMAIL = 'mailto:hello@starlightai.site?subject=Free%203-point%20property%20enquiry%20audit&body=Hi%20Starlight%2C%0A%0AWe%27d%20like%20the%20free%203-point%20property%20enquiry%20audit.%0A%0ACompany%3A%20%0AWebsite%3A%20%0AEnquiry%20volume%3A%20%0A'
 const EMAIL = 'mailto:hello@starlightai.site'
 const WHATSAPP = 'https://wa.me/923007657038'
-const INSTAGRAM = 'https://www.instagram.com/starlight_.ai/'
 
 const FloatingCTA = dynamic(() => import('@/components/floating-cta').then((m) => m.FloatingCTA), { ssr: false, loading: () => null })
 const UrgencyBanner = dynamic(() => import('@/components/urgency-banner').then((m) => m.UrgencyBanner), { ssr: false, loading: () => null })
@@ -18,12 +18,13 @@ const LiveDemoPopup = dynamic(() => import('@/components/live-demo-popup').then(
 
 const nav = ['Services', 'Solutions', 'Pricing', 'FAQ', 'About']
 
+
 const services = [
   ['01', 'AI CHATBOTS & ASSISTANTS', 'Custom AI-powered chatbots that handle customer support, lead generation, and internal operations 24/7.'],
   ['02', 'AI RECEPTIONIST', 'A 24/7 AI phone agent that answers calls, books appointments, and qualifies leads so you never miss a customer.'],
   ['03', 'WORKFLOW AUTOMATION', 'End-to-end automation that eliminates manual tasks and streamlines your business processes.'],
   ['04', 'AI INTEGRATION', 'Seamlessly integrate AI capabilities into your existing systems and tech stack.'],
-  ['05', 'AI KNOWLEDGE SYSTEMS', 'Practical knowledge and workflow systems shaped around approved business information.'],
+  ['05', 'CUSTOM AI MODELS', 'Tailored machine learning models trained on your data for specific business use cases.'],
   ['06', 'DATA ANALYTICS & BI', 'Transform raw data into actionable insights with AI-powered analytics dashboards.'],
 ]
 
@@ -35,37 +36,36 @@ const solutions = [
 ]
 
 const benefits = [
-  'Custom AI workflows shaped around your business',
-  'Connects to the tools you already use',
-  'Clear handoffs when a person needs human judgment',
-  'Usage and outcomes reviewed with evidence',
-  'Practical analytics and reporting',
-  'Founder-led implementation and support',
+  'Custom AI solutions tailored to your industry',
+  'Seamless integration with existing systems',
+  'Security requirements reviewed in proposal',
+  'Ongoing improvement scoped to the engagement',
+  'Real-time analytics and reporting',
+  'Named point of contact subject to plan',
 ]
 
 const featureCards = [
-  ['Always-on first response', 'Approved enquiries can receive a reply even when your team is busy or offline.'],
-  ['Scalable workflows', 'Start with one focused workflow and expand when the evidence supports it.'],
-  ['Human handoff', 'Sensitive, urgent, or uncertain requests can move to a person using agreed rules.'],
-  ['Clear reporting', 'Review conversations, handoffs, and outcomes instead of relying on vague promises.'],
+  ['10x Faster Deployment', 'Launch AI solutions in weeks, not months.'],
+  ['24/7 Availability', 'AI systems that never sleep, always ready to serve.'],
+  ['Scalable Architecture', 'Built to grow with your business demands.'],
+  ['Dedicated Support', 'Expert team available whenever you need help.'],
 ]
 
 const plans = [
-  { name: 'Starter', desc: 'For solo businesses trying AI for the first time', price: '$97/mo', features: ['1 AI Chatbot or Receptionist', 'Basic workflow automation', 'Email support', 'Up to 5,000 chat messages/mo', 'Up to 100 call minutes/mo'], popular: false },
-  { name: 'Growth', desc: 'Perfect for small businesses getting started with AI', price: '$197/mo', features: ['1 Custom AI Chatbot', 'Basic workflow automation', 'Email support', 'Monthly reporting', 'Up to 10,000 chat messages/mo', 'Up to 300 call minutes/mo'], popular: false },
-  { name: 'Professional', desc: 'For growing companies ready to scale with AI', price: '$397/mo', features: ['3 Custom AI Solutions', 'Advanced automation workflows', 'Support scope agreed in proposal', 'Real-time analytics dashboard', 'Up to 100,000 chat messages/mo', 'Up to 1,500 call minutes/mo', 'Custom integrations'], popular: true },
-  { name: 'Enterprise', desc: 'Tailored solutions for large-scale operations', price: 'Tailored Quote', features: ['Custom workflow scope', 'Security and deployment requirements reviewed', 'Usage limits agreed in proposal', 'Support and reporting scope agreed upfront'], popular: false },
+  { name: 'Growth', desc: 'Perfect for small businesses getting started with AI', price: '$297/mo', features: ['1 scoped AI chatbot', 'Workflow scope agreed in proposal', 'Support channel agreed in proposal', 'Reporting scope agreed in proposal', 'Usage limits agreed in proposal'], popular: false },
+  { name: 'Professional', desc: 'For growing companies ready to scale with AI', price: '$597/mo', features: ['Up to 3 scoped AI solutions', 'Workflow scope agreed in proposal', 'Support hours and channels agreed in proposal', 'Reporting scope agreed in proposal', 'Usage limits agreed in proposal', 'Custom integrations subject to scope', 'Named point of contact subject to plan'], popular: true },
+  { name: 'Enterprise', desc: 'Tailored solutions for large-scale operations', price: 'Tailored Quote', features: ['Custom workflow scope', 'Security requirements reviewed in proposal', 'Support hours and channels agreed in proposal', 'Custom model work assessed case by case', 'Usage limits agreed in proposal', 'Deployment options assessed case by case', 'Service levels agreed in proposal'], popular: false },
 ]
 
 const faqs = [
-  ['How long does it take to get my AI system up and running?', 'Timing depends on the workflow and integrations. We scope the first useful workflow before committing to a delivery date.'],
-  ['Do I need any technical knowledge to use the system?', 'No. We handle the agreed setup and explain the workflow in practical terms, with a human handoff when your team needs to take over.'],
-  ['What exactly is included in the Growth plan?', 'The Growth plan is $197/month and includes one custom AI chatbot, basic workflow automation, email support, monthly reporting, up to 10,000 chat messages, and up to 300 call minutes per month.'],
-  ['What if I want ongoing support or updates?', 'Support and update scope is defined before work begins. Professional and Enterprise proposals can include broader review, reporting, and improvement work where appropriate.'],
-  ['Can the AI integrate with my existing tools and software?', 'Usually, yes, depending on the tools and access available. We review the required integrations and any limits before promising a workflow.'],
-  ['Is my business data safe and secure?', 'Data handling depends on the tools and workflow. We discuss access, retention, permissions, and escalation requirements before implementation rather than making blanket security claims.'],
-  ['What kind of businesses do you work with?', 'We focus on businesses with repetitive enquiries, missed calls, lead follow-up, appointment booking, or admin handoffs that can be improved with a carefully scoped workflow.'],
-  ["What if I'm not satisfied with the result?", 'The agreed scope, review points, and change process are set out before implementation so expectations are clear.'],
+  ['How long does it take to get my AI system up and running?', 'Most clients are live within 2 weeks. A basic AI chatbot can be deployed in as little as 5-7 days. More complex automations or custom builds typically take 2-4 weeks depending on requirements.'],
+  ['Do I need any technical knowledge to use the system?', "Zero technical knowledge required. We handle everything from setup to deployment. Once it's live, your AI system runs on autopilot, with a simple dashboard so you can monitor performance anytime."],
+  ['What exactly is included in the Growth plan?', 'A fully custom AI chatbot built for your business, integrated directly into your website or platform, plus basic workflow automation. It handles customer queries, lead capture, and appointment booking 24/7, with up to 10k interactions per month.'],
+  ['What if I want ongoing support or updates?', 'Our Professional plan includes priority 24/7 support, real-time analytics, custom integrations, and a dedicated account manager to keep your AI systems improving over time.'],
+  ['Can the AI integrate with my existing tools and software?', "Yes. We integrate with WhatsApp, Instagram, websites, CRMs, booking systems, email platforms and more. If you use a specific tool, just let us know and we'll make it work."],
+  ['Is my business data safe and secure?', 'All data is encrypted end-to-end and we never share your data with third parties. Your business information stays private and under your control at all times.'],
+  ['What kind of businesses do you work with?', 'Businesses across every industry: salons, dental clinics, real estate agencies, law firms, e-commerce stores, restaurants, SaaS companies and more.'],
+  ["What if I'm not satisfied with the result?", 'We offer revisions until you’re happy with the system. Our goal is real results for your business, not just a finished product.'],
 ]
 
 const homepageStructuredData = [
@@ -168,7 +168,7 @@ export default function Page() {
     window.addEventListener('mousemove', move)
     return () => window.removeEventListener('mousemove', move)
   }, [])
-  
+
   return <div>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageStructuredData) }} />
     <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo-256.png" alt="Starlight AI" style={{ height: 120, width: 'auto', marginBottom: 22 }} /><p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 22 }}>Build the future. Automate the now.</p><div style={{ width: 160, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.1)', overflow: 'hidden', margin: '0 auto' }}><motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, var(--purple), var(--cyan))' }} /></div></motion.div></motion.div>}</AnimatePresence>
@@ -189,11 +189,11 @@ export default function Page() {
       <section id="top" className="hero">
         <div className="hero-glow" />
         <div className="hero-copy">
-          <Reveal><div className="availability"><i /> AI automation for businesses worldwide <span>→</span></div></Reveal>
+          <Reveal><div className="availability"><i /> AI enquiry operations for property-management companies <span>→</span></div></Reveal>
           <LiveStatsTicker />
-          <Reveal delay={.1}><h1>Build the future.<br /><em>Automate</em> the now.</h1></Reveal>
-          <Reveal delay={.2}><p>Most businesses do not need another dashboard. They need every new enquiry answered, qualified, and moved to the next step without adding headcount. We design the workflow that makes that happen.</p></Reveal>
-          <Reveal delay={.3}><Magnetic dark href={CALENDLY}>Start a conversation</Magnetic></Reveal>
+          <Reveal delay={.1}><h1>Respond to property enquiries.<br /><em>Before they go cold.</em></h1></Reveal>
+          <Reveal delay={.2}><p>We help property-management teams answer renter, landlord, and resident enquiries faster, capture the right details, and route the next step without adding another admin queue.</p></Reveal>
+          <Reveal delay={.3}><Magnetic dark href={AUDIT_EMAIL}>Get a free 3-point enquiry audit</Magnetic></Reveal>
         </div>
         <div className="hero-meta"><span>AI AUTOMATION / DIGITAL GROWTH</span><span>SCROLL TO EXPLORE ↓</span></div>
       </section>
@@ -202,7 +202,7 @@ export default function Page() {
 
       <section className="trust-strip">
         <Reveal><span className="eyebrow">BUILT FOR</span></Reveal>
-        <Reveal delay={.1}><div className="trust-chips">{['Real Estate', 'Healthcare', 'E-commerce', 'Law Firms', 'Finance', 'SaaS'].map(n => <span key={n} className="glass-card trust-chip">{n}</span>)}</div></Reveal>
+        <Reveal delay={.1}><div className="trust-chips">{['Property Management', 'Letting Teams', 'Estate Agencies', 'Landlord Portfolios'].map(n => <span key={n} className="glass-card trust-chip">{n}</span>)}</div></Reveal>
       </section>
 
       <section className="section" aria-labelledby="problem-heading">
@@ -211,9 +211,9 @@ export default function Page() {
           <Reveal delay={.15}><p className="section-intro">A missed call, an unanswered form, or a lead waiting until tomorrow is not just an admin issue. It is a customer choosing the business that replied first.</p></Reveal>
         </div>
         <div className="feature-grid">
-          <Reveal><article className="glass-card feature-card"><div className="eyebrow">01 / MISSED ENQUIRIES</div><h3>Calls and messages go unanswered</h3><p>We give every new enquiry a fast first response, even when your team is serving customers, driving, or offline.</p></article></Reveal>
-          <Reveal delay={.08}><article className="glass-card feature-card"><div className="eyebrow">02 / ADMIN OVERLOAD</div><h3>Your team repeats the same work</h3><p>We automate approved questions, data capture, reminders, and routing so people spend more time on work that needs judgment.</p></article></Reveal>
-          <Reveal delay={.16}><article className="glass-card feature-card"><div className="eyebrow">03 / COLD LEADS</div><h3>Interested prospects lose momentum</h3><p>We build follow-up paths that keep the conversation moving toward a booking, quote, consultation, or human handoff.</p></article></Reveal>
+          <Reveal><article className="glass-card feature-card"><div className="eyebrow">01 / MISSED ENQUIRIES</div><h4>Calls and messages go unanswered</h4><p>We give every new enquiry a fast first response, even when your team is serving customers, driving, or offline.</p></article></Reveal>
+          <Reveal delay={.08}><article className="glass-card feature-card"><div className="eyebrow">02 / ADMIN OVERLOAD</div><h4>Your team repeats the same work</h4><p>We automate approved questions, data capture, reminders, and routing so people spend more time on work that needs judgment.</p></article></Reveal>
+          <Reveal delay={.16}><article className="glass-card feature-card"><div className="eyebrow">03 / COLD LEADS</div><h4>Interested prospects lose momentum</h4><p>We build follow-up paths that keep the conversation moving toward a booking, quote, consultation, or human handoff.</p></article></Reveal>
         </div>
       </section>
 
@@ -232,7 +232,7 @@ export default function Page() {
             <p className="about-copy" style={{ fontSize: 16 }}>We do not start with a tool. We start with the expensive problem: missed demand, slow response, repetitive admin, or a handoff that breaks. Then we design the smallest useful system around your existing operation.</p>
             <ul className="benefit-list">{benefits.map(b => <li key={b}><span className="dot">✓</span>{b}</li>)}</ul>
           </Reveal>
-          <Reveal delay={.15}><div className="feature-grid">{featureCards.map(([t, d]) => <div key={t} className="glass-card feature-card"><div style={{ fontSize: 20 }}>✦</div><h3>{t}</h3><p>{d}</p></div>)}</div></Reveal>
+          <Reveal delay={.15}><div className="feature-grid">{featureCards.map(([t, d]) => <div key={t} className="glass-card feature-card"><div style={{ fontSize: 20 }}>✦</div><h4>{t}</h4><p>{d}</p></div>)}</div></Reveal>
         </div>
       </section>
 
@@ -241,7 +241,7 @@ export default function Page() {
           <Reveal><span className="eyebrow">03 / SOLUTIONS BY INDUSTRY</span><h2>Built around<br />your <em>business.</em></h2></Reveal>
           <Reveal delay={.15}><p className="section-intro">Every niche has its own missed calls and slow replies. We build for how your industry actually runs.</p></Reveal>
         </div>
-        <Reveal><div className="solutions-grid">{solutions.map(([name, cat]) => <div key={name} className="solution-card"><span className="eyebrow">{cat.toUpperCase()}</span><h3>{name}</h3></div>)}</div></Reveal>
+        <Reveal><div className="solutions-grid">{solutions.map(([name, cat]) => <div key={name} className="solution-card"><span className="eyebrow">{cat.toUpperCase()}</span><h4>{name}</h4></div>)}</div></Reveal>
         <Reveal delay={.1}><div style={{ textAlign: 'center', marginTop: 26 }}><a href="/solutions" style={{ color: 'var(--cyan)', fontSize: 13 }}>View all industries in detail →</a></div></Reveal>
       </section>
 
@@ -273,6 +273,8 @@ export default function Page() {
         <Reveal delay={.2}><div style={{ textAlign: 'center', marginTop: 30 }}><Magnetic dark href={CALENDLY}>Get a workflow review</Magnetic></div></Reveal>
       </section>
 
+      
+
       <section id="pricing" className="section pricing">
         <div className="section-head">
           <Reveal><span className="eyebrow">06 / PRICING</span><h2>Simple, transparent<br /><em>pricing.</em></h2></Reveal>
@@ -293,8 +295,8 @@ export default function Page() {
       <section id="about" className="section about">
         <div><Reveal><span className="eyebrow">08 / THE STUDIO</span><h2>Not an agency.<br /><em>A thinking partner.</em></h2></Reveal></div>
         <Reveal delay={.15}>
-          <p className="about-copy">Starlight is a founder-led practice for businesses ready to move with intention. We combine thoughtful design with practical engineering, so your growth system fits the way your business actually runs.</p>
-          <div className="stats"><div><strong>1</strong><small>Focused workflow to start</small></div><div><strong>Clear</strong><small>Scope before build</small></div><div><strong>Human</strong><small>Handoff when needed</small></div></div>
+          <p className="about-copy">Starlight is a small, senior team for businesses ready to move with intention. We blend the imagination of a design studio with the rigour of an engineering team, so your growth system feels as considered as your brand.</p>
+          <div className="stats"><div><strong>12<span>+</span></strong><small>Automations launched</small></div><div><strong>4<span>x</span></strong><small>Average ROI on systems</small></div><div><strong>24<span>/7</span></strong><small>Ideas in motion</small></div></div>
         </Reveal>
       </section>
 
@@ -317,14 +319,14 @@ export default function Page() {
       <section id="contact" className="contact">
         <div className="contact-inner">
           <Reveal><span className="eyebrow">10 / YOUR NEXT MOVE</span><h2>Let&apos;s make<br /><em>something happen.</em></h2><p>Tell us where you want to go. We&apos;ll help you map the way there.</p><Magnetic dark href={EMAIL}>hello@starlightai.site</Magnetic></Reveal>
-          <div className="contact-side"><span>Based in</span><strong>Pakistan · Serving clients worldwide</strong><span>Reach us on</span><strong><a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit' }}>WhatsApp</a></strong></div>
+          <div className="contact-side"><span>Based in</span><strong>Pakistan · Serving US · UK · Kuwait</strong><span>Reach us on</span><strong><a href={WHATSAPP} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit' }}>WhatsApp</a></strong></div>
         </div>
       </section>
 
       <footer style={{ flexWrap: 'wrap', gap: 16 }}>
         <a href="#top" className="logo" style={{ display: 'flex', alignItems: 'center' }}><img src="/starlight-logo-256.png" alt="Starlight AI" style={{ height: 20, width: 'auto' }} /></a>
         <span>© 2026 Starlight AI</span>
-        <div><a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+        <div><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
       </footer>
     </main>
   </div>
