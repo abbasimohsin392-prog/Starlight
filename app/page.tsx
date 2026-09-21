@@ -38,10 +38,10 @@ const solutions = [
 const benefits = [
   'Custom AI solutions tailored to your industry',
   'Seamless integration with existing systems',
-  'Enterprise-grade security and compliance',
-  'Continuous learning and optimization',
+  'Security requirements reviewed in proposal',
+  'Ongoing improvement scoped to the engagement',
   'Real-time analytics and reporting',
-  'Dedicated account management',
+  'Named point of contact subject to plan',
 ]
 
 const featureCards = [
@@ -52,9 +52,9 @@ const featureCards = [
 ]
 
 const plans = [
-  { name: 'Growth', desc: 'Perfect for small businesses getting started with AI', price: '$297/mo', features: ['1 Custom AI Chatbot', 'Basic workflow automation', 'Email support', 'Monthly reporting', 'Up to 10k interactions/mo'], popular: false },
-  { name: 'Professional', desc: 'For growing companies ready to scale with AI', price: '$597/mo', features: ['3 Custom AI Solutions', 'Advanced automation workflows', 'Priority support (24/7)', 'Real-time analytics dashboard', 'Up to 100k interactions/mo', 'Custom integrations', 'Dedicated account manager'], popular: true },
-  { name: 'Enterprise', desc: 'Tailored solutions for large-scale operations', price: 'Tailored Quote', features: ['Unlimited AI Solutions', 'Enterprise-grade security', '24/7 phone & Slack support', 'Custom ML model development', 'Unlimited interactions', 'On-premise deployment option', 'SLA guarantee'], popular: false },
+  { name: 'Growth', desc: 'Perfect for small businesses getting started with AI', price: '$297/mo', features: ['1 scoped AI chatbot', 'Workflow scope agreed in proposal', 'Support channel agreed in proposal', 'Reporting scope agreed in proposal', 'Usage limits agreed in proposal'], popular: false },
+  { name: 'Professional', desc: 'For growing companies ready to scale with AI', price: '$597/mo', features: ['Up to 3 scoped AI solutions', 'Workflow scope agreed in proposal', 'Support hours and channels agreed in proposal', 'Reporting scope agreed in proposal', 'Usage limits agreed in proposal', 'Custom integrations subject to scope', 'Named point of contact subject to plan'], popular: true },
+  { name: 'Enterprise', desc: 'Tailored solutions for large-scale operations', price: 'Tailored Quote', features: ['Custom workflow scope', 'Security requirements reviewed in proposal', 'Support hours and channels agreed in proposal', 'Custom model work assessed case by case', 'Usage limits agreed in proposal', 'Deployment options assessed case by case', 'Service levels agreed in proposal'], popular: false },
 ]
 
 const faqs = [
