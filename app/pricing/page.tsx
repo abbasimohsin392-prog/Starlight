@@ -47,7 +47,7 @@ const plans = [
     desc: "For growing companies ready to scale with AI",
     monthlyPrice: 397,
     annualPrice: 327,
-    features: ["3 Custom AI Solutions", "Advanced automation workflows", "Priority support (24/7)", "Real-time analytics dashboard", "Up to 100,000 chat messages/mo", "Up to 1,500 call minutes/mo", "Custom integrations", "Dedicated account manager"],
+    features: ["Up to 3 scoped AI solutions", "Workflow scope agreed in proposal", "Support hours and channels agreed in proposal", "Reporting scope agreed in proposal", "Usage limits agreed in proposal", "Custom integrations subject to scope", "Named point of contact subject to plan"],
     popular: true,
   },
   {
@@ -55,7 +55,7 @@ const plans = [
     desc: "Tailored solutions for large-scale operations",
     monthlyPrice: null,
     annualPrice: null,
-    features: ["Unlimited AI Solutions", "Enterprise-grade security", "24/7 phone & Slack support", "Custom ML model development", "Usage limits scoped to your call volume", "On-premise deployment option", "SLA guarantee"],
+    features: ["Custom workflow scope", "Security requirements reviewed in proposal", "Support hours and channels agreed in proposal", "Custom model work assessed case by case", "Usage limits agreed in proposal", "Deployment options assessed case by case", "Service levels agreed in proposal"],
     popular: false,
   },
 ]
@@ -129,7 +129,7 @@ export default function PricingPage() {
       <footer style={{ flexWrap: "wrap", gap: 16 }}>
         <a href="/" className="logo" style={{ display: "flex", alignItems: "center" }}><img src="/starlight-logo.png" alt="Starlight AI" style={{ height: 20, width: "auto" }} /></a>
         <span>© 2026 Starlight AI</span>
-        <div><a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+        <div><a href={EMAIL} target="_blank" rel="noopener noreferrer">Email</a><a href={WHATSAPP} target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
       </footer>
     </main>
   )
