@@ -55,8 +55,8 @@ function SystemScene({ active }: { active: number }) {
     scene.fog = new THREE.FogExp2('#080a12', 0.065)
     const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100)
     camera.position.set(0, 1.5, 9)
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6))
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'low-power' })
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25))
     renderer.outputColorSpace = THREE.SRGBColorSpace
 
     const group = new THREE.Group()
@@ -102,7 +102,13 @@ function SystemScene({ active }: { active: number }) {
       camera.aspect = rect.width / Math.max(1, rect.height)
       camera.updateProjectionMatrix()
     }
+    let lastRender = 0
+    let hidden = document.visibilityState === 'hidden'
+    const onVisibility = () => { hidden = document.visibilityState === 'hidden' }
     const render = (time: number) => {
+      if (hidden) { frame = window.requestAnimationFrame(render); return }
+      if (time - lastRender < 33) { frame = window.requestAnimationFrame(render); return }
+      lastRender = time
       const tick = time * 0.00055
       group.rotation.y = Math.sin(tick * 0.8) * 0.12 + (scrollProgress - 0.5) * 0.34
       group.rotation.x = Math.cos(tick * 0.55) * 0.045 + scrollProgress * 0.12
@@ -121,6 +127,7 @@ function SystemScene({ active }: { active: number }) {
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
+    document.addEventListener('visibilitychange', onVisibility)
     window.addEventListener('resize', resize)
     resize()
     onScroll()
@@ -128,6 +135,7 @@ function SystemScene({ active }: { active: number }) {
     return () => {
       window.cancelAnimationFrame(frame)
       window.removeEventListener('scroll', onScroll)
+      document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener('resize', resize)
       renderer.dispose()
       nodeGeo.dispose()
