@@ -104,9 +104,12 @@ function SystemScene({ active }: { active: number }) {
     }
     let lastRender = 0
     let hidden = document.visibilityState === 'hidden'
+    let visible = true
     const onVisibility = () => { hidden = document.visibilityState === 'hidden' }
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting }, { threshold: 0.01 })
+    observer.observe(canvas)
     const render = (time: number) => {
-      if (hidden) { frame = window.requestAnimationFrame(render); return }
+      if (hidden || !visible) { frame = window.requestAnimationFrame(render); return }
       if (time - lastRender < 33) { frame = window.requestAnimationFrame(render); return }
       lastRender = time
       const tick = time * 0.00055
@@ -136,6 +139,7 @@ function SystemScene({ active }: { active: number }) {
       window.cancelAnimationFrame(frame)
       window.removeEventListener('scroll', onScroll)
       document.removeEventListener('visibilitychange', onVisibility)
+      observer.disconnect()
       window.removeEventListener('resize', resize)
       renderer.dispose()
       nodeGeo.dispose()
