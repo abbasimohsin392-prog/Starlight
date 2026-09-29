@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motio
 import dynamic from 'next/dynamic'
 
 const LiveStatsTicker = dynamic(() => import('@/components/live-stats-ticker').then((m) => m.LiveStatsTicker), { ssr: false, loading: () => null })
+const StarfieldBackground = dynamic(() => import('@/components/starfield-background').then((m) => m.StarfieldBackground), { ssr: false, loading: () => null })
 
 const CALENDLY = 'https://calendly.com/starlightai306/30min?utm_source=homepage&utm_medium=property_management&utm_campaign=enquiry_audit'
 const AUDIT_EMAIL = 'mailto:hello@starlightai.site?subject=Free%203-point%20property%20enquiry%20audit&body=Hi%20Starlight%2C%0A%0AWe%27d%20like%20the%20free%203-point%20property%20enquiry%20audit.%0A%0ACompany%3A%20%0AWebsite%3A%20%0AEnquiry%20volume%3A%20%0A'
@@ -170,6 +171,7 @@ export default function Page() {
   }, [])
 
   return <div>
+    <StarfieldBackground />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageStructuredData) }} />
     <AnimatePresence>{intro && <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .7 }}><motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: .7 }} style={{ textAlign: 'center' }}><img src="/starlight-logo-256.png" alt="Starlight AI" style={{ height: 120, width: 'auto', marginBottom: 22 }} /><p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 22 }}>Build the future. Automate the now.</p><div style={{ width: 160, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.1)', overflow: 'hidden', margin: '0 auto' }}><motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }} style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, var(--purple), var(--cyan))' }} /></div></motion.div></motion.div>}</AnimatePresence>
     <motion.div className="cursor" animate={{ x: cursor.x, y: cursor.y }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
