@@ -51,9 +51,9 @@ export function FloatingCTA() {
                     transition={{ duration: 0.2, delay: i * 0.05 }}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="glass-card flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium text-foreground border border-white/10 shadow-lg hover:border-purple-500/40 hover:bg-purple-500/10"
+                    className="glass-card flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium text-foreground border border-white/10 shadow-lg hover:border-[var(--purple)]/40 hover:bg-[var(--purple)]/10"
                   >
-                    <action.icon className="h-4 w-4 text-cyan-400" />
+                    <action.icon className="h-4 w-4 text-[var(--cyan)]" />
                     {action.label}
                   </motion.a>
                 ))}
@@ -70,7 +70,7 @@ export function FloatingCTA() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             aria-label={open ? "Close contact options" : "Open contact options"}
-            className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold px-5 py-3 rounded-full shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-shadow duration-300"
+            className="flex items-center gap-2 bg-gradient-to-r from-[var(--purple)] to-[var(--cyan)] text-[#04070f] font-semibold px-5 py-3 rounded-full shadow-lg shadow-[var(--purple)]/30 hover:shadow-[var(--purple)]/50 transition-shadow duration-300"
           >
             <AnimatePresence mode="wait" initial={false}>
               {open ? (
