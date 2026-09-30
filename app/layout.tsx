@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
 }
 
-export const viewport: Viewport = { colorScheme: 'dark', themeColor: '#0a0a0a', userScalable: true }
+export const viewport: Viewport = { colorScheme: 'dark', themeColor: '#0A1A2F', userScalable: true }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const structuredData = [
