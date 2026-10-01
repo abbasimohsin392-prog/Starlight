@@ -108,7 +108,7 @@ export function VoiceDemoSection() {
 
         <div style={{ padding: "14px 18px", borderTop: "1px solid var(--line)", display: "flex", justifyContent: "center" }}>
           {status !== "calling" ? (
-            <button onClick={startCall} disabled={status === "calling"} className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 26px", fontSize: 14, border: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}>
+            <button onClick={startCall} className="inline-flex primary" style={{ borderRadius: 999, padding: "12px 26px", fontSize: 14, border: 0, cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}>
               <Phone size={15} /> {status === "done" ? "Play Again" : "Start Call"}
             </button>
           ) : (
