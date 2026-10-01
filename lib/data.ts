@@ -14,8 +14,10 @@ export const site = {
 export const navLinks = [
   { id: 'services', label: 'Services' },
   { id: 'process', label: 'Process' },
+  { id: 'pricing', label: 'Pricing' },
   { id: 'systems', label: 'Systems' },
   { id: 'about', label: 'About' },
+  { id: 'faq', label: 'FAQ' },
   { id: 'contact', label: 'Contact' },
 ]
 
@@ -71,65 +73,31 @@ export const services = [
 ]
 
 export const process = [
-  {
-    step: '01',
-    title: 'Discover',
-    description:
-      'We map your customer journey, find where time and leads leak out, and pick the highest-ROI automations first.',
-    duration: 'Week 1',
-  },
-  {
-    step: '02',
-    title: 'Design',
-    description:
-      'Conversation flows, agent personas, guardrails, and integrations are designed and approved before a line of code.',
-    duration: 'Week 1–2',
-  },
-  {
-    step: '03',
-    title: 'Build',
-    description:
-      'We build, train, and stress-test your AI system against real scenarios until it performs like your best employee.',
-    duration: 'Week 2–4',
-  },
-  {
-    step: '04',
-    title: 'Launch',
-    description:
-      'Go live with monitoring, weekly optimization, and a team that keeps improving your system as your business grows.',
-    duration: 'Ongoing',
-  },
+  { step: '01', title: 'Discover', description: 'We map your customer journey, find where time and leads leak out, and pick the highest-ROI automations first.', duration: 'Week 1' },
+  { step: '02', title: 'Design', description: 'Conversation flows, agent personas, guardrails, and integrations are designed and approved before a line of code.', duration: 'Week 1–2' },
+  { step: '03', title: 'Build', description: 'We build, train, and stress-test your AI system against real scenarios until it performs like your best employee.', duration: 'Week 2–4' },
+  { step: '04', title: 'Launch', description: 'Go live with monitoring, weekly optimization, and a team that keeps improving your system as your business grows.', duration: 'Ongoing' },
+]
+
+export const pricingPlans = [
+  { name: 'Starter', price: '$97', description: 'For solo businesses trying AI for the first time', features: ['1 AI chatbot or receptionist', 'Basic workflow automation', 'Email support', 'Up to 5,000 chat messages per month', 'Up to 100 call minutes per month'] },
+  { name: 'Growth', price: '$197', description: 'For small businesses getting started with AI', featured: true, features: ['1 custom AI chatbot', 'Basic workflow automation', 'Email support', 'Monthly reporting', 'Up to 10,000 chat messages per month', 'Up to 300 call minutes per month'] },
+  { name: 'Professional', price: '$397', description: 'For growing companies ready to scale', features: ['Multiple AI systems', 'Advanced workflow automation', 'Priority support', 'Custom integrations', 'Expanded usage limits'] },
+  { name: 'Enterprise', price: 'Tailored', description: 'For larger or more complex operations', features: ['Multi-system architecture', 'Custom integrations and guardrails', 'Dedicated delivery scope', 'Reporting and optimization plan'] },
+]
+
+export const faqs = [
+  { question: 'How long does it take to get an AI system up and running?', answer: 'Most focused systems can move from discovery to launch in around four weeks. The exact timeline depends on the workflow, integrations, content, testing, and approval requirements.' },
+  { question: 'Do I need technical knowledge to use the system?', answer: 'No. We design the system around your team’s existing workflow and provide the handoff, documentation, and support needed to operate it confidently.' },
+  { question: 'What is included in the Growth plan?', answer: 'The Growth plan includes one custom AI chatbot, basic workflow automation, email support, monthly reporting, and the listed monthly usage allowances. Final scope is confirmed before work begins.' },
+  { question: 'What if I want ongoing support or updates?', answer: 'Ongoing optimization, support, new workflows, and additional integrations can be scoped around your needs after launch.' },
 ]
 
 export const systems = [
-  {
-    title: 'Clinic Reception Suite',
-    category: 'Healthcare',
-    result: '0 missed calls',
-    description: 'Voice receptionist + WhatsApp reminders for a multi-location dental clinic.',
-    image: '/images/system-clinic.webp',
-  },
-  {
-    title: 'Property Lead Engine',
-    category: 'Real Estate',
-    result: '3× faster follow-up',
-    description: 'Instant lead qualification and viewing bookings for a real estate brokerage.',
-    image: '/images/system-realestate.webp',
-  },
-  {
-    title: 'E-commerce Support Agent',
-    category: 'E-commerce',
-    result: '78% tickets automated',
-    description: 'Order tracking, returns, and product Q&A across email and live chat.',
-    image: '/images/system-ecommerce.webp',
-  },
-  {
-    title: 'Service Booking Flow',
-    category: 'Home Services',
-    result: '24/7 bookings',
-    description: 'Website chatbot that quotes, books, and dispatches jobs for an HVAC company.',
-    image: '/images/system-services.webp',
-  },
+  { title: 'Clinic Reception Suite', category: 'Healthcare', result: 'Example system', description: 'Voice receptionist + WhatsApp reminders for a multi-location dental clinic.', image: '/images/system-clinic.webp' },
+  { title: 'Property Lead Engine', category: 'Real Estate', result: 'Example system', description: 'Instant lead qualification and viewing bookings for a real estate brokerage.', image: '/images/system-realestate.webp' },
+  { title: 'E-commerce Support Agent', category: 'E-commerce', result: 'Example system', description: 'Order tracking, returns, and product Q&A across email and live chat.', image: '/images/system-ecommerce.webp' },
+  { title: 'Service Booking Flow', category: 'Home Services', result: 'Example system', description: 'Website chatbot that quotes, books, and dispatches jobs for an HVAC company.', image: '/images/system-services.webp' },
 ]
 
 export const stats = [
@@ -139,20 +107,4 @@ export const stats = [
   { value: 4, suffix: ' wks', label: 'From kickoff to live system' },
 ]
 
-export const marqueeItems = [
-  'OpenAI',
-  'WhatsApp Business',
-  'Twilio',
-  'HubSpot',
-  'Make',
-  'n8n',
-  'Zapier',
-  'Salesforce',
-  'Google Calendar',
-  'Stripe',
-  'Slack',
-  'Shopify',
-  'Notion',
-  'Gmail',
-]
-
+export const marqueeItems = ['OpenAI', 'WhatsApp Business', 'Twilio', 'HubSpot', 'Make', 'n8n', 'Zapier', 'Salesforce', 'Google Calendar', 'Stripe', 'Slack', 'Shopify', 'Notion', 'Gmail']
