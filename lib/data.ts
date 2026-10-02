@@ -25,31 +25,31 @@ export const services = [
     title: 'AI Receptionist',
     tagline: 'Never miss a call again.',
     description:
-      'A voice agent that answers every call in seconds, books appointments, qualifies callers, and routes urgent requests to your team, day and night.',
+      'A voice agent that picks up every call within seconds, books appointments, qualifies callers, and sends urgent requests straight to your team, day and night.',
     bullets: ['Inbound call handling', 'Calendar booking', 'Call summaries to CRM'],
   },
   {
     index: '02',
     title: 'AI Chatbots',
-    tagline: 'Website conversations that convert.',
+    tagline: 'Website visitors, turned into leads.',
     description:
-      'Trained on your business, your tone, and your offers. Captures leads, answers FAQs, and hands off to a human exactly when it should.',
+      'Trained on your business, tone, and offers. Answers questions instantly, captures contact details, and hands off to a human at exactly the right moment.',
     bullets: ['Trained on your data', 'Lead capture', 'Human handoff'],
   },
   {
     index: '03',
     title: 'AI Customer Support',
-    tagline: 'Resolve tickets before they pile up.',
+    tagline: 'Fewer tickets, faster answers.',
     description:
-      'Multichannel support agents that resolve the repetitive 80% instantly and escalate the rest with full context attached.',
+      'Support agents that handle repetitive questions across email and chat, look up orders and accounts, and escalate everything else with full context attached.',
     bullets: ['Email, chat & help desk', 'Order & account lookups', 'Smart escalation'],
   },
   {
     index: '04',
     title: 'WhatsApp AI Agents',
-    tagline: 'Meet customers where they already are.',
+    tagline: 'Reach customers where they already chat.',
     description:
-      'Conversational agents on WhatsApp Business that follow up, confirm bookings, send reminders, and close sales in the chat.',
+      'WhatsApp Business agents that follow up on enquiries, confirm bookings, send reminders, and keep conversations moving until a human is needed.',
     bullets: ['WhatsApp Business API', 'Follow-up sequences', 'Booking confirmations'],
   },
   {
@@ -57,7 +57,7 @@ export const services = [
     title: 'Lead Automation',
     tagline: 'From form fill to booked call, automatically.',
     description:
-      'Instant lead response, enrichment, scoring, and nurturing across email, SMS, and WhatsApp so no lead ever goes cold.',
+      'Instant replies, lead scoring, and follow-up across email, SMS, and WhatsApp, so no enquiry sits unanswered.',
     bullets: ['Speed-to-lead < 60s', 'Scoring & routing', 'Multi-channel nurture'],
   },
   {
@@ -65,7 +65,7 @@ export const services = [
     title: 'Custom AI Automation',
     tagline: 'If it repeats, we automate it.',
     description:
-      'Bespoke workflows connecting your CRM, inbox, calendar, and tools, designed around how your business actually runs.',
+      'Custom workflows connecting your CRM, inbox, calendar, and tools, built around how your business actually runs.',
     bullets: ['CRM & tool integrations', 'Internal ops workflows', 'Reporting & alerts'],
   },
 ]
@@ -99,10 +99,10 @@ export const systems = [
 ]
 
 export const stats = [
-  { value: 24, suffix: '/7', label: 'AI availability, every day of the year' },
-  { value: 100, suffix: '%', label: 'Of repetitive workflows automated' },
-  { value: 60, prefix: '<', suffix: 's', label: 'Average lead response time' },
-  { value: 4, suffix: ' wks', label: 'From kickoff to live system' },
+  { value: 24, suffix: '/7', label: 'Availability, every day of the year' },
+  { value: 6, suffix: '', label: 'Core AI systems, built around your workflow' },
+  { value: 60, prefix: '<', suffix: 's', label: 'Target lead response time' },
+  { value: 4, suffix: ' wks', label: 'Typical kickoff to live system' },
 ]
 
 export const marqueeItems = ['OpenAI', 'WhatsApp Business', 'Twilio', 'HubSpot', 'Make', 'n8n', 'Zapier', 'Salesforce', 'Google Calendar', 'Stripe', 'Slack', 'Shopify', 'Notion', 'Gmail']

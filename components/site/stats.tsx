@@ -9,7 +9,7 @@ function Counter({ value, prefix = '', suffix = '' }: { value: number; prefix?: 
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.6 })
   const reduced = useReducedMotion()
-  const [display, setDisplay] = useState(reduced ? value : 0)
+  const [display, setDisplay] = useState(value)
 
   useEffect(() => {
     if (!inView || reduced) return
