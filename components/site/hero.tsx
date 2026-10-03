@@ -52,10 +52,10 @@ export function Hero() {
           </motion.div>
 
           <h1 className="font-display text-[clamp(2.75rem,7.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.03em]">
-            <SplitWords text="Answer every lead," delay={introDelay + 0.1} />
+            <SplitWords text="Your business," delay={introDelay + 0.1} />
             <br />
-            <SplitWords text="in under a" delay={introDelay + 0.25} />{' '}
-            <SplitWords text="minute." className="text-gradient" delay={introDelay + 0.4} />
+            <SplitWords text="running on" delay={introDelay + 0.25} />{' '}
+            <SplitWords text="autopilot." className="text-gradient" delay={introDelay + 0.4} />
           </h1>
 
           <motion.p
@@ -64,8 +64,8 @@ export function Hero() {
             transition={{ duration: 0.8, ease, delay: introDelay + 0.7 }}
             className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl"
           >
-            Starlight AI builds AI receptionists, chatbots, and WhatsApp agents that answer, qualify, book, and follow up
-            for your business 24/7, so no enquiry waits and no lead goes cold.
+            Starlight AI designs and builds AI receptionists, chatbots, WhatsApp agents, and custom automations that
+            answer, qualify, book, and follow up, 24/7, without adding headcount.
           </motion.p>
 
           <motion.div

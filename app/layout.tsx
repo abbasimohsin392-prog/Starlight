@@ -1,69 +1,103 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Syne, Manrope, JetBrains_Mono } from 'next/font/google'
+import { ThemeProvider } from '@/components/providers/theme-provider'
+import { SmoothScroll } from '@/components/motion/smooth-scroll'
+import { Cursor } from '@/components/motion/cursor'
+import { Preloader } from '@/components/motion/preloader'
 import './globals.css'
 
+const display = Syne({
+  subsets: ['latin'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+})
+
+const body = Manrope({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-body',
+  display: 'swap',
+})
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+})
+
 const siteUrl = 'https://starlightai.site'
-const siteTitle = 'Starlight AI: AI Automation Agency & AI Receptionists'
-const siteDescription = 'Starlight AI builds AI receptionists, chatbots, and workflow automation that answer enquiries, qualify leads, and reduce repetitive admin for growing businesses.'
-const socialImage = siteUrl + '/images/og-banner.jpg'
-const faviconImage = siteUrl + '/icon.svg'
 
 export const metadata: Metadata = {
-  title: siteTitle,
-  description: siteDescription,
-  generator: 'Starlight AI',
-  applicationName: 'Starlight AI',
-  keywords: ['AI automation agency', 'AI receptionist', 'AI chatbot', 'workflow automation', 'business process automation'],
-  robots: { index: true, follow: true },
   metadataBase: new URL(siteUrl),
-  alternates: { canonical: '/' },
-  icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
-    shortcut: '/icon.svg',
-    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+  title: {
+    default: 'Starlight AI | AI Automation Agency',
+    template: '%s | Starlight AI',
   },
+  description:
+    'Starlight AI builds AI receptionists, chatbots, WhatsApp agents, and custom automation systems that handle customer communication, lead generation, and support 24/7.',
+  keywords: [
+    'AI automation agency',
+    'AI receptionist',
+    'AI chatbot',
+    'WhatsApp AI agent',
+    'lead generation automation',
+    'AI customer support',
+  ],
+  applicationName: 'Starlight AI',
+  authors: [{ name: 'Starlight AI', url: siteUrl }],
   openGraph: {
-    title: siteTitle,
-    description: 'AI receptionists, chatbots, and workflow automation for growing businesses.',
     type: 'website',
     url: siteUrl,
     siteName: 'Starlight AI',
-    images: [{ url: socialImage, width: 1200, height: 630, type: 'image/jpeg', alt: 'Starlight AI — AI automation for growing businesses' }],
+    title: 'Starlight AI | AI Automation Agency',
+    description:
+      'AI receptionists, chatbots, WhatsApp agents, and custom automation systems that run your customer communication 24/7.',
+    locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: siteTitle,
-    description: 'AI receptionists, chatbots, and workflow automation for growing businesses.',
-    images: [{ url: socialImage, alt: 'Starlight AI — AI automation for growing businesses' }],
+    title: 'Starlight AI | AI Automation Agency',
+    description:
+      'AI receptionists, chatbots, WhatsApp agents, and custom automation systems that run your customer communication 24/7.',
+  },
+  icons: {
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    apple: '/apple-icon.png',
   },
 }
 
-export const viewport: Viewport = { colorScheme: 'dark', themeColor: '#0A1A2F', userScalable: true }
+export const viewport: Viewport = {
+  colorScheme: 'dark light',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8f8fb' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0b12' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+}
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const structuredData = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      '@id': siteUrl + '/#organization',
-      name: 'Starlight AI',
-      url: siteUrl,
-      description: siteDescription,
-      logo: { '@type': 'ImageObject', url: faviconImage, width: 512, height: 512 },
-      image: faviconImage,
-      contactPoint: { '@type': 'ContactPoint', contactType: 'sales', email: 'hello@starlightai.site', availableLanguage: ['English'] },
-      knowsAbout: ['AI receptionists', 'AI chatbots', 'workflow automation', 'lead capture', 'appointment booking'],
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      '@id': siteUrl + '/#website',
-      name: 'Starlight AI',
-      url: siteUrl,
-      inLanguage: 'en',
-      publisher: { '@id': siteUrl + '/#organization' },
-    },
-  ]
-
-  return <html lang="en" className="bg-background"><body className="antialiased">{children}{process.env.NODE_ENV === 'production' && <Analytics />}<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></body></html>
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${display.variable} ${body.variable} ${mono.variable}`}
+    >
+      <body className="antialiased cursor-none-desktop">
+        <ThemeProvider>
+          <Preloader />
+          <SmoothScroll>{children}</SmoothScroll>
+          <Cursor />
+        </ThemeProvider>
+        {process.env.NODE_ENV === 'production' && <Analytics />}
+      </body>
+    </html>
+  )
 }

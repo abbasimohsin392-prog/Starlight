@@ -59,7 +59,7 @@ export function Preloader() {
               ))}
             </h1>
             <motion.div
-              className="h-px w-48 origin-left bg-gradient-to-r from-[oklch(0.72_0.18_240)] via-primary to-accent"
+              className="h-px w-48 origin-left bg-gradient-to-r from-[#4A6FA5] via-primary to-accent"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.6, ease: 'easeInOut', delay: 0.15 }}
