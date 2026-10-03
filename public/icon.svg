@@ -2,11 +2,11 @@
   <rect width="64" height="64" rx="14" fill="#0b0b12"/>
   <defs>
     <linearGradient id="g" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E8B94E"/>
-      <stop offset="0.5" stop-color="#2DD4BF"/>
-      <stop offset="1" stop-color="#4A6FA5"/>
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="0.5" stop-color="#5b6cff"/>
+      <stop offset="1" stop-color="#c04cff"/>
     </linearGradient>
   </defs>
   <path d="M44 18c-3-3.5-8-5.5-13.5-5.5C21 12.5 15 17.5 15 24.5c0 6.5 5 9.5 13 11.5l6 1.5c6 1.5 8.5 3 8.5 6 0 3.5-3.5 6-9.5 6-5 0-9.5-2-12.5-5.5" stroke="url(#g)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M50 8l1.6 4.4L56 14l-4.4 1.6L50 20l-1.6-4.4L44 14l4.4-1.6L50 8z" fill="#F5EFE0"/>
+  <path d="M50 8l1.6 4.4L56 14l-4.4 1.6L50 20l-1.6-4.4L44 14l4.4-1.6L50 8z" fill="#7dd3fc"/>
 </svg>

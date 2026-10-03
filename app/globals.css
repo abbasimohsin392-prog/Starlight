@@ -33,18 +33,18 @@
 :root {
   color-scheme: dark;
   --background: oklch(0.11 0.01 270);
-  --foreground: #F5EFE0;
+  --foreground: oklch(0.97 0.005 270);
   --surface: oklch(0.15 0.012 270);
   --surface-2: oklch(0.19 0.014 270);
   --muted: oklch(0.24 0.014 270);
-  --muted-foreground: #B8AD8E;
+  --muted-foreground: oklch(0.68 0.02 270);
   --border: oklch(1 0 0 / 10%);
-  --primary: #2DD4BF;
-  --primary-foreground: #071014;
-  --accent: #E8B94E;
-  --glow: rgba(45, 212, 191, 0.45);
-  --ring: #2DD4BF;
-  --cursor: #F5EFE0;
+  --primary: oklch(0.62 0.22 262);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.72 0.19 300);
+  --glow: oklch(0.65 0.2 262 / 55%);
+  --ring: oklch(0.62 0.22 262);
+  --cursor: oklch(0.97 0.005 270);
 }
 
 .light {
@@ -56,11 +56,11 @@
   --muted: oklch(0.93 0.006 270);
   --muted-foreground: oklch(0.45 0.02 270);
   --border: oklch(0 0 0 / 10%);
-  --primary: #0B7F73;
+  --primary: oklch(0.52 0.24 262);
   --primary-foreground: oklch(0.98 0 0);
-  --accent: #A16A10;
-  --glow: rgba(11, 127, 115, 0.35);
-  --ring: #0B7F73;
+  --accent: oklch(0.6 0.2 300);
+  --glow: oklch(0.55 0.22 262 / 35%);
+  --ring: oklch(0.52 0.24 262);
   --cursor: oklch(0.14 0.012 270);
 }
 
@@ -95,8 +95,9 @@
   .text-gradient {
     background-image: linear-gradient(
       100deg,
-      var(--accent),
-      var(--primary)
+      oklch(0.72 0.18 240),
+      var(--primary) 45%,
+      var(--accent)
     );
     -webkit-background-clip: text;
     background-clip: text;

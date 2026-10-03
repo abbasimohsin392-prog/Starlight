@@ -47,8 +47,8 @@ export function AutomationFlow({ className }: { className?: string }) {
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible">
         <defs>
           <linearGradient id="edge" x1="0" x2="1">
-            <stop offset="0" stopColor="#2DD4BF" />
-            <stop offset="1" stopColor="#E8B94E" />
+            <stop offset="0" stopColor="oklch(0.72 0.18 240)" />
+            <stop offset="1" stopColor="oklch(0.72 0.19 300)" />
           </linearGradient>
         </defs>
         {edges.map(([a, b]) => {
