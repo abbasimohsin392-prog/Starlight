@@ -6,9 +6,9 @@ export function Logo({ className }: { className?: string }) {
     <svg viewBox="0 0 64 64" fill="none" aria-hidden className={cn('shrink-0', className)}>
       <defs>
         <linearGradient id="sl-grad" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#38bdf8" />
-          <stop offset="0.5" stopColor="#5b6cff" />
-          <stop offset="1" stopColor="#c04cff" />
+          <stop offset="0" stopColor="#E8B94E" />
+          <stop offset="0.5" stopColor="#2DD4BF" />
+          <stop offset="1" stopColor="#4A6FA5" />
         </linearGradient>
       </defs>
       <path
@@ -18,7 +18,7 @@ export function Logo({ className }: { className?: string }) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path d="M50 8l1.6 4.4L56 14l-4.4 1.6L50 20l-1.6-4.4L44 14l4.4-1.6L50 8z" fill="#7dd3fc" />
+      <path d="M50 8l1.6 4.4L56 14l-4.4 1.6L50 20l-1.6-4.4L44 14l4.4-1.6L50 8z" fill="#F5EFE0" />
     </svg>
   )
 }
