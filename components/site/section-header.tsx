@@ -2,6 +2,7 @@ import { Reveal, SplitWords } from '@/components/motion/reveal'
 import { cn } from '@/lib/utils'
 
 type Props = {
+  headingLevel?: 'h1' | 'h2'
   eyebrow: string
   title: string
   description?: string
@@ -10,7 +11,7 @@ type Props = {
   light?: boolean
 }
 
-export function SectionHeader({ eyebrow, title, description, align = 'left', className, light }: Props) {
+export function SectionHeader({ eyebrow, title, description, align = 'left', className, light, headingLevel: Heading = 'h2' }: Props) {
   return (
     <div className={cn('max-w-3xl', align === 'center' && 'mx-auto text-center', className)}>
       <Reveal amount={0.6}>
@@ -19,9 +20,9 @@ export function SectionHeader({ eyebrow, title, description, align = 'left', cla
           {eyebrow}
         </p>
       </Reveal>
-      <h2 className="font-display text-[clamp(2.25rem,5vw,4.5rem)] font-bold leading-[1] tracking-[-0.03em]">
+      <Heading className="font-display text-[clamp(2.25rem,5vw,4.5rem)] font-bold leading-[1] tracking-[-0.03em]">
         <SplitWords text={title} inView step={0.04} />
-      </h2>
+      </Heading>
       {description && (
         <Reveal delay={0.2} amount={0.6}>
           <p className={cn('mt-6 text-lg leading-relaxed', light ? 'text-primary-foreground/80' : 'text-muted-foreground')}>{description}</p>

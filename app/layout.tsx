@@ -6,6 +6,7 @@ import { SmoothScroll } from '@/components/motion/smooth-scroll'
 import { Cursor } from '@/components/motion/cursor'
 import { Preloader } from '@/components/motion/preloader'
 import './globals.css'
+import { safeJsonLd } from '@/lib/seo'
 
 const display = Syne({
   subsets: ['latin'],
@@ -91,6 +92,7 @@ export default function RootLayout({
       className={`${display.variable} ${body.variable} ${mono.variable}`}
     >
       <body className="antialiased cursor-none-desktop">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd({ "@context": "https://schema.org", "@type": "Organization", "@id": siteUrl + "/#organization", name: "Starlight AI", url: siteUrl, logo: siteUrl + "/images/starlight-logo.png" }) }} />
         <ThemeProvider>
           <Preloader />
           <SmoothScroll>{children}</SmoothScroll>

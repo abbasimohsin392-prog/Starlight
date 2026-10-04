@@ -1,3 +1,5 @@
+import { pageMetadata } from '@/lib/seo'
+export const metadata = pageMetadata("Practical AI Receptionist & Chatbot Guides", "Read practical guides to AI receptionists, chatbots and intake workflows across healthcare, property, legal, hospitality and other service industries.", "/blog")
 import { Nav } from '@/components/site/nav'
 import { Footer } from '@/components/site/footer'
 import { blogPosts } from '@/lib/data'

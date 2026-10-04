@@ -3,10 +3,10 @@ import { pricingPlans, site } from '@/lib/data'
 import { SectionHeader } from './section-header'
 import { Reveal, StaggerGroup, StaggerItem } from '@/components/motion/reveal'
 
-export function Pricing() {
+export function Pricing({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' } = {}) {
   return (
     <section id="pricing" className="mx-auto max-w-7xl px-6 py-28 md:py-40">
-      <SectionHeader eyebrow="Pricing" title="Simple starting points. Scoped around your workflow." description="The current plan structure is carried into the new design. Final scope, usage, integrations, and support are confirmed before delivery." />
+      <SectionHeader headingLevel={headingLevel} eyebrow="Pricing" title="Simple starting points. Scoped around your workflow." description="The current plan structure is carried into the new design. Final scope, usage, integrations, and support are confirmed before delivery." />
       <StaggerGroup className="mt-16 grid gap-5 lg:grid-cols-4" delay={0.08}>
         {pricingPlans.map((plan) => (
           <StaggerItem key={plan.name}>
