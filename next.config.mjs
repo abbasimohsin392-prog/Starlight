@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [{ source: '/:path*', has: [{ type: 'host', value: 'www.starlightai.site' }], destination: 'https://starlightai.site/:path*', permanent: true }]
+  },
   async headers() {
     return [
       {
