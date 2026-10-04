@@ -71,7 +71,7 @@ function Field({
   )
 }
 
-export function Contact() {
+export function Contact({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' } = {}) {
   const [state, action, pending] = useActionState(submitContact, initial)
 
   return (
@@ -81,7 +81,7 @@ export function Contact() {
 
       <div className="relative mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[1fr_1fr] lg:gap-24">
         <div>
-          <SectionHeader
+          <SectionHeader headingLevel={headingLevel}
             eyebrow="Let’s talk"
             title="Ready to stop losing leads to voicemail?"
             description="Book a free 30-minute strategy call. We’ll map your customer journey, spot the leaks, and show you exactly what an AI system would look like for your business."
