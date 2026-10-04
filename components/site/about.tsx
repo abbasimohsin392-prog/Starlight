@@ -12,7 +12,7 @@ const principles = [
   { title: 'Measured in outcomes', body: 'Missed calls recovered, response time, booked appointments. If a metric doesn’t move, we keep iterating.' },
 ]
 
-export function About() {
+export function About({ headingLevel = 'h2' }: { headingLevel?: 'h1' | 'h2' } = {}) {
   const ref = useRef<HTMLElement>(null)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
@@ -53,7 +53,7 @@ export function About() {
         </div>
 
         <div>
-          <SectionHeader
+          <SectionHeader headingLevel={headingLevel}
             eyebrow="About Starlight AI"
             title="A small studio obsessed with the unglamorous work."
             description="Starlight AI started with a simple observation: most businesses don’t lose customers because of bad products. They lose them in the gaps, the unanswered call, the lead that waited a day, the follow-up nobody sent. We build AI systems that close those gaps for good."
