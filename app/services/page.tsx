@@ -1,3 +1,5 @@
+import { pageMetadata } from '@/lib/seo'
+export const metadata = pageMetadata("AI Receptionist, Chatbot & Automation Services", "Explore AI receptionists, website chatbots, customer support, WhatsApp agents and custom workflows. Scope integrations and human handoffs before launch.", "/services")
 import { Nav } from '@/components/site/nav'
 import { Services } from '@/components/site/services'
 import { Process } from '@/components/site/process'
