@@ -64,7 +64,7 @@ export const metadata: Metadata = {
       'AI receptionists, chatbots, WhatsApp agents, and custom automation systems that run your customer communication 24/7.',
   },
   icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    icon: [{ url: '/favicon-192.png', type: 'image/png', sizes: '192x192' }],
     apple: '/apple-icon.png',
   },
 }
