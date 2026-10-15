@@ -39,10 +39,16 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
     return { status: 'error', errors, message: 'Please fix the highlighted fields.' }
   }
 
-  const { env } = getCloudflareContext()
-  const { BREVO_API_KEY, BREVO_FROM_EMAIL } = env as unknown as ContactEnv
-  const apiKey = BREVO_API_KEY?.trim()
-  const fromEmail = BREVO_FROM_EMAIL?.trim()
+  let env: ContactEnv
+  try {
+    env = getCloudflareContext().env as unknown as ContactEnv
+  } catch {
+    console.error('[contact] Cloudflare runtime configuration is unavailable.')
+    return { status: 'error', message: FAILURE_MESSAGE }
+  }
+
+  const apiKey = env.BREVO_API_KEY?.trim()
+  const fromEmail = env.BREVO_FROM_EMAIL?.trim()
 
   if (!apiKey || !fromEmail || !EMAIL_RE.test(fromEmail)) {
     console.error('[contact] Brevo notification is missing a valid API key or verified sender configuration.')
