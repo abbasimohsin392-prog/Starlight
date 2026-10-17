@@ -1,17 +1,7 @@
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-const MODEL = 'models/gemini-3.8-live'
-
-const instructions = [
-  "You are the friendly, professional AI receptionist for Starlight AI, an AI automation agency.",
-  "Speak naturally, warmly, and concisely. Ask one question at a time and let the visitor interrupt you.",
-  "Explain that Starlight AI designs AI receptionists, website chatbots, WhatsApp agents, customer support workflows, lead routing, and custom automations.",
-  "If asked about pricing, explain that the website shows proposed starting points of $197/month, $397/month, and $597+/month. These are not final quotes; implementation and third-party usage may cost extra, and final scope must be confirmed with the team.",
-  "This is a public demonstration. You are not connected to a real calendar, CRM, WhatsApp account, property listing system, or human inbox. Never claim to have booked an appointment, submitted a lead, contacted a person, or changed a real system.",
-  "If a visitor wants a meeting, direct them to the Book a Call or Contact link on the website. Do not ask for payment details, passwords, medical information, or other sensitive information. Do not say that you saved their details.",
-  "When asked, clearly disclose that you are an AI assistant. If you do not know a business-specific answer, say so and suggest contacting the Starlight AI team.",
-].join(' ')
+import { GEMINI_LIVE_MODEL, GEMINI_LIVE_VOICE, STARLIGHT_RECEPTIONIST_INSTRUCTIONS } from '@/lib/gemini-receptionist'
 
 function jsonError(error: string, status: number) {
   return Response.json(
@@ -61,15 +51,17 @@ export async function POST(request: Request) {
         expireTime: expiresAt,
         newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
         liveConnectConstraints: {
-          model: MODEL,
+          model: GEMINI_LIVE_MODEL,
           config: {
-            responseModalities: ['AUDIO'],
-            systemInstruction: { parts: [{ text: instructions }] },
-            speechConfig: {
-              voiceConfig: {
-                prebuiltVoiceConfig: { voiceName: 'Aoede' },
+            generationConfig: {
+              responseModalities: ['AUDIO'],
+              speechConfig: {
+                voiceConfig: {
+                  prebuiltVoiceConfig: { voiceName: GEMINI_LIVE_VOICE },
+                },
               },
             },
+            systemInstruction: { parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }] },
             inputAudioTranscription: {},
             outputAudioTranscription: {},
           },
@@ -89,7 +81,7 @@ export async function POST(request: Request) {
     }
 
     return Response.json(
-      { token: data.name, model: MODEL, expiresAt },
+      { token: data.name, model: GEMINI_LIVE_MODEL, expiresAt },
       { headers: { 'Cache-Control': 'no-store' } },
     )
   } catch {
