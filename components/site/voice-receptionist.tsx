@@ -69,6 +69,8 @@ export function VoiceReceptionist() {
   const [status, setStatus] = useState<ConnectionStatus>('idle')
   const [statusMessage, setStatusMessage] = useState('Ready when you are')
   const [errorMessage, setErrorMessage] = useState('')
+  const [canUseTextOnly, setCanUseTextOnly] = useState(false)
+  const [textOnlyMode, setTextOnlyMode] = useState(false)
   const [muted, setMuted] = useState(false)
   const [draft, setDraft] = useState('')
   const [messages, setMessages] = useState<TranscriptMessage[]>([])
@@ -183,46 +185,62 @@ export function VoiceReceptionist() {
     playbackSourcesRef.current.add(source)
   }, [])
 
-  const startSession = useCallback(async () => {
+  const startSession = useCallback(async (withMicrophone = true) => {
     cleanupSession()
     endingRef.current = false
     setStatus('connecting')
-    setStatusMessage('Allow microphone access to connect')
+    setStatusMessage(withMicrophone ? 'Allow microphone access to connect' : 'Starting text-only connection')
     setErrorMessage('')
+    setCanUseTextOnly(false)
+    setTextOnlyMode(!withMicrophone)
     setMuted(false)
+    let microphoneAccessFailed = false
 
     try {
-      if (!navigator.mediaDevices?.getUserMedia || !window.WebSocket || !window.AudioContext) {
-        throw new Error('Live voice is not supported in this browser. Try the latest Chrome or Edge over HTTPS.')
+      if (!window.WebSocket || !window.AudioContext) {
+        throw new Error('Live chat is not supported in this browser. Try the latest Chrome or Edge.')
       }
 
-      const microphone = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-      })
-      microphoneRef.current = microphone
+      if (withMicrophone) {
+        if (!navigator.mediaDevices?.getUserMedia) {
+          microphoneAccessFailed = true
+          throw new Error('Microphone access is not available in this browser.')
+        }
 
-      const captureContext = new AudioContext()
-      captureContextRef.current = captureContext
-      await captureContext.resume()
-      const source = captureContext.createMediaStreamSource(microphone)
-      const processor = captureContext.createScriptProcessor(2048, 1, 1)
-      const silentGain = captureContext.createGain()
-      silentGain.gain.value = 0
-      captureSourceRef.current = source
-      captureProcessorRef.current = processor
-      captureGainRef.current = silentGain
+        let microphone: MediaStream
+        try {
+          microphone = await navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+          })
+        } catch (error) {
+          microphoneAccessFailed = true
+          throw error
+        }
+        microphoneRef.current = microphone
 
-      processor.onaudioprocess = (event) => {
-        const socket = socketRef.current
-        if (!readyRef.current || mutedRef.current || !socket || socket.readyState !== WebSocket.OPEN) return
-        const base64 = floatToPcm16Base64(event.inputBuffer.getChannelData(0), event.inputBuffer.sampleRate)
-        socket.send(JSON.stringify({
-          realtimeInput: { audio: { data: base64, mimeType: 'audio/pcm;rate=16000' } },
-        }))
+        const captureContext = new AudioContext()
+        captureContextRef.current = captureContext
+        await captureContext.resume()
+        const source = captureContext.createMediaStreamSource(microphone)
+        const processor = captureContext.createScriptProcessor(2048, 1, 1)
+        const silentGain = captureContext.createGain()
+        silentGain.gain.value = 0
+        captureSourceRef.current = source
+        captureProcessorRef.current = processor
+        captureGainRef.current = silentGain
+
+        processor.onaudioprocess = (event) => {
+          const socket = socketRef.current
+          if (!readyRef.current || mutedRef.current || !socket || socket.readyState !== WebSocket.OPEN) return
+          const base64 = floatToPcm16Base64(event.inputBuffer.getChannelData(0), event.inputBuffer.sampleRate)
+          socket.send(JSON.stringify({
+            realtimeInput: { audio: { data: base64, mimeType: 'audio/pcm;rate=16000' } },
+          }))
+        }
+        source.connect(processor)
+        processor.connect(silentGain)
+        silentGain.connect(captureContext.destination)
       }
-      source.connect(processor)
-      processor.connect(silentGain)
-      silentGain.connect(captureContext.destination)
 
       const playbackContext = new AudioContext({ sampleRate: 24000 })
       playbackContextRef.current = playbackContext
@@ -288,7 +306,7 @@ export function VoiceReceptionist() {
             if (payload.setupComplete) {
               readyRef.current = true
               setStatus('connected')
-              setStatusMessage('Connected — speak naturally or type below')
+              setStatusMessage(withMicrophone ? 'Connected — speak naturally or type below' : 'Text-only connected — type a message below')
               socket.send(JSON.stringify({
                 clientContent: {
                   turns: [{
@@ -357,7 +375,17 @@ export function VoiceReceptionist() {
       cleanupSession()
       setStatus('error')
       setStatusMessage('Voice session unavailable')
-      setErrorMessage(error instanceof Error ? error.message : 'Could not start the voice assistant.')
+      if (microphoneAccessFailed) {
+        setCanUseTextOnly(true)
+        const errorName = error instanceof DOMException ? error.name : ''
+        setErrorMessage(
+          errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError'
+            ? 'Microphone access was denied by your browser or operating system. Allow it in site settings, or continue with text only to test Gemini.'
+            : (error instanceof Error ? error.message : 'Microphone unavailable.') + ' You can continue with text only to test Gemini.',
+        )
+      } else {
+        setErrorMessage(error instanceof Error ? error.message : 'Could not start the voice assistant.')
+      }
     }
   }, [appendMessage, cleanupSession, playPcmChunk, stopPlayback])
 
@@ -417,7 +445,7 @@ export function VoiceReceptionist() {
               <AudioLines className="size-12" strokeWidth={1.5} />
             </div>
           </div>
-          <p className="mt-4 font-display text-2xl font-bold tracking-tight">{connected ? 'I’m listening.' : connecting ? 'Connecting…' : 'Talk to our AI.'}</p>
+          <p className="mt-4 font-display text-2xl font-bold tracking-tight">{connected ? (textOnlyMode ? 'Type to talk.' : 'I’m listening.') : connecting ? 'Connecting…' : 'Talk to our AI.'}</p>
           <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground" aria-live="polite">{statusMessage}</p>
 
           <div className="mt-7 flex flex-wrap justify-center gap-2">
@@ -428,11 +456,18 @@ export function VoiceReceptionist() {
               </button>
             ) : (
               <>
-                <button type="button" onClick={toggleMute} className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border px-4 text-sm font-semibold transition-colors hover:border-primary/60">
-                  {muted ? <MicOff className="size-4" /> : <Mic className="size-4" />}{muted ? 'Unmute mic' : 'Mute mic'}
-                </button>
-                <button type="button" onClick={endSession} className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border px-4 text-sm font-semibold text-muted-foreground transition-colors hover:border-red-500/40 hover:text-red-500"><X className="size-4" /> End chat</button>
+                {!textOnlyMode && (
+                  <button type="button" onClick={toggleMute} className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border px-4 text-sm font-semibold transition-colors hover:border-primary/60">
+                    {muted ? <MicOff className="size-4" /> : <Mic className="size-4" />}{muted ? 'Unmute mic' : 'Mute mic'}
+                  </button>
+                )}
+                <button type="button" onClick={endSession} className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:border-red-500/40 hover:text-red-500"><X className="size-4" /> End chat</button>
               </>
+            )}
+            {!connected && canUseTextOnly && (
+              <button type="button" onClick={() => startSession(false)} disabled={connecting} className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-primary/40 px-5 text-sm font-semibold text-primary transition-colors hover:bg-primary/10 disabled:cursor-wait disabled:opacity-60">
+                <Send className="size-4" /> Continue with text only
+              </button>
             )}
           </div>
 
