@@ -269,10 +269,12 @@ export function VoiceReceptionist() {
         socket.send(JSON.stringify({
           setup: {
             model: GEMINI_LIVE_MODEL,
-            responseModalities: ['AUDIO'],
-            speechConfig: {
-              voiceConfig: {
-                prebuiltVoiceConfig: { voiceName: GEMINI_LIVE_VOICE },
+            generationConfig: {
+              responseModalities: ['AUDIO'],
+              speechConfig: {
+                voiceConfig: {
+                  prebuiltVoiceConfig: { voiceName: GEMINI_LIVE_VOICE },
+                },
               },
             },
             systemInstruction: { parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }] },
