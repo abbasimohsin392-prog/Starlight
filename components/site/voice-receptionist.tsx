@@ -261,7 +261,7 @@ export function VoiceReceptionist() {
       const tokenData = await tokenResponse.json() as { token?: string }
       if (!tokenData.token) throw new Error('Gemini did not return a short-lived session token.')
 
-      const socketUrl = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=' + encodeURIComponent(tokenData.token)
+      const socketUrl = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=' + tokenData.token
       const socket = new WebSocket(socketUrl)
       socketRef.current = socket
 
