@@ -1,31 +1,33 @@
 # AI receptionist demo setup
 
-The `/demo/ai-receptionist` page uses the OpenAI Realtime API over WebRTC for live microphone input and spoken responses. The standard API key stays on the server.
+The `/demo/ai-receptionist` page uses Google's Gemini Live API over WebSockets for low-latency microphone input and spoken responses. The permanent API key remains server-side; the backend issues a short-lived, one-use ephemeral token for the browser connection.
 
 ## Required server secret
 
-Set `OPENAI_API_KEY` as a **server-side secret** in the deployment provider's environment settings. Do not add it to source control or name it `NEXT_PUBLIC_OPENAI_API_KEY`.
+1. Create an API key in [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Add it as `GEMINI_API_KEY` in the hosting provider's **private server-side runtime secrets/environment variables**. `GOOGLE_API_KEY` is also accepted as a fallback.
+3. Never put the permanent key in browser code, `NEXT_PUBLIC_*` variables, a public issue, or a committed file.
+4. Redeploy/restart the runtime if your host requires it for secret changes.
 
-For local development, add it to your untracked `.env.local` file:
+For local development, put the key in an untracked `.env.local` file:
 
 ```bash
-OPENAI_API_KEY=your_api_key_here
+GEMINI_API_KEY=your_google_ai_studio_key_here
 ```
 
-For production, add the secret in the hosting provider's runtime environment (for example, Cloudflare Worker or Netlify site settings), then redeploy or restart the service as required by that provider. Do not paste the key into browser code, public issues, or committed files.
-
-## How to test
+## Test the demo
 
 1. Open `/demo/ai-receptionist` over HTTPS in a recent version of Chrome or Edge.
 2. Click **Start voice chat** and grant microphone permission.
-3. Wait for the live connection, then speak naturally. The assistant should respond aloud.
-4. Test the text input, mute control, end-call control, and a fresh session.
-5. If the page says the demo is not configured, the runtime secret is missing or is not visible to the server function. If the provider reports an access or usage error, verify API project access and usage limits.
+3. Speak naturally; the assistant should respond aloud. You can also type messages, mute the microphone, clear the visible transcript, or end the session.
+4. If the demo says it is not configured, the runtime secret is missing or not visible to the server function. If Google returns an access or quota error, verify the key, project, current Live model availability, and AI Studio limits.
 
-## Cost and abuse protection
+## Free tier, costs, and abuse protection
 
-The Realtime API is usage-metered. Before promoting this public demo, configure provider usage alerts/limits and an edge or hosting-platform rate limit for `POST /api/session`. The route validates the same-site origin and bounds the SDP request size, but those checks are not a substitute for infrastructure-level rate limiting.
+Google lists free-tier access for supported Gemini Live models subject to account and rate limits. Free-tier requests are subject to Google's data-use terms; check the current [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) and [terms](https://ai.google.dev/gemini-api/terms) before sharing the demo broadly. Requests on a billable paid tier may incur charges.
+
+The token endpoint checks the browser's same-site origin and issues a single-use token with a short setup window and a 15-minute expiry. These checks do not replace hosting/edge rate limiting. Before widely sharing the public page, configure a rate limit on `POST /api/session` and set Google API usage alerts/limits. Audio-only Live sessions also have a provider-defined session-duration limit; start a new session if one ends.
 
 ## Privacy and scope
 
-The page does not persist the transcript in a Starlight AI database. Audio is sent to the voice provider for the live session. It is a demonstration only: it does not book meetings, collect leads, contact employees, or connect to any business CRM or messaging account. Keep the visible disclosure in place.
+The page does not persist the transcript in a Starlight AI database. Audio is sent directly to Google Gemini for the live conversation. The assistant is only a demonstration: it does not book meetings, collect leads, contact employees, or connect to any business CRM, calendar, listing, or messaging account. Keep the on-page disclosure in place.
