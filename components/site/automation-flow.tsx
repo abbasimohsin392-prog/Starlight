@@ -43,7 +43,7 @@ export function AutomationFlow({ className }: { className?: string }) {
   const byId = Object.fromEntries(nodes.map((n) => [n.id, n]))
 
   return (
-    <div className={cn('relative aspect-[16/10] w-full select-none', className)} role="img" aria-label="Illustrative automation workflow from a website enquiry to an AI assistant, connected tools, and a human follow-up">
+    <div className={cn('relative aspect-[16/10] w-full select-none', className)} role="group" aria-label="Interactive illustrative automation workflow from a website enquiry to an AI assistant, connected tools, and a human follow-up">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible">
         <defs>
           <linearGradient id="edge" x1="0" x2="1">
