@@ -70,12 +70,12 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }] },
         contents: [
-          ...history,
+          ...history.map((turn) => ({
+            role: turn.role,
+            parts: [{ text: turn.text }],
+          })),
           { role: 'user', parts: [{ text: message }] },
-        ].map((turn) => ({
-          role: 'role' in turn ? turn.role : 'user',
-          parts: [{ text: turn.text }],
-        })),
+        ],
         generationConfig: { maxOutputTokens: 700 },
       }),
     })
