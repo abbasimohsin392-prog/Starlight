@@ -269,12 +269,10 @@ export function VoiceReceptionist() {
         socket.send(JSON.stringify({
           setup: {
             model: GEMINI_LIVE_MODEL,
-            generationConfig: {
-              responseModalities: ['AUDIO'],
-              speechConfig: {
-                voiceConfig: {
-                  prebuiltVoiceConfig: { voiceName: GEMINI_LIVE_VOICE },
-                },
+            responseModalities: ['AUDIO'],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: { voiceName: GEMINI_LIVE_VOICE },
               },
             },
             systemInstruction: { parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }] },
@@ -450,7 +448,7 @@ export function VoiceReceptionist() {
 
           <div className="mt-7 flex flex-wrap justify-center gap-2">
             {!connected ? (
-              <button type="button" onClick={startSession} disabled={connecting} className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-60">
+              <button type="button" onClick={() => startSession(true)} disabled={connecting} className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-60">
                 {connecting ? <LoaderCircle className="size-4 animate-spin" /> : <Mic className="size-4" />}
                 {connecting ? 'Connecting' : status === 'error' ? 'Try again' : 'Start voice chat'}
               </button>
