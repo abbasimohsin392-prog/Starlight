@@ -20,7 +20,7 @@ export function Services() {
           <SectionHeader
             eyebrow="What we build"
             title="AI systems that work the front desk, the inbox, and the follow-up."
-            description="Six core systems. Every one designed around your real workflow, trained on your business, and connected to the tools you already use."
+            description="Six core systems to explore. We scope approved information, available integrations, and clear human handoffs around the workflow you choose."
           />
 
           <div className="sticky top-32 mt-12 hidden lg:block">
