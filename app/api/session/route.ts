@@ -2,6 +2,7 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 import { GEMINI_LIVE_MODEL, GEMINI_LIVE_VOICE, STARLIGHT_RECEPTIONIST_INSTRUCTIONS } from '@/lib/gemini-receptionist'
+import { getGeminiApiKey } from '@/lib/gemini-api-key'
 
 function jsonError(error: string, status: number) {
   return Response.json(
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
     return jsonError('Invalid request origin.', 403)
   }
 
-  const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
+  const apiKey = getGeminiApiKey()
   if (!apiKey) {
     return jsonError(
       'The live AI receptionist is not configured yet. Add GEMINI_API_KEY as a private server-side secret in your hosting settings.',
