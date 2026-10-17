@@ -70,6 +70,7 @@ export function VoiceReceptionist() {
   const [statusMessage, setStatusMessage] = useState('Ready when you are')
   const [errorMessage, setErrorMessage] = useState('')
   const [textOnlyMode, setTextOnlyMode] = useState(false)
+  const [textRequestPending, setTextRequestPending] = useState(false)
   const [muted, setMuted] = useState(false)
   const [draft, setDraft] = useState('')
   const [messages, setMessages] = useState<TranscriptMessage[]>([])
@@ -195,6 +196,16 @@ export function VoiceReceptionist() {
     setTextOnlyMode(textOnly)
     setMuted(false)
     let microphoneAccessFailed = false
+
+    // The text diagnostic intentionally bypasses mic, Web Audio, ephemeral tokens, and WebSockets.
+    // It uses the server-side generateContent endpoint so audio-mode limits cannot mask text API issues.
+    if (textOnly) {
+      readyRef.current = true
+      setStatus('connected')
+      setStatusMessage('Text chat ready — type a question below')
+      appendMessage('assistant', 'Text-only test is ready. Ask me about Starlight AI to verify the Gemini API connection.')
+      return
+    }
 
     try {
       if (!window.WebSocket) {
@@ -397,10 +408,47 @@ export function VoiceReceptionist() {
     }
   }, [appendMessage, cleanupSession, playPcmChunk, stopPlayback])
 
-  const sendText = useCallback((value: string) => {
+  const sendText = useCallback(async (value: string) => {
     const text = value.trim()
+    if (!text || status !== 'connected' || !readyRef.current || textRequestPending) return
+
+    if (textOnlyMode) {
+      const history = messages.slice(-12).map((message) => ({
+        role: message.role,
+        text: message.text,
+      }))
+      appendMessage('visitor', text)
+      setDraft('')
+      setErrorMessage('')
+      setStatusMessage('Asking Gemini…')
+      setTextRequestPending(true)
+
+      try {
+        const response = await fetch('/api/receptionist-text', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history }),
+          cache: 'no-store',
+        })
+        const data = await response.json().catch(() => ({})) as { reply?: string; error?: string }
+        if (!response.ok) throw new Error(data.error || `Gemini text request failed (HTTP ${response.status}).`)
+        if (!data.reply) throw new Error('Gemini returned an empty reply. Please try again.')
+        appendMessage('assistant', data.reply)
+        setStatusMessage('Text chat ready — type another question')
+      } catch (error) {
+        setErrorMessage(error instanceof Error ? error.message : 'Could not reach Gemini text mode.')
+        setStatusMessage('Text chat request failed — you can retry')
+      } finally {
+        setTextRequestPending(false)
+      }
+      return
+    }
+
     const socket = socketRef.current
-    if (!text || status !== 'connected' || !readyRef.current || !socket || socket.readyState !== WebSocket.OPEN) return
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      setErrorMessage('The voice connection is not ready. End the chat and reconnect.')
+      return
+    }
     appendMessage('visitor', text)
     socket.send(JSON.stringify({
       clientContent: {
@@ -410,8 +458,7 @@ export function VoiceReceptionist() {
     }))
     setStatusMessage('Thinking…')
     setDraft('')
-  }, [appendMessage, status])
-
+  }, [appendMessage, messages, status, textOnlyMode, textRequestPending])
   const toggleMute = useCallback(() => {
     const nextMuted = !mutedRef.current
     mutedRef.current = nextMuted
@@ -488,7 +535,7 @@ export function VoiceReceptionist() {
 
         <div className="flex min-h-[460px] flex-col">
           <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4 md:px-6">
-            <div><p className="font-semibold">Conversation</p><p className="text-xs text-muted-foreground">Voice replies appear here as text when available.</p></div>
+            <div><p className="font-semibold">Conversation</p><p className="text-xs text-muted-foreground">{textOnlyMode ? 'Text-only Gemini API test — no microphone required.' : 'Voice replies appear here as text when available.'}</p></div>
             <button type="button" onClick={resetTranscript} disabled={messages.length === 0 && !liveTranscript} className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40" aria-label="Clear conversation transcript"><RotateCcw className="size-3.5" /> Clear</button>
           </div>
 
@@ -497,7 +544,7 @@ export function VoiceReceptionist() {
               <div className="flex h-full min-h-[230px] flex-col items-center justify-center text-center">
                 <span className="flex size-12 items-center justify-center rounded-2xl border border-border bg-background text-primary"><Sparkles className="size-5" /></span>
                 <p className="mt-4 font-semibold">Your conversation starts here</p>
-                <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">Start voice chat with microphone access, or choose Test text chat to verify Gemini without using your microphone.</p>
+                <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">Start voice chat with microphone access, or choose Test text chat to check the Gemini text API independently.</p>
               </div>
             )}
             {messages.map((message) => (
@@ -524,8 +571,8 @@ export function VoiceReceptionist() {
               {suggestions.map((suggestion) => <button key={suggestion} type="button" onClick={() => sendText(suggestion)} disabled={!connected} className="rounded-full border border-border px-3 py-2 text-left text-xs transition-colors hover:border-primary/50 hover:text-primary disabled:cursor-not-allowed disabled:opacity-40">{suggestion}</button>)}
             </div>
             <form onSubmit={(event) => { event.preventDefault(); sendText(draft) }} className="flex items-center gap-2 rounded-2xl border border-border bg-background p-2 pl-4 focus-within:border-primary/60">
-              <input value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={700} disabled={!connected} placeholder={connected ? 'Type a message…' : 'Start voice chat to send a message'} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70 disabled:cursor-not-allowed" aria-label="Message the AI receptionist" />
-              <button type="submit" disabled={!connected || !draft.trim()} aria-label="Send message" className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40"><Send className="size-4" /></button>
+              <input value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={700} disabled={!connected || textRequestPending} placeholder={connected ? (textOnlyMode ? 'Type a message to test Gemini…' : 'Type a message…') : 'Start voice chat to send a message'} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70 disabled:cursor-not-allowed" aria-label="Message the AI receptionist" />
+              <button type="submit" disabled={!connected || !draft.trim() || textRequestPending} aria-label="Send message" className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40"><Send className="size-4" /></button>
             </form>
           </div>
         </div>
