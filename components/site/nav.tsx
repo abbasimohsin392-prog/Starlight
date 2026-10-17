@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { useLenis } from 'lenis/react'
 import { Menu, X } from 'lucide-react'
@@ -17,6 +18,7 @@ export function Nav() {
   const [open, setOpen] = useState(false)
   const { scrollY } = useScroll()
   const lenis = useLenis()
+  const pathname = usePathname()
 
   useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 40))
 
@@ -33,11 +35,12 @@ export function Nav() {
     )
     sections.forEach((s) => observer.observe(s))
     return () => observer.disconnect()
-  }, [])
+  }, [pathname])
 
-  const goTo = (id: string) => (e: React.MouseEvent) => {
-    e.preventDefault()
+  const goTo = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     setOpen(false)
+    if (pathname !== '/') return
+    e.preventDefault()
     const el = document.getElementById(id)
     if (!el) return
     if (lenis) lenis.scrollTo(el, { offset: -80, duration: 1.4 })
@@ -64,17 +67,17 @@ export function Nav() {
           animate={{ height: scrolled ? 56 : 72 }}
           transition={{ duration: 0.5, ease }}
         >
-          <a href="#" onClick={goTo('hero')} aria-label="Starlight AI home" className="pl-2">
+          <a href={pathname === '/' ? '#hero' : '/'} onClick={goTo('hero')} aria-label="Starlight AI home" className="pl-2">
             <Wordmark />
           </a>
 
-          <ul className="hidden items-center gap-1 lg:flex">
+          <ul className="hidden items-center gap-1 xl:flex">
             {navLinks.map((link) => {
               const isActive = active === link.id
               return (
                 <li key={link.id} className="relative">
                   <a
-                    href={`#${link.id}`}
+                    href={pathname === '/' ? `#${link.id}` : `/#${link.id}`}
                     onClick={goTo(link.id)}
                     className={cn(
                       'relative z-10 block rounded-full px-4 py-2 text-sm font-medium transition-colors',
@@ -93,13 +96,23 @@ export function Nav() {
                 </li>
               )
             })}
+            <li className="relative">
+              <a href="/pricing" className={cn('relative z-10 block rounded-full px-4 py-2 text-sm font-medium transition-colors', pathname === '/pricing' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground')}>
+                Pricing
+              </a>
+            </li>
+            <li className="relative">
+              <a href="/demo/ai-receptionist" className={cn('relative z-10 block rounded-full px-4 py-2 text-sm font-medium transition-colors', pathname === '/demo/ai-receptionist' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground')}>
+                Demo
+              </a>
+            </li>
           </ul>
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Magnetic strength={0.25} className="hidden sm:inline-block">
               <a
-                href="#contact"
+                href={pathname === '/' ? '#contact' : '/#contact'}
                 onClick={goTo('contact')}
                 className="glow-primary inline-flex h-10 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
               >
@@ -111,7 +124,7 @@ export function Nav() {
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               onClick={() => setOpen((o) => !o)}
-              className="flex size-10 items-center justify-center rounded-full border border-border bg-surface/60 lg:hidden"
+              className="flex size-10 items-center justify-center rounded-full border border-border bg-surface/60 xl:hidden"
             >
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
@@ -122,7 +135,7 @@ export function Nav() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[90] flex flex-col justify-center bg-background/95 px-8 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-[90] flex flex-col justify-center bg-background/95 px-8 backdrop-blur-xl xl:hidden"
             initial={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}
             animate={{ opacity: 1, clipPath: 'circle(150% at 100% 0%)' }}
             exit={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}
@@ -137,7 +150,7 @@ export function Nav() {
                   transition={{ delay: 0.15 + i * 0.05, duration: 0.5, ease }}
                 >
                   <a
-                    href={`#${link.id}`}
+                    href={pathname === '/' ? `#${link.id}` : `/#${link.id}`}
                     onClick={goTo(link.id)}
                     className="font-display block py-2 text-4xl font-bold tracking-tight"
                   >
@@ -145,9 +158,27 @@ export function Nav() {
                   </a>
                 </motion.li>
               ))}
+              <motion.li
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.15 + navLinks.length * 0.05, duration: 0.5, ease }}
+              >
+                <a href="/pricing" onClick={() => setOpen(false)} className="font-display block py-2 text-4xl font-bold tracking-tight">
+                  Pricing
+                </a>
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 + navLinks.length * 0.05, duration: 0.5, ease }}
+              >
+                <a href="/demo/ai-receptionist" onClick={() => setOpen(false)} className="font-display block py-2 text-4xl font-bold tracking-tight">
+                  AI Receptionist Demo
+                </a>
+              </motion.li>
             </ul>
             <a
-              href="#contact"
+              href={pathname === '/' ? '#contact' : '/#contact'}
               onClick={goTo('contact')}
               className="mt-10 inline-flex h-14 w-full items-center justify-center rounded-full bg-primary text-base font-semibold text-primary-foreground"
             >

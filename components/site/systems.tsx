@@ -16,8 +16,8 @@ export function Systems() {
       <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
         <SectionHeader
           eyebrow="AI systems"
-          title="Built for real businesses, not demos."
-          description="Sample automation systems modeled on the industries we serve. Each one is a blueprint we tailor to your operations."
+          title="Explore example workflows."
+          description="Illustrative blueprints, not client case studies or measured results. Each workflow is tailored to your approved scope, integrations, and operating needs."
         />
         <a
           href="#contact"

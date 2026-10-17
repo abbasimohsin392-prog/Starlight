@@ -47,15 +47,15 @@ export function Hero() {
               <span className="relative inline-flex size-2.5 rounded-full bg-emerald-400" />
             </span>
             <span className="text-muted-foreground">
-              Accepting <span className="font-semibold text-foreground">3 new clients</span> this month
+              AI workflows tailored to your business
             </span>
           </motion.div>
 
           <h1 className="font-display text-[clamp(2.75rem,7.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.03em]">
-            <SplitWords text="Your business," delay={introDelay + 0.1} />
+            <SplitWords text="Less busywork," delay={introDelay + 0.1} />
             <br />
-            <SplitWords text="running on" delay={introDelay + 0.25} />{' '}
-            <SplitWords text="autopilot." className="text-gradient" delay={introDelay + 0.4} />
+            <SplitWords text="more time for" delay={introDelay + 0.25} />{' '}
+            <SplitWords text="real growth." className="text-gradient" delay={introDelay + 0.4} />
           </h1>
 
           <motion.p
@@ -64,8 +64,7 @@ export function Hero() {
             transition={{ duration: 0.8, ease, delay: introDelay + 0.7 }}
             className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl"
           >
-            Starlight AI designs and builds AI receptionists, chatbots, WhatsApp agents, and custom automations that
-            answer, qualify, book, and follow up, 24/7, without adding headcount.
+            We build AI receptionists, website chatbots, WhatsApp agents, and custom automations that can answer approved questions, capture enquiries, and route follow-ups—with clear human handoffs.
           </motion.p>
 
           <motion.div
@@ -105,9 +104,9 @@ export function Hero() {
           <div className="absolute -inset-6 rounded-[2.5rem] bg-[radial-gradient(closest-side,var(--glow),transparent)] opacity-60 blur-2xl" aria-hidden />
           <div className="relative rounded-[2rem] border border-border bg-surface/40 p-6 backdrop-blur-sm md:p-8">
             <div className="mb-6 flex items-center justify-between font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-              <span>Live automation</span>
+              <span>Illustrative workflow</span>
               <span className="flex items-center gap-2">
-                <span className="size-1.5 rounded-full bg-emerald-400" /> Running
+                <span className="size-1.5 rounded-full bg-primary" /> Example flow
               </span>
             </div>
             <AutomationFlow />

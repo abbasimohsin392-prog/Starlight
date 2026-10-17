@@ -7,12 +7,12 @@ import { cn } from '@/lib/utils'
 import { ease } from '@/components/motion/reveal'
 
 const nodes = [
-  { id: 'website', label: 'Website', icon: Globe, x: 8, y: 50, event: 'New visitor asks about pricing' },
-  { id: 'agent', label: 'AI Agent', icon: Bot, x: 32, y: 50, event: 'Qualifies lead, answers instantly' },
-  { id: 'crm', label: 'CRM', icon: Database, x: 56, y: 22, event: 'Contact created & scored' },
-  { id: 'whatsapp', label: 'WhatsApp', icon: MessageCircle, x: 56, y: 50, event: 'Booking confirmation sent' },
-  { id: 'email', label: 'Email', icon: Mail, x: 56, y: 78, event: 'Follow-up sequence started' },
-  { id: 'customer', label: 'Customer', icon: User, x: 86, y: 50, event: 'Appointment booked. 12 seconds.' },
+  { id: 'website', label: 'Website', icon: Globe, x: 8, y: 50, event: 'Visitor asks about a service' },
+  { id: 'agent', label: 'AI Agent', icon: Bot, x: 32, y: 50, event: 'Answers approved FAQs and collects details' },
+  { id: 'crm', label: 'CRM', icon: Database, x: 56, y: 22, event: 'Enquiry logged when the CRM is connected' },
+  { id: 'whatsapp', label: 'WhatsApp', icon: MessageCircle, x: 56, y: 50, event: 'Follow-up sent where enabled and permitted' },
+  { id: 'email', label: 'Email', icon: Mail, x: 56, y: 78, event: 'Team receives the enquiry details' },
+  { id: 'customer', label: 'Customer', icon: User, x: 86, y: 50, event: 'Prospect receives a clear next step' },
 ]
 
 const edges: [string, string][] = [
@@ -43,7 +43,7 @@ export function AutomationFlow({ className }: { className?: string }) {
   const byId = Object.fromEntries(nodes.map((n) => [n.id, n]))
 
   return (
-    <div className={cn('relative aspect-[16/10] w-full select-none', className)} role="img" aria-label="Automation flow: Website to AI Agent to CRM, WhatsApp, and Email, then to Customer">
+    <div className={cn('relative aspect-[16/10] w-full select-none', className)} role="group" aria-label="Interactive illustrative automation workflow from a website enquiry to an AI assistant, connected tools, and a human follow-up">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible">
         <defs>
           <linearGradient id="edge" x1="0" x2="1">

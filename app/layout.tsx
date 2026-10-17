@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     template: '%s | Starlight AI',
   },
   description:
-    'Starlight AI builds AI receptionists, chatbots, WhatsApp agents, and custom automation systems that handle customer communication, lead generation, and support 24/7.',
+    'Starlight AI designs AI receptionists, website chatbots, WhatsApp agents, and custom workflows to help teams handle enquiries, route leads, and support customers with clear human handoffs.',
   keywords: [
     'AI automation agency',
     'AI receptionist',
@@ -54,14 +54,14 @@ export const metadata: Metadata = {
     siteName: 'Starlight AI',
     title: 'Starlight AI | AI Automation Agency',
     description:
-      'AI receptionists, chatbots, WhatsApp agents, and custom automation systems that run your customer communication 24/7.',
+      'AI receptionists, website chatbots, WhatsApp agents, and custom workflows for enquiry handling, lead routing, and customer support.',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Starlight AI | AI Automation Agency',
     description:
-      'AI receptionists, chatbots, WhatsApp agents, and custom automation systems that run your customer communication 24/7.',
+      'AI receptionists, website chatbots, WhatsApp agents, and custom workflows for enquiry handling, lead routing, and customer support.',
   },
   icons: {
     icon: [{ url: '/favicon-192.png', type: 'image/png', sizes: '192x192' }],

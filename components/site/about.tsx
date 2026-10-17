@@ -8,8 +8,8 @@ import { Reveal, StaggerGroup, StaggerItem } from '@/components/motion/reveal'
 
 const principles = [
   { title: 'Built around your workflow', body: 'We don’t sell a chatbot in a box. Every system starts with how your team actually takes calls, leads, and bookings.' },
-  { title: 'Guardrails first', body: 'Clear escalation paths, approved answers only, and full logs. Your AI represents your brand, it behaves like it.' },
-  { title: 'Measured in outcomes', body: 'Missed calls recovered, response time, booked appointments. If a metric doesn’t move, we keep iterating.' },
+  { title: 'Guardrails first', body: 'Approved answers, defined escalation paths, and logs where the connected tools support them. Your AI should follow the rules you set for your brand.' },
+  { title: 'Measured in outcomes', body: 'Where reliable data is available, we track the agreed measures—such as enquiry response time or booking requests—and use the results to guide improvements.' },
 ]
 
 export function About() {
@@ -56,7 +56,7 @@ export function About() {
           <SectionHeader
             eyebrow="About Starlight AI"
             title="A small studio obsessed with the unglamorous work."
-            description="Starlight AI started with a simple observation: most businesses don’t lose customers because of bad products. They lose them in the gaps, the unanswered call, the lead that waited a day, the follow-up nobody sent. We build AI systems that close those gaps for good."
+            description="Starlight AI started with a simple observation: most businesses don’t lose customers because of bad products. They lose them in the gaps: an unanswered call, a delayed lead response, or a follow-up nobody sent. We build AI workflows designed to reduce those gaps and make responses more consistent."
           />
 
           <StaggerGroup className="mt-14 space-y-10" delay={0.12}>
@@ -73,10 +73,9 @@ export function About() {
 
           <Reveal className="mt-14 rounded-3xl bg-surface p-8" delay={0.1}>
             <p className="font-display text-xl font-semibold leading-snug tracking-tight md:text-2xl">
-              “Our mission is simple: give every business a front desk, a sales assistant, and a support team that never
-              sleeps, and never forgets to follow up.”
+              “Our mission is to give businesses practical support for customer enquiries and follow-up—without losing the human touch.”
             </p>
-            <p className="mt-4 text-sm text-muted-foreground">The Starlight AI team</p>
+            <p className="mt-4 text-sm text-muted-foreground">Starlight AI</p>
           </Reveal>
         </div>
       </div>

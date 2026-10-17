@@ -26,6 +26,12 @@ export function Cursor() {
   }, [reduced])
 
   useEffect(() => {
+    if (enabled) document.documentElement.classList.add('has-custom-cursor')
+    else document.documentElement.classList.remove('has-custom-cursor')
+    return () => document.documentElement.classList.remove('has-custom-cursor')
+  }, [enabled])
+
+  useEffect(() => {
     if (!enabled) return
 
     const onMove = (e: PointerEvent) => {

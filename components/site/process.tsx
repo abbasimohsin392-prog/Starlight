@@ -26,7 +26,7 @@ export function Process() {
           light
           eyebrow="How it works"
           title="Discover. Design. Build. Launch."
-          description="A four-step process that takes you from ‘we should automate this’ to a live AI system in about four weeks."
+          description="We scope the workflow first, agree on deliverables and costs in writing, then build and test it. Timelines depend on complexity, integrations, and approvals."
         />
 
         <ol ref={ref} className="relative mt-20 grid gap-10 md:grid-cols-4 md:gap-6">
