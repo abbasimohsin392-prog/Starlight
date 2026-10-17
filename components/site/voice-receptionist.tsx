@@ -69,7 +69,6 @@ export function VoiceReceptionist() {
   const [status, setStatus] = useState<ConnectionStatus>('idle')
   const [statusMessage, setStatusMessage] = useState('Ready when you are')
   const [errorMessage, setErrorMessage] = useState('')
-  const [canUseTextOnly, setCanUseTextOnly] = useState(false)
   const [textOnlyMode, setTextOnlyMode] = useState(false)
   const [muted, setMuted] = useState(false)
   const [draft, setDraft] = useState('')
@@ -185,20 +184,24 @@ export function VoiceReceptionist() {
     playbackSourcesRef.current.add(source)
   }, [])
 
-  const startSession = useCallback(async (withMicrophone = true) => {
+  const startSession = useCallback(async (mode: 'voice' | 'text' = 'voice') => {
+    const withMicrophone = mode === 'voice'
+    const textOnly = mode === 'text'
     cleanupSession()
     endingRef.current = false
     setStatus('connecting')
-    setStatusMessage(withMicrophone ? 'Allow microphone access to connect' : 'Starting text-only connection')
+    setStatusMessage(withMicrophone ? 'Requesting microphone and starting Gemini…' : 'Starting a text-only Gemini session…')
     setErrorMessage('')
-    setCanUseTextOnly(false)
-    setTextOnlyMode(!withMicrophone)
+    setTextOnlyMode(textOnly)
     setMuted(false)
     let microphoneAccessFailed = false
 
     try {
-      if (!window.WebSocket || !window.AudioContext) {
-        throw new Error('Live chat is not supported in this browser. Try the latest Chrome or Edge.')
+      if (!window.WebSocket) {
+        throw new Error('WebSocket is not supported in this browser. Try the latest Chrome or Edge.')
+      }
+      if (withMicrophone && !window.AudioContext) {
+        throw new Error('Audio is not supported in this browser. Try the latest Chrome or Edge.')
       }
 
       if (withMicrophone) {
@@ -242,15 +245,17 @@ export function VoiceReceptionist() {
         silentGain.connect(captureContext.destination)
       }
 
-      const playbackContext = new AudioContext({ sampleRate: 24000 })
-      playbackContextRef.current = playbackContext
-      await playbackContext.resume()
-      playbackQueueTimeRef.current = playbackContext.currentTime
+      if (withMicrophone) {
+        const playbackContext = new AudioContext({ sampleRate: 24000 })
+        playbackContextRef.current = playbackContext
+        await playbackContext.resume()
+        playbackQueueTimeRef.current = playbackContext.currentTime
+      }
 
       const tokenResponse = await fetch('/api/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ mode }),
         cache: 'no-store',
       })
       if (!tokenResponse.ok) {
@@ -269,17 +274,21 @@ export function VoiceReceptionist() {
         socket.send(JSON.stringify({
           setup: {
             model: GEMINI_LIVE_MODEL,
-            generationConfig: {
+            generationConfig: withMicrophone ? {
               responseModalities: ['AUDIO'],
               speechConfig: {
                 voiceConfig: {
                   prebuiltVoiceConfig: { voiceName: GEMINI_LIVE_VOICE },
                 },
               },
+            } : {
+              responseModalities: ['TEXT'],
             },
             systemInstruction: { parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }] },
-            inputAudioTranscription: {},
-            outputAudioTranscription: {},
+            ...(withMicrophone ? {
+              inputAudioTranscription: {},
+              outputAudioTranscription: {},
+            } : {}),
           },
         }))
       }
@@ -306,12 +315,12 @@ export function VoiceReceptionist() {
             if (payload.setupComplete) {
               readyRef.current = true
               setStatus('connected')
-              setStatusMessage(withMicrophone ? 'Connected — speak naturally or type below' : 'Text-only connected — type a message below')
+              setStatusMessage(withMicrophone ? 'Connected — speak naturally or type below' : 'Text test connected — type a message below')
               socket.send(JSON.stringify({
                 clientContent: {
                   turns: [{
                     role: 'user',
-                    parts: [{ text: 'Greet the visitor warmly in one or two short spoken sentences as Starlight AI’s demo receptionist. Invite them to ask about the agency’s AI services.' }],
+                    parts: [{ text: 'Welcome the visitor warmly and concisely as Starlight AI’s demo receptionist. Invite them to ask about the agency’s AI services.' }],
                   }],
                   turnComplete: true,
                 },
@@ -330,7 +339,7 @@ export function VoiceReceptionist() {
               setLiveTranscript({ role: 'assistant', text: outputDraftRef.current })
             }
             for (const part of content.modelTurn?.parts || []) {
-              if (part.inlineData?.data) playPcmChunk(part.inlineData.data)
+              if (!textOnly && part.inlineData?.data) playPcmChunk(part.inlineData.data)
               if (part.text && !content.outputTranscription?.text) {
                 outputDraftRef.current += part.text
                 setLiveTranscript({ role: 'assistant', text: outputDraftRef.current })
@@ -351,7 +360,7 @@ export function VoiceReceptionist() {
               inputDraftRef.current = ''
               outputDraftRef.current = ''
               setLiveTranscript(null)
-              setStatusMessage('Connected — speak naturally or type below')
+              setStatusMessage(withMicrophone ? 'Connected — speak naturally or type below' : 'Text test connected — type a message below')
             }
           } catch {
             setErrorMessage('A voice response could not be processed. Please end the chat and reconnect.')
@@ -362,25 +371,24 @@ export function VoiceReceptionist() {
       socket.onerror = () => {
         setStatus('error')
         setStatusMessage('Voice connection error')
-        setErrorMessage('Could not connect to Gemini Live. Check your API key, model access, and network, then try again.')
+        setErrorMessage(textOnly ? 'Could not connect to Gemini text mode. The server may be rejecting the API key, model, or session configuration.' : 'Could not connect to Gemini Live. Check the server API key, model access, and network, then try again.')
       }
       socket.onclose = () => {
         if (endingRef.current) return
         readyRef.current = false
         setStatus('error')
         setStatusMessage('Voice session ended')
-        setErrorMessage('The Gemini Live session closed. Start a new chat to continue.')
+        setErrorMessage(textOnly ? 'The Gemini text session closed before it was ready. Try again or inspect the server/API error.' : 'The Gemini Live session closed. Start a new chat to continue.')
       }
     } catch (error) {
       cleanupSession()
       setStatus('error')
       setStatusMessage('Voice session unavailable')
       if (microphoneAccessFailed) {
-        setCanUseTextOnly(true)
         const errorName = error instanceof DOMException ? error.name : ''
         setErrorMessage(
           errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError'
-            ? 'Microphone access was denied by your browser or operating system. Allow it in site settings, or continue with text only to test Gemini.'
+            ? 'Microphone access was denied by your browser or operating system. Allow it in site settings, or choose the text-only test below to test Gemini independently.'
             : (error instanceof Error ? error.message : 'Microphone unavailable.') + ' You can continue with text only to test Gemini.',
         )
       } else {
@@ -450,7 +458,7 @@ export function VoiceReceptionist() {
 
           <div className="mt-7 flex flex-wrap justify-center gap-2">
             {!connected ? (
-              <button type="button" onClick={() => startSession(true)} disabled={connecting} className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-60">
+              <button type="button" onClick={() => startSession('voice')} disabled={connecting} className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-60">
                 {connecting ? <LoaderCircle className="size-4 animate-spin" /> : <Mic className="size-4" />}
                 {connecting ? 'Connecting' : status === 'error' ? 'Try again' : 'Start voice chat'}
               </button>
@@ -464,9 +472,9 @@ export function VoiceReceptionist() {
                 <button type="button" onClick={endSession} className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:border-red-500/40 hover:text-red-500"><X className="size-4" /> End chat</button>
               </>
             )}
-            {!connected && canUseTextOnly && (
-              <button type="button" onClick={() => startSession(false)} disabled={connecting} className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-primary/40 px-5 text-sm font-semibold text-primary transition-colors hover:bg-primary/10 disabled:cursor-wait disabled:opacity-60">
-                <Send className="size-4" /> Continue with text only
+            {!connected && (
+              <button type="button" onClick={() => startSession('text')} disabled={connecting} className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-primary/40 px-5 text-sm font-semibold text-primary transition-colors hover:bg-primary/10 disabled:cursor-wait disabled:opacity-60">
+                <Send className="size-4" /> Test text chat
               </button>
             )}
           </div>
@@ -489,7 +497,7 @@ export function VoiceReceptionist() {
               <div className="flex h-full min-h-[230px] flex-col items-center justify-center text-center">
                 <span className="flex size-12 items-center justify-center rounded-2xl border border-border bg-background text-primary"><Sparkles className="size-5" /></span>
                 <p className="mt-4 font-semibold">Your conversation starts here</p>
-                <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">Start the voice chat, allow microphone access, then speak normally. You can also type a question.</p>
+                <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">Start voice chat with microphone access, or choose Test text chat to verify Gemini without using your microphone.</p>
               </div>
             )}
             {messages.map((message) => (
