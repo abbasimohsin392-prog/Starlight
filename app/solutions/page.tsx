@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { ArrowRight } from 'lucide-react'
+import Image from 'next/image'
 import { Nav } from '@/components/site/nav'
 import { Footer } from '@/components/site/footer'
 import { systems } from '@/lib/data'
@@ -26,7 +27,7 @@ export default function SolutionsPage() {
             {systems.map((system) => (
               <article key={system.title} className="overflow-hidden rounded-3xl border border-border bg-surface/60">
                 <div className="relative aspect-[16/9] overflow-hidden bg-surface-2">
-                  <img src={system.image} alt="" loading="lazy" className="h-full w-full object-cover" />
+                  <Image src={system.image} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
                 </div>
                 <div className="p-6 md:p-8">
                   <div className="flex flex-wrap items-center justify-between gap-3">

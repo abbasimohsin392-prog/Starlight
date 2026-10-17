@@ -67,14 +67,14 @@ export default function PricingPage() {
               <article key={plan.name} className={plan.featured ? 'flex flex-col rounded-3xl border border-primary/60 bg-surface p-7 shadow-[0_0_40px_-16px_var(--glow)] md:p-9' : 'flex flex-col rounded-3xl border border-border bg-surface/60 p-7 md:p-9'}>
                 <div className="flex items-center justify-between gap-4">
                   <h2 className="font-display text-2xl font-bold">{plan.name}</h2>
-                  {plan.featured && <span className="rounded-full bg-primary/15 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-primary">Popular starting point</span>}
+                  {plan.featured && <span className="rounded-full bg-primary/15 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-primary">Connected workflow</span>}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{plan.summary}</p>
                 <p className="mt-8">
                   <span className="font-display text-5xl font-bold tracking-tight">{plan.price}</span>
                   <span className="ml-2 text-sm text-muted-foreground">/ month, starting</span>
                 </p>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Recurring service price. One-time implementation is quoted separately.</p>
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Recurring service price. Any one-time implementation fee is quoted separately where applicable.</p>
                 <ul className="mt-8 flex-1 space-y-4">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex gap-3 text-sm leading-relaxed">
