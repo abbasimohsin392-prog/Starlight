@@ -3,16 +3,10 @@ export const dynamic = 'force-dynamic'
 
 import { STARLIGHT_RECEPTIONIST_INSTRUCTIONS } from '@/lib/gemini-receptionist'
 
-type HistoryTurn = {
-  role: 'user' | 'model'
-  text: string
-}
+type HistoryTurn = { role: 'user' | 'model'; text: string }
 
 function jsonError(error: string, status: number) {
-  return Response.json(
-    { error },
-    { status, headers: { 'Cache-Control': 'no-store' } },
-  )
+  return Response.json({ error }, { status, headers: { 'Cache-Control': 'no-store' } })
 }
 
 export async function POST(request: Request) {
@@ -82,15 +76,14 @@ export async function POST(request: Request) {
 
     const data = await response.json() as {
       candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
-      error?: { message?: string; status?: string }
+      error?: { message?: string }
     }
     if (!response.ok) {
       const detail = data.error?.message ? ` Details: ${data.error.message}` : ''
-      const status = response.status === 429 ? 429 : response.status === 401 || response.status === 403 ? 502 : 502
-      const message = response.status === 429
+      const error = response.status === 429
         ? 'Gemini reached its current usage limit. Try again later.'
-        : `Gemini text chat request failed (HTTP ${response.status}). Check the API key, model access, and quota.${detail}`
-      return jsonError(message, status)
+        : `Gemini text request failed (HTTP ${response.status}). Check the key, model access, and quota.${detail}`
+      return jsonError(error, response.status === 429 ? 429 : 502)
     }
 
     const reply = (data.candidates?.[0]?.content?.parts || [])
