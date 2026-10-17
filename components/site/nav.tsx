@@ -71,7 +71,7 @@ export function Nav() {
             <Wordmark />
           </a>
 
-          <ul className="hidden items-center gap-1 lg:flex">
+          <ul className="hidden items-center gap-1 xl:flex">
             {navLinks.map((link) => {
               const isActive = active === link.id
               return (
@@ -124,7 +124,7 @@ export function Nav() {
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               onClick={() => setOpen((o) => !o)}
-              className="flex size-10 items-center justify-center rounded-full border border-border bg-surface/60 lg:hidden"
+              className="flex size-10 items-center justify-center rounded-full border border-border bg-surface/60 xl:hidden"
             >
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
@@ -135,7 +135,7 @@ export function Nav() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[90] flex flex-col justify-center bg-background/95 px-8 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-[90] flex flex-col justify-center bg-background/95 px-8 backdrop-blur-xl xl:hidden"
             initial={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}
             animate={{ opacity: 1, clipPath: 'circle(150% at 100% 0%)' }}
             exit={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}

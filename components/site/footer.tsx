@@ -17,7 +17,7 @@ export function Footer() {
             <Wordmark />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
               AI automation agency building receptionists, chatbots, WhatsApp agents, and custom workflows for
-              businesses that refuse to miss a lead.
+              businesses that want to respond consistently and spend less time on repetitive work.
             </p>
           </div>
           <nav aria-label="Footer">

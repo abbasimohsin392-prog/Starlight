@@ -184,7 +184,8 @@ export function Contact() {
                     <a href="/privacy" className="underline underline-offset-4 hover:text-foreground">Privacy policy</a>
                   </p>
                   <p className="text-center text-xs text-muted-foreground">
-                    Prefer to talk? Email us at{' '}                    <a href={`mailto:${site.email}`} className="underline underline-offset-4 hover:text-foreground">
+                    Prefer to talk? Email us at{' '}
+                    <a href={`mailto:${site.email}`} className="underline underline-offset-4 hover:text-foreground">
                       {site.email}
                     </a>
                   </p>

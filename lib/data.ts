@@ -33,7 +33,7 @@ export const services = [
     title: 'AI Chatbots',
     tagline: 'Website conversations that help qualify leads.',
     description:
-      'Trained on your business, your tone, and your offers. Captures leads, answers FAQs, and hands off to a human exactly when it should.',
+      'A chatbot can use approved information about your business to answer FAQs, capture enquiries, and route complex questions to a person using agreed handoff rules.',
     bullets: ['Trained on your data', 'Lead capture', 'Human handoff'],
   },
   {
