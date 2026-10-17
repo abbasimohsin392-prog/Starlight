@@ -194,6 +194,7 @@ export function VoiceReceptionist() {
     setStatusMessage(withMicrophone ? 'Requesting microphone and starting Gemini…' : 'Starting a text-only Gemini session…')
     setErrorMessage('')
     setTextOnlyMode(textOnly)
+    setTextRequestPending(false)
     setMuted(false)
     let microphoneAccessFailed = false
 
