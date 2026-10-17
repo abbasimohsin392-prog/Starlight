@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       !!turn && typeof turn === 'object'
       && typeof (turn as { role?: unknown }).role === 'string'
       && typeof (turn as { text?: unknown }).text === 'string')
-    .map((turn) => ({
+    .map((turn): HistoryTurn => ({
       role: turn.role === 'assistant' || turn.role === 'model' ? 'model' : 'user',
       text: turn.text.trim().slice(0, 1500),
     }))
