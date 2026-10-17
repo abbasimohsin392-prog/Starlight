@@ -34,6 +34,7 @@ export function Footer() {
               <li><a href="/services" className="transition-colors hover:text-primary">Services overview</a></li>
               <li><a href="/solutions" className="transition-colors hover:text-primary">Solutions</a></li>
               <li><a href="/contact" className="transition-colors hover:text-primary">Contact page</a></li>
+              <li><a href="/demo/ai-receptionist" className="transition-colors hover:text-primary">AI receptionist demo</a></li>
               <li><a href="/demo/real-estate" className="transition-colors hover:text-primary">Real estate demo</a></li>
               <li><a href="/privacy" className="transition-colors hover:text-primary">Privacy policy</a></li>
               <li><a href="/terms" className="transition-colors hover:text-primary">Terms of service</a></li>

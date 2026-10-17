@@ -102,7 +102,7 @@ export function Nav() {
               </a>
             </li>
             <li className="relative">
-              <a href="/demo/real-estate" className={cn('relative z-10 block rounded-full px-4 py-2 text-sm font-medium transition-colors', pathname === '/demo/real-estate' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground')}>
+              <a href="/demo/ai-receptionist" className={cn('relative z-10 block rounded-full px-4 py-2 text-sm font-medium transition-colors', pathname === '/demo/ai-receptionist' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground')}>
                 Demo
               </a>
             </li>
@@ -172,8 +172,8 @@ export function Nav() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 + navLinks.length * 0.05, duration: 0.5, ease }}
               >
-                <a href="/demo/real-estate" onClick={() => setOpen(false)} className="font-display block py-2 text-4xl font-bold tracking-tight">
-                  Real Estate Demo
+                <a href="/demo/ai-receptionist" onClick={() => setOpen(false)} className="font-display block py-2 text-4xl font-bold tracking-tight">
+                  AI Receptionist Demo
                 </a>
               </motion.li>
             </ul>
