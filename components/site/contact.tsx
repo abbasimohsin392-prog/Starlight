@@ -84,7 +84,7 @@ export function Contact() {
           <SectionHeader
             eyebrow="Let’s talk"
             title="Ready to stop losing leads to voicemail?"
-            description="Book a free 30-minute strategy call. We’ll map your customer journey, spot the leaks, and show you exactly what an AI system would look like for your business."
+            description="Book a free 30-minute strategy call. We’ll map one customer workflow, identify a practical opportunity, and outline what a scoped AI solution could look like."
           />
           <Reveal className="mt-12 space-y-4" delay={0.2}>
             <a href={`mailto:${site.email}`} className="group flex items-center gap-4 text-lg">
@@ -180,8 +180,11 @@ export function Contact() {
                     </button>
                   </Magnetic>
                   <p className="text-center text-xs text-muted-foreground">
-                    Prefer to talk? Email us at{' '}
-                    <a href={`mailto:${site.email}`} className="underline underline-offset-4 hover:text-foreground">
+                    We use these details to respond. Please do not include passwords, payment details, or sensitive personal or health information.{' '}
+                    <a href="/privacy" className="underline underline-offset-4 hover:text-foreground">Privacy policy</a>
+                  </p>
+                  <p className="text-center text-xs text-muted-foreground">
+                    Prefer to talk? Email us at{' '}                    <a href={`mailto:${site.email}`} className="underline underline-offset-4 hover:text-foreground">
                       {site.email}
                     </a>
                   </p>

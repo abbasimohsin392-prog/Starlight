@@ -1,10 +1,14 @@
+'use client'
+
 import { ArrowUpRight } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { navLinks, site } from '@/lib/data'
 import { Wordmark } from './logo'
 import { Reveal } from '@/components/motion/reveal'
 
 export function Footer() {
   const year = new Date().getFullYear()
+  const pathname = usePathname()
   return (
     <footer className="relative overflow-hidden border-t border-border">
       <div className="mx-auto max-w-7xl px-6 pt-20 pb-10">
@@ -21,11 +25,15 @@ export function Footer() {
             <ul className="mt-5 space-y-3 text-sm">
               {navLinks.map((l) => (
                 <li key={l.id}>
-                  <a href={`#${l.id}`} className="transition-colors hover:text-primary">
+                  <a href={pathname === '/' ? `#${l.id}` : `/#${l.id}`} className="transition-colors hover:text-primary">
                     {l.label}
                   </a>
                 </li>
               ))}
+              <li><a href="/pricing" className="transition-colors hover:text-primary">Pricing</a></li>
+              <li><a href="/demo/real-estate" className="transition-colors hover:text-primary">Real estate demo</a></li>
+              <li><a href="/privacy" className="transition-colors hover:text-primary">Privacy policy</a></li>
+              <li><a href="/terms" className="transition-colors hover:text-primary">Terms of service</a></li>
             </ul>
           </nav>
           <div>

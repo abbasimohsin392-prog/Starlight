@@ -13,13 +13,13 @@ export default function HomePage() {
   return (
     <>
       <a
-        href="#services"
+        href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
       >
         Skip to content
       </a>
       <Nav />
-      <main>
+      <main id="main-content">
         <Hero />
         <Marquee />
         <Services />

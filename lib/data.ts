@@ -23,15 +23,15 @@ export const services = [
   {
     index: '01',
     title: 'AI Receptionist',
-    tagline: 'Never miss a call again.',
+    tagline: 'Give every caller a clear next step.',
     description:
-      'A voice agent that answers every call in seconds, books appointments, qualifies callers, and routes urgent requests to your team, day and night.',
+      'A voice agent can answer configured inbound calls, collect caller details, handle approved FAQs, and route booking requests or urgent issues to your team.',
     bullets: ['Inbound call handling', 'Calendar booking', 'Call summaries to CRM'],
   },
   {
     index: '02',
     title: 'AI Chatbots',
-    tagline: 'Website conversations that convert.',
+    tagline: 'Website conversations that help qualify leads.',
     description:
       'Trained on your business, your tone, and your offers. Captures leads, answers FAQs, and hands off to a human exactly when it should.',
     bullets: ['Trained on your data', 'Lead capture', 'Human handoff'],
@@ -39,33 +39,33 @@ export const services = [
   {
     index: '03',
     title: 'AI Customer Support',
-    tagline: 'Resolve tickets before they pile up.',
+    tagline: 'Handle routine questions with a clear handoff.',
     description:
-      'Multichannel support agents that resolve the repetitive 80% instantly and escalate the rest with full context attached.',
+      'A support assistant can answer approved FAQs, guide customers through defined steps, and pass complex issues to a human with the context collected so far.',
     bullets: ['Email, chat & help desk', 'Order & account lookups', 'Smart escalation'],
   },
   {
     index: '04',
     title: 'WhatsApp AI Agents',
-    tagline: 'Meet customers where they already are.',
+    tagline: 'Respond on the channel customers already use.',
     description:
-      'Conversational agents on WhatsApp Business that follow up, confirm bookings, send reminders, and close sales in the chat.',
+      'An assistant on WhatsApp Business can handle approved FAQs, collect enquiry details, and trigger agreed follow-ups, subject to your setup and messaging permissions.',
     bullets: ['WhatsApp Business API', 'Follow-up sequences', 'Booking confirmations'],
   },
   {
     index: '05',
     title: 'Lead Automation',
-    tagline: 'From form fill to booked call, automatically.',
+    tagline: 'From form fill to a faster follow-up.',
     description:
-      'Instant lead response, enrichment, scoring, and nurturing across email, SMS, and WhatsApp so no lead ever goes cold.',
-    bullets: ['Speed-to-lead < 60s', 'Scoring & routing', 'Multi-channel nurture'],
+      'Connect new enquiries to agreed routing, notifications, and follow-up workflows so your team can respond consistently.',
+    bullets: ['Fast enquiry routing', 'Scoring & routing', 'Multi-channel nurture'],
   },
   {
     index: '06',
     title: 'Custom AI Automation',
-    tagline: 'If it repeats, we automate it.',
+    tagline: 'Connect the repetitive steps in your operations.',
     description:
-      'Bespoke workflows connecting your CRM, inbox, calendar, and tools, designed around how your business actually runs.',
+      'Workflows connecting your CRM, inbox, calendar, and other agreed tools, scoped around how your business actually runs.',
     bullets: ['CRM & tool integrations', 'Internal ops workflows', 'Reporting & alerts'],
   },
 ]
@@ -75,29 +75,29 @@ export const process = [
     step: '01',
     title: 'Discover',
     description:
-      'We map your customer journey, find where time and leads leak out, and pick the highest-ROI automations first.',
-    duration: 'Week 1',
+      'We map your customer journey and identify one practical workflow worth improving first.',
+    duration: 'Discovery',
   },
   {
     step: '02',
     title: 'Design',
     description:
-      'Conversation flows, agent personas, guardrails, and integrations are designed and approved before a line of code.',
-    duration: 'Week 1–2',
+      'We agree on conversation flows, approved answers, guardrails, integrations, and success measures before the build.',
+    duration: 'Scope agreed',
   },
   {
     step: '03',
     title: 'Build',
     description:
-      'We build, train, and stress-test your AI system against real scenarios until it performs like your best employee.',
-    duration: 'Week 2–4',
+      'We build and test the agreed system against typical and edge-case scenarios, then refine it with your feedback.',
+    duration: 'Build + test',
   },
   {
     step: '04',
     title: 'Launch',
     description:
-      'Go live with monitoring, weekly optimization, and a team that keeps improving your system as your business grows.',
-    duration: 'Ongoing',
+      'Launch with documentation, agreed monitoring, and a clear path for human escalation. Ongoing support is defined in your proposal.',
+    duration: 'Launch + review',
   },
 ]
 
@@ -105,54 +105,50 @@ export const systems = [
   {
     title: 'Clinic Reception Suite',
     category: 'Healthcare',
-    result: '0 missed calls',
-    description: 'Voice receptionist + WhatsApp reminders for a multi-location dental clinic.',
+    result: 'Calls → team',
+    description: 'Illustrative workflow: a voice receptionist and WhatsApp reminders, subject to clinic systems, permissions, and approved content.',
     image: '/images/system-clinic.webp',
   },
   {
     title: 'Property Lead Engine',
     category: 'Real Estate',
-    result: '3× faster follow-up',
-    description: 'Instant lead qualification and viewing bookings for a real estate brokerage.',
+    result: 'Lead → agent',
+    description: 'Illustrative workflow: qualify a property enquiry and pass a viewing request to an agent; no live listings or bookings are connected in this example.',
     image: '/images/system-realestate.webp',
   },
   {
     title: 'E-commerce Support Agent',
     category: 'E-commerce',
-    result: '78% tickets automated',
-    description: 'Order tracking, returns, and product Q&A across email and live chat.',
+    result: 'FAQ → handoff',
+    description: 'Illustrative workflow: answer approved order and product questions, then route complex support requests to a person.',
     image: '/images/system-ecommerce.webp',
   },
   {
     title: 'Service Booking Flow',
     category: 'Home Services',
-    result: '24/7 bookings',
-    description: 'Website chatbot that quotes, books, and dispatches jobs for an HVAC company.',
+    result: 'Enquiry → request',
+    description: 'Illustrative workflow: collect service details and send a booking request for a team member to confirm.',
     image: '/images/system-services.webp',
   },
 ]
 
 export const stats = [
-  { value: 24, suffix: '/7', label: 'AI availability, every day of the year' },
-  { value: 100, suffix: '%', label: 'Of repetitive workflows automated' },
-  { value: 60, prefix: '<', suffix: 's', label: 'Average lead response time' },
-  { value: 4, suffix: ' wks', label: 'From kickoff to live system' },
+  { value: '24/7', label: 'After-hours handling can be configured for supported channels' },
+  { value: 'Human', label: 'Clear handoff paths when an enquiry needs your team' },
+  { value: 'Connected', label: 'Connect the tools included in your agreed workflow' },
+  { value: 'Measured', label: 'Track response time, enquiries, and bookings you agree to measure' },
 ]
 
 export const marqueeItems = [
-  'OpenAI',
+  'Website chat',
+  'Voice workflows',
+  'Lead routing',
+  'CRM connections',
   'WhatsApp Business',
-  'Twilio',
-  'HubSpot',
-  'Make',
-  'n8n',
-  'Zapier',
-  'Salesforce',
-  'Google Calendar',
-  'Stripe',
-  'Slack',
-  'Shopify',
-  'Notion',
-  'Gmail',
+  'Email follow-up',
+  'Appointment requests',
+  'Human handoff',
+  'Workflow monitoring',
+  'Custom integrations',
 ]
 
