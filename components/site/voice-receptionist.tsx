@@ -256,6 +256,9 @@ export function VoiceReceptionist() {
       if (!window.WebSocket) {
         throw new Error('WebSocket is not supported in this browser. Try the latest Chrome or Edge.')
       }
+      if (withMicrophone && !window.isSecureContext) {
+        throw new Error('Voice chat requires a secure HTTPS page. You can still use the text-only test below.')
+      }
       if (withMicrophone && !window.AudioContext) {
         throw new Error('Audio is not supported in this browser. Try the latest Chrome or Edge.')
       }
