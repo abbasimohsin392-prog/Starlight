@@ -62,6 +62,11 @@ export async function POST(request: Request) {
     }))
     .filter((turn) => turn.text.length > 0)
 
+  const timeoutController = new AbortController()
+  const timeoutId = setTimeout(() => {
+    timeoutController.abort(new DOMException('Gemini text request timed out.', 'TimeoutError'))
+  }, 20_000)
+
   try {
     const response = await requestGeminiWithRetry('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent', {
       method: 'POST',
@@ -70,6 +75,7 @@ export async function POST(request: Request) {
         'Content-Type': 'application/json',
       },
       cache: 'no-store',
+      signal: timeoutController.signal,
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }] },
         contents: [
@@ -80,7 +86,7 @@ export async function POST(request: Request) {
       }),
     })
 
-    const data = await response.json() as {
+    const data = await response.json().catch(() => ({})) as {
       candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
       error?: { message?: string }
     }
@@ -117,6 +123,11 @@ export async function POST(request: Request) {
 
     return Response.json({ reply }, { headers: { 'Cache-Control': 'no-store' } })
   } catch {
+    if (timeoutController.signal.aborted) {
+      return jsonError('Gemini took too long to respond. Please try again.', 504)
+    }
     return jsonError('Could not reach Gemini after the retry attempts. Check the connection and try again shortly.', 503)
+  } finally {
+    clearTimeout(timeoutId)
   }
 }
