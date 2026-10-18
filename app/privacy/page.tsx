@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             </section>
             <section>
               <h2 className="font-display text-xl font-bold text-foreground">Service providers</h2>
-              <p className="mt-3">The contact form uses Brevo to send enquiry notifications to Starlight AI. The website also uses Vercel Analytics in production to understand site usage and performance. External links such as Calendly, WhatsApp, email, and social networks are operated by their respective providers and are subject to their own privacy practices.</p>
+              <p className="mt-3">The contact form uses Brevo to send enquiry notifications to Starlight AI. External links such as Calendly, WhatsApp, email, and social networks are operated by their respective providers and are subject to their own privacy practices.</p>
             </section>
             <section>
               <h2 className="font-display text-xl font-bold text-foreground">Sharing and retention</h2>
