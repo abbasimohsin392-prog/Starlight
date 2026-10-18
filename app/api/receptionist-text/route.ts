@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     return jsonError('Invalid request origin.', 403)
   }
 
-  const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
+  const apiKey = getGeminiApiKey()
   if (!apiKey) {
     return jsonError('The AI chat is not configured: GEMINI_API_KEY is missing from the Cloudflare Worker secrets.', 503)
   }
