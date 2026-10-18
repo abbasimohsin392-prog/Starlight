@@ -40,15 +40,21 @@ export async function POST(request: Request) {
         uses: 1,
         expireTime: expiresAt,
         newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
-        liveConnectConstraints: {
+        bidiGenerateContentSetup: {
           model: GEMINI_LIVE_MODEL,
-          config: {
+          generationConfig: {
             responseModalities: ['AUDIO'],
-            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: GEMINI_LIVE_VOICE } } },
-            systemInstruction: { parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }] },
-            inputAudioTranscription: {},
-            outputAudioTranscription: {},
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: { voiceName: GEMINI_LIVE_VOICE },
+              },
+            },
           },
+          systemInstruction: {
+            parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }],
+          },
+          inputAudioTranscription: {},
+          outputAudioTranscription: {},
         },
       }),
     })
