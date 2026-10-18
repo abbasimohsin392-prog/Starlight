@@ -63,8 +63,7 @@ export async function POST(request: Request) {
     if (!tokenResponse.ok || !data.name) {
       if (tokenResponse.status === 429) return jsonError('Gemini is at its current usage limit. Please try again later or check your Google AI Studio quota.', 429)
       if (tokenResponse.status === 401 || tokenResponse.status === 403) return jsonError('Gemini rejected the server key. Check that GEMINI_API_KEY is valid and the Live API is enabled for this project.', 502)
-      const detail = data.error?.message ? ` Details: ${data.error.message}` : ''
-      return jsonError(`Gemini could not create a voice session. Check the API key, Live API access, and model availability.${detail}`, 502)
+      return jsonError('Gemini could not create a voice session. Check the server key, Live API access, and model availability.', 502)
     }
 
     return Response.json({ token: data.name, model: GEMINI_LIVE_MODEL, expiresAt }, { headers: { 'Cache-Control': 'no-store' } })
