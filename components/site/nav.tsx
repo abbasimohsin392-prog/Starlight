@@ -37,6 +37,19 @@ export function Nav() {
     return () => observer.disconnect()
   }, [pathname])
 
+  useEffect(() => {
+    if (!open) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [open])
+
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
+
   const goTo = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     setOpen(false)
     if (pathname !== '/') return
@@ -123,6 +136,7 @@ export function Nav() {
               type="button"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
+              aria-controls="mobile-navigation"
               onClick={() => setOpen((o) => !o)}
               className="flex size-10 items-center justify-center rounded-full border border-border bg-surface/60 xl:hidden"
             >
@@ -135,55 +149,77 @@ export function Nav() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-[90] flex flex-col justify-center bg-background/95 px-8 backdrop-blur-xl xl:hidden"
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+            onClick={(event) => {
+              if (event.target === event.currentTarget) setOpen(false)
+            }}
+            className="fixed inset-0 z-[90] overflow-y-auto overscroll-contain bg-background/95 px-6 pb-10 pt-28 backdrop-blur-xl sm:px-8 xl:hidden"
             initial={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}
             animate={{ opacity: 1, clipPath: 'circle(150% at 100% 0%)' }}
             exit={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}
             transition={{ duration: 0.6, ease }}
           >
-            <ul className="flex flex-col gap-2">
-              {navLinks.map((link, i) => (
+            <nav aria-label="Mobile" className="mx-auto flex min-h-full w-full max-w-lg flex-col justify-center">
+              <ul className="flex flex-col gap-1">
                 <motion.li
-                  key={link.id}
                   initial={{ opacity: 0, x: 24 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.15 + i * 0.05, duration: 0.5, ease }}
+                  transition={{ delay: 0.1, duration: 0.4, ease }}
                 >
                   <a
-                    href={pathname === '/' ? `#${link.id}` : `/#${link.id}`}
-                    onClick={goTo(link.id)}
-                    className="font-display block py-2 text-4xl font-bold tracking-tight"
+                    href={pathname === '/' ? '#hero' : '/'}
+                    onClick={goTo('hero')}
+                    className="font-display block py-2 text-3xl font-bold tracking-tight sm:text-4xl"
                   >
-                    {link.label}
+                    Home
                   </a>
                 </motion.li>
-              ))}
-              <motion.li
-                initial={{ opacity: 0, x: 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.15 + navLinks.length * 0.05, duration: 0.5, ease }}
+                {navLinks.map((link, i) => (
+                  <motion.li
+                    key={link.id}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.15 + i * 0.04, duration: 0.4, ease }}
+                  >
+                    <a
+                      href={pathname === '/' ? `#${link.id}` : `/#${link.id}`}
+                      onClick={goTo(link.id)}
+                      className="font-display block py-2 text-3xl font-bold tracking-tight sm:text-4xl"
+                    >
+                      {link.label}
+                    </a>
+                  </motion.li>
+                ))}
+                <motion.li
+                  initial={{ opacity: 0, x: 24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + navLinks.length * 0.04, duration: 0.4, ease }}
+                >
+                  <a href="/pricing" onClick={() => setOpen(false)} className="font-display block py-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                    Pricing
+                  </a>
+                </motion.li>
+                <motion.li
+                  initial={{ opacity: 0, x: 24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + navLinks.length * 0.04, duration: 0.4, ease }}
+                >
+                  <a href="/demo/ai-receptionist" onClick={() => setOpen(false)} className="font-display block py-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                    AI Receptionist Demo
+                  </a>
+                </motion.li>
+              </ul>
+              <a
+                href={pathname === '/' ? '#contact' : '/#contact'}
+                onClick={goTo('contact')}
+                className="mt-8 inline-flex min-h-14 w-full items-center justify-center rounded-full bg-primary px-5 text-base font-semibold text-primary-foreground"
               >
-                <a href="/pricing" onClick={() => setOpen(false)} className="font-display block py-2 text-4xl font-bold tracking-tight">
-                  Pricing
-                </a>
-              </motion.li>
-              <motion.li
-                initial={{ opacity: 0, x: 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 + navLinks.length * 0.05, duration: 0.5, ease }}
-              >
-                <a href="/demo/ai-receptionist" onClick={() => setOpen(false)} className="font-display block py-2 text-4xl font-bold tracking-tight">
-                  AI Receptionist Demo
-                </a>
-              </motion.li>
-            </ul>
-            <a
-              href={pathname === '/' ? '#contact' : '/#contact'}
-              onClick={goTo('contact')}
-              className="mt-10 inline-flex h-14 w-full items-center justify-center rounded-full bg-primary text-base font-semibold text-primary-foreground"
-            >
-              Book a call
-            </a>
+                Book a call
+              </a>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
