@@ -65,18 +65,55 @@ function pcm16Base64ToFloat(base64: string) {
   return samples
 }
 
+function microphoneErrorMessage(error: unknown) {
+  const errorName = error instanceof DOMException ? error.name : ''
+  const policyDocument = document as unknown as {
+    permissionsPolicy?: { allowsFeature?: (feature: string) => boolean }
+    featurePolicy?: { allowsFeature?: (feature: string) => boolean }
+  }
+  const policy = policyDocument.permissionsPolicy || policyDocument.featurePolicy
+  if (policy?.allowsFeature && !policy.allowsFeature('microphone')) {
+    return 'This page’s Permissions Policy blocks microphone access. If the demo is embedded, its parent page must also allow the microphone.'
+  }
+  if (errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError') {
+    return 'Microphone access was denied or blocked by browser policy. Check the site permission, browser policy, and operating-system microphone privacy settings, then try again.'
+  }
+  if (errorName === 'NotFoundError' || errorName === 'DevicesNotFoundError') {
+    return 'No microphone device is available. Connect or enable a microphone, then try again.'
+  }
+  if (errorName === 'NotReadableError' || errorName === 'TrackStartError') {
+    return 'The microphone could not start. It may be in use by another app or blocked by your operating system.'
+  }
+  if (errorName === 'OverconstrainedError' || errorName === 'ConstraintNotSatisfiedError') {
+    return 'The available microphone does not support the requested audio settings. Try another microphone or browser.'
+  }
+  if (errorName === 'SecurityError') {
+    return 'Microphone access is blocked by this page’s security settings. Open the demo over HTTPS and check browser site permissions.'
+  }
+  if (errorName === 'AbortError') {
+    return 'The microphone was interrupted before it could start. Check the device and try again.'
+  }
+  return error instanceof Error
+    ? `Could not access the microphone: ${error.message}`
+    : 'Could not access the microphone. Check your device and site permissions, then try again.'
+}
+
 export function VoiceReceptionist() {
   const [status, setStatus] = useState<ConnectionStatus>('idle')
   const [statusMessage, setStatusMessage] = useState('Ready when you are')
   const [errorMessage, setErrorMessage] = useState('')
   const [textOnlyMode, setTextOnlyMode] = useState(false)
   const [textRequestPending, setTextRequestPending] = useState(false)
+  const textRequestPendingRef = useRef(false)
   const [muted, setMuted] = useState(false)
   const [draft, setDraft] = useState('')
   const [messages, setMessages] = useState<TranscriptMessage[]>([])
   const [liveTranscript, setLiveTranscript] = useState<LiveTranscript>(null)
 
   const socketRef = useRef<WebSocket | null>(null)
+  const sessionAbortRef = useRef<AbortController | null>(null)
+  const sessionGenerationRef = useRef(0)
+  const startPendingRef = useRef(false)
   const microphoneRef = useRef<MediaStream | null>(null)
   const captureContextRef = useRef<AudioContext | null>(null)
   const captureSourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
@@ -110,8 +147,12 @@ export function VoiceReceptionist() {
   }, [])
 
   const cleanupSession = useCallback(() => {
+    sessionGenerationRef.current++
+    startPendingRef.current = false
     readyRef.current = false
     endingRef.current = true
+    sessionAbortRef.current?.abort()
+    sessionAbortRef.current = null
 
     if (socketRef.current) {
       const socket = socketRef.current
@@ -186,15 +227,17 @@ export function VoiceReceptionist() {
   }, [])
 
   const startSession = useCallback(async (mode: 'voice' | 'text' = 'voice') => {
+    if (startPendingRef.current) return
     const withMicrophone = mode === 'voice'
     const textOnly = mode === 'text'
     cleanupSession()
+    startPendingRef.current = true
+    const sessionGeneration = sessionGenerationRef.current
     endingRef.current = false
     setStatus('connecting')
     setStatusMessage(withMicrophone ? 'Requesting microphone and starting Gemini…' : 'Starting a text-only Gemini session…')
     setErrorMessage('')
     setTextOnlyMode(textOnly)
-    setTextRequestPending(false)
     setMuted(false)
     let microphoneAccessFailed = false
 
@@ -205,12 +248,16 @@ export function VoiceReceptionist() {
       setStatus('connected')
       setStatusMessage('Text chat ready — type a question below')
       appendMessage('assistant', 'Text-only test is ready. Ask me about Starlight AI to verify the Gemini API connection.')
+      startPendingRef.current = false
       return
     }
 
     try {
       if (!window.WebSocket) {
         throw new Error('WebSocket is not supported in this browser. Try the latest Chrome or Edge.')
+      }
+      if (withMicrophone && !window.isSecureContext) {
+        throw new Error('Voice chat requires a secure HTTPS page. You can still use the text-only test below.')
       }
       if (withMicrophone && !window.AudioContext) {
         throw new Error('Audio is not supported in this browser. Try the latest Chrome or Edge.')
@@ -231,11 +278,16 @@ export function VoiceReceptionist() {
           microphoneAccessFailed = true
           throw error
         }
+        if (sessionGenerationRef.current !== sessionGeneration) {
+          microphone.getTracks().forEach((track) => track.stop())
+          return
+        }
         microphoneRef.current = microphone
 
         const captureContext = new AudioContext()
         captureContextRef.current = captureContext
         await captureContext.resume()
+        if (sessionGenerationRef.current !== sessionGeneration) return
         const source = captureContext.createMediaStreamSource(microphone)
         const processor = captureContext.createScriptProcessor(2048, 1, 1)
         const silentGain = captureContext.createGain()
@@ -261,21 +313,28 @@ export function VoiceReceptionist() {
         const playbackContext = new AudioContext({ sampleRate: 24000 })
         playbackContextRef.current = playbackContext
         await playbackContext.resume()
+        if (sessionGenerationRef.current !== sessionGeneration) return
         playbackQueueTimeRef.current = playbackContext.currentTime
       }
 
+      const sessionAbortController = new AbortController()
+      sessionAbortRef.current = sessionAbortController
       const tokenResponse = await fetch('/api/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mode }),
         cache: 'no-store',
+        signal: sessionAbortController.signal,
       })
+      if (sessionGenerationRef.current !== sessionGeneration) return
       if (!tokenResponse.ok) {
         const data = await tokenResponse.json().catch(() => ({})) as { error?: string }
         throw new Error(data.error || 'Could not create a Gemini Live session. Please try again.')
       }
 
       const tokenData = await tokenResponse.json() as { token?: string }
+      sessionAbortRef.current = null
+      if (sessionGenerationRef.current !== sessionGeneration) return
       if (!tokenData.token) throw new Error('Gemini did not return a short-lived session token.')
 
       const socketUrl = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=' + tokenData.token
@@ -316,8 +375,9 @@ export function VoiceReceptionist() {
 
             const payload = JSON.parse(raw) as GeminiMessage
             if (payload.error) {
-              setErrorMessage(payload.error.message || 'Gemini returned a voice-session error.')
+              setErrorMessage('Gemini could not continue the live session. Please end the chat and reconnect.')
               if (!readyRef.current) {
+                cleanupSession()
                 setStatus('error')
                 setStatusMessage('Voice session unavailable')
               }
@@ -326,6 +386,7 @@ export function VoiceReceptionist() {
 
             if (payload.setupComplete) {
               readyRef.current = true
+              startPendingRef.current = false
               setStatus('connected')
               setStatusMessage(withMicrophone ? 'Connected — speak naturally or type below' : 'Text test connected — type a message below')
               socket.send(JSON.stringify({
@@ -381,28 +442,26 @@ export function VoiceReceptionist() {
       }
 
       socket.onerror = () => {
+        if (sessionGenerationRef.current !== sessionGeneration) return
+        cleanupSession()
         setStatus('error')
         setStatusMessage('Voice connection error')
         setErrorMessage(textOnly ? 'Could not connect to Gemini text mode. The server may be rejecting the API key, model, or session configuration.' : 'Could not connect to Gemini Live. Check the server API key, model access, and network, then try again.')
       }
       socket.onclose = () => {
-        if (endingRef.current) return
-        readyRef.current = false
+        if (endingRef.current || sessionGenerationRef.current !== sessionGeneration) return
+        cleanupSession()
         setStatus('error')
         setStatusMessage('Voice session ended')
         setErrorMessage(textOnly ? 'The Gemini text session closed before it was ready. Try again or inspect the server/API error.' : 'The Gemini Live session closed. Start a new chat to continue.')
       }
     } catch (error) {
+      if (sessionGenerationRef.current !== sessionGeneration) return
       cleanupSession()
       setStatus('error')
       setStatusMessage('Voice session unavailable')
       if (microphoneAccessFailed) {
-        const errorName = error instanceof DOMException ? error.name : ''
-        setErrorMessage(
-          errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError'
-            ? 'Microphone access was denied by your browser or operating system. Allow it in site settings, or choose the text-only test below to test Gemini independently.'
-            : (error instanceof Error ? error.message : 'Microphone unavailable.') + ' You can continue with text only to test Gemini.',
-        )
+        setErrorMessage(microphoneErrorMessage(error) + ' You can continue with text only to test Gemini.')
       } else {
         setErrorMessage(error instanceof Error ? error.message : 'Could not start the voice assistant.')
       }
@@ -411,7 +470,7 @@ export function VoiceReceptionist() {
 
   const sendText = useCallback(async (value: string) => {
     const text = value.trim()
-    if (!text || status !== 'connected' || !readyRef.current || textRequestPending) return
+    if (!text || status !== 'connected' || !readyRef.current || textRequestPending || textRequestPendingRef.current) return
 
     if (textOnlyMode) {
       const history = messages.slice(-12).map((message) => ({
@@ -422,6 +481,7 @@ export function VoiceReceptionist() {
       setDraft('')
       setErrorMessage('')
       setStatusMessage('Asking Gemini…')
+      textRequestPendingRef.current = true
       setTextRequestPending(true)
 
       try {
@@ -440,6 +500,7 @@ export function VoiceReceptionist() {
         setErrorMessage(error instanceof Error ? error.message : 'Could not reach Gemini text mode.')
         setStatusMessage('Text chat request failed — you can retry')
       } finally {
+        textRequestPendingRef.current = false
         setTextRequestPending(false)
       }
       return
