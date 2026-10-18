@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     return jsonError('Invalid request origin.', 403)
   }
 
-  const apiKey = getGeminiApiKey()
+  const apiKey = await getGeminiApiKey()
   if (!apiKey) {
     return jsonError('The AI chat is not configured: GEMINI_API_KEY is missing from the Cloudflare Worker secrets.', 503)
   }
@@ -66,10 +66,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: STARLIGHT_RECEPTIONIST_INSTRUCTIONS }] },
         contents: [
-          ...history.map((turn) => ({
-            role: turn.role,
-            parts: [{ text: turn.text }],
-          })),
+          ...history.map((turn) => ({ role: turn.role, parts: [{ text: turn.text }] })),
           { role: 'user', parts: [{ text: message }] },
         ],
         generationConfig: { maxOutputTokens: 700 },
@@ -88,10 +85,7 @@ export async function POST(request: Request) {
       return jsonError(error, response.status === 429 ? 429 : 502)
     }
 
-    const reply = (data.candidates?.[0]?.content?.parts || [])
-      .map((part) => part.text || '')
-      .join('')
-      .trim()
+    const reply = (data.candidates?.[0]?.content?.parts || []).map((part) => part.text || '').join('').trim()
     if (!reply) return jsonError('Gemini returned no text. Try sending your question again.', 502)
 
     return Response.json({ reply }, { headers: { 'Cache-Control': 'no-store' } })
