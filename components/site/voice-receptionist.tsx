@@ -111,6 +111,9 @@ export function VoiceReceptionist() {
   const [liveTranscript, setLiveTranscript] = useState<LiveTranscript>(null)
 
   const socketRef = useRef<WebSocket | null>(null)
+  const sessionAbortRef = useRef<AbortController | null>(null)
+  const sessionGenerationRef = useRef(0)
+  const startPendingRef = useRef(false)
   const microphoneRef = useRef<MediaStream | null>(null)
   const captureContextRef = useRef<AudioContext | null>(null)
   const captureSourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
@@ -144,8 +147,12 @@ export function VoiceReceptionist() {
   }, [])
 
   const cleanupSession = useCallback(() => {
+    sessionGenerationRef.current++
+    startPendingRef.current = false
     readyRef.current = false
     endingRef.current = true
+    sessionAbortRef.current?.abort()
+    sessionAbortRef.current = null
 
     if (socketRef.current) {
       const socket = socketRef.current
@@ -220,9 +227,12 @@ export function VoiceReceptionist() {
   }, [])
 
   const startSession = useCallback(async (mode: 'voice' | 'text' = 'voice') => {
+    if (startPendingRef.current) return
     const withMicrophone = mode === 'voice'
     const textOnly = mode === 'text'
     cleanupSession()
+    startPendingRef.current = true
+    const sessionGeneration = sessionGenerationRef.current
     endingRef.current = false
     setStatus('connecting')
     setStatusMessage(withMicrophone ? 'Requesting microphone and starting Gemini…' : 'Starting a text-only Gemini session…')
@@ -238,6 +248,7 @@ export function VoiceReceptionist() {
       setStatus('connected')
       setStatusMessage('Text chat ready — type a question below')
       appendMessage('assistant', 'Text-only test is ready. Ask me about Starlight AI to verify the Gemini API connection.')
+      startPendingRef.current = false
       return
     }
 
@@ -264,11 +275,16 @@ export function VoiceReceptionist() {
           microphoneAccessFailed = true
           throw error
         }
+        if (sessionGenerationRef.current !== sessionGeneration) {
+          microphone.getTracks().forEach((track) => track.stop())
+          return
+        }
         microphoneRef.current = microphone
 
         const captureContext = new AudioContext()
         captureContextRef.current = captureContext
         await captureContext.resume()
+        if (sessionGenerationRef.current !== sessionGeneration) return
         const source = captureContext.createMediaStreamSource(microphone)
         const processor = captureContext.createScriptProcessor(2048, 1, 1)
         const silentGain = captureContext.createGain()
@@ -294,21 +310,28 @@ export function VoiceReceptionist() {
         const playbackContext = new AudioContext({ sampleRate: 24000 })
         playbackContextRef.current = playbackContext
         await playbackContext.resume()
+        if (sessionGenerationRef.current !== sessionGeneration) return
         playbackQueueTimeRef.current = playbackContext.currentTime
       }
 
+      const sessionAbortController = new AbortController()
+      sessionAbortRef.current = sessionAbortController
       const tokenResponse = await fetch('/api/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mode }),
         cache: 'no-store',
+        signal: sessionAbortController.signal,
       })
+      if (sessionGenerationRef.current !== sessionGeneration) return
       if (!tokenResponse.ok) {
         const data = await tokenResponse.json().catch(() => ({})) as { error?: string }
         throw new Error(data.error || 'Could not create a Gemini Live session. Please try again.')
       }
 
       const tokenData = await tokenResponse.json() as { token?: string }
+      sessionAbortRef.current = null
+      if (sessionGenerationRef.current !== sessionGeneration) return
       if (!tokenData.token) throw new Error('Gemini did not return a short-lived session token.')
 
       const socketUrl = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=' + tokenData.token
@@ -349,8 +372,9 @@ export function VoiceReceptionist() {
 
             const payload = JSON.parse(raw) as GeminiMessage
             if (payload.error) {
-              setErrorMessage(payload.error.message || 'Gemini returned a voice-session error.')
+              setErrorMessage('Gemini could not continue the live session. Please end the chat and reconnect.')
               if (!readyRef.current) {
+                cleanupSession()
                 setStatus('error')
                 setStatusMessage('Voice session unavailable')
               }
@@ -359,6 +383,7 @@ export function VoiceReceptionist() {
 
             if (payload.setupComplete) {
               readyRef.current = true
+              startPendingRef.current = false
               setStatus('connected')
               setStatusMessage(withMicrophone ? 'Connected — speak naturally or type below' : 'Text test connected — type a message below')
               socket.send(JSON.stringify({
@@ -414,18 +439,21 @@ export function VoiceReceptionist() {
       }
 
       socket.onerror = () => {
+        if (sessionGenerationRef.current !== sessionGeneration) return
+        cleanupSession()
         setStatus('error')
         setStatusMessage('Voice connection error')
         setErrorMessage(textOnly ? 'Could not connect to Gemini text mode. The server may be rejecting the API key, model, or session configuration.' : 'Could not connect to Gemini Live. Check the server API key, model access, and network, then try again.')
       }
       socket.onclose = () => {
-        if (endingRef.current) return
-        readyRef.current = false
+        if (endingRef.current || sessionGenerationRef.current !== sessionGeneration) return
+        cleanupSession()
         setStatus('error')
         setStatusMessage('Voice session ended')
         setErrorMessage(textOnly ? 'The Gemini text session closed before it was ready. Try again or inspect the server/API error.' : 'The Gemini Live session closed. Start a new chat to continue.')
       }
     } catch (error) {
+      if (sessionGenerationRef.current !== sessionGeneration) return
       cleanupSession()
       setStatus('error')
       setStatusMessage('Voice session unavailable')
