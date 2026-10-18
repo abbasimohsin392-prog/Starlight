@@ -65,12 +65,46 @@ function pcm16Base64ToFloat(base64: string) {
   return samples
 }
 
+function microphoneErrorMessage(error: unknown) {
+  const errorName = error instanceof DOMException ? error.name : ''
+  const policyDocument = document as unknown as {
+    permissionsPolicy?: { allowsFeature?: (feature: string) => boolean }
+    featurePolicy?: { allowsFeature?: (feature: string) => boolean }
+  }
+  const policy = policyDocument.permissionsPolicy || policyDocument.featurePolicy
+  if (policy?.allowsFeature && !policy.allowsFeature('microphone')) {
+    return 'This page’s Permissions Policy blocks microphone access. If the demo is embedded, its parent page must also allow the microphone.'
+  }
+  if (errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError') {
+    return 'Microphone access was denied or blocked by browser policy. Check the site permission, browser policy, and operating-system microphone privacy settings, then try again.'
+  }
+  if (errorName === 'NotFoundError' || errorName === 'DevicesNotFoundError') {
+    return 'No microphone device is available. Connect or enable a microphone, then try again.'
+  }
+  if (errorName === 'NotReadableError' || errorName === 'TrackStartError') {
+    return 'The microphone could not start. It may be in use by another app or blocked by your operating system.'
+  }
+  if (errorName === 'OverconstrainedError' || errorName === 'ConstraintNotSatisfiedError') {
+    return 'The available microphone does not support the requested audio settings. Try another microphone or browser.'
+  }
+  if (errorName === 'SecurityError') {
+    return 'Microphone access is blocked by this page’s security settings. Open the demo over HTTPS and check browser site permissions.'
+  }
+  if (errorName === 'AbortError') {
+    return 'The microphone was interrupted before it could start. Check the device and try again.'
+  }
+  return error instanceof Error
+    ? `Could not access the microphone: ${error.message}`
+    : 'Could not access the microphone. Check your device and site permissions, then try again.'
+}
+
 export function VoiceReceptionist() {
   const [status, setStatus] = useState<ConnectionStatus>('idle')
   const [statusMessage, setStatusMessage] = useState('Ready when you are')
   const [errorMessage, setErrorMessage] = useState('')
   const [textOnlyMode, setTextOnlyMode] = useState(false)
   const [textRequestPending, setTextRequestPending] = useState(false)
+  const textRequestPendingRef = useRef(false)
   const [muted, setMuted] = useState(false)
   const [draft, setDraft] = useState('')
   const [messages, setMessages] = useState<TranscriptMessage[]>([])
@@ -194,7 +228,6 @@ export function VoiceReceptionist() {
     setStatusMessage(withMicrophone ? 'Requesting microphone and starting Gemini…' : 'Starting a text-only Gemini session…')
     setErrorMessage('')
     setTextOnlyMode(textOnly)
-    setTextRequestPending(false)
     setMuted(false)
     let microphoneAccessFailed = false
 
@@ -397,12 +430,7 @@ export function VoiceReceptionist() {
       setStatus('error')
       setStatusMessage('Voice session unavailable')
       if (microphoneAccessFailed) {
-        const errorName = error instanceof DOMException ? error.name : ''
-        setErrorMessage(
-          errorName === 'NotAllowedError' || errorName === 'PermissionDeniedError'
-            ? 'Microphone access was denied by your browser or operating system. Allow it in site settings, or choose the text-only test below to test Gemini independently.'
-            : (error instanceof Error ? error.message : 'Microphone unavailable.') + ' You can continue with text only to test Gemini.',
-        )
+        setErrorMessage(microphoneErrorMessage(error) + ' You can continue with text only to test Gemini.')
       } else {
         setErrorMessage(error instanceof Error ? error.message : 'Could not start the voice assistant.')
       }
@@ -411,7 +439,7 @@ export function VoiceReceptionist() {
 
   const sendText = useCallback(async (value: string) => {
     const text = value.trim()
-    if (!text || status !== 'connected' || !readyRef.current || textRequestPending) return
+    if (!text || status !== 'connected' || !readyRef.current || textRequestPending || textRequestPendingRef.current) return
 
     if (textOnlyMode) {
       const history = messages.slice(-12).map((message) => ({
@@ -422,6 +450,7 @@ export function VoiceReceptionist() {
       setDraft('')
       setErrorMessage('')
       setStatusMessage('Asking Gemini…')
+      textRequestPendingRef.current = true
       setTextRequestPending(true)
 
       try {
@@ -440,6 +469,7 @@ export function VoiceReceptionist() {
         setErrorMessage(error instanceof Error ? error.message : 'Could not reach Gemini text mode.')
         setStatusMessage('Text chat request failed — you can retry')
       } finally {
+        textRequestPendingRef.current = false
         setTextRequestPending(false)
       }
       return
