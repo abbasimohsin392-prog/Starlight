@@ -5,9 +5,11 @@ import { getCloudflareContext } from '@opennextjs/cloudflare'
  * then fall back to process.env for supported local/dev environments.
  * The key is only consumed by server-side route handlers.
  */
-export function getGeminiApiKey(): string | undefined {
+export async function getGeminiApiKey(): Promise<string | undefined> {
   try {
-    const bindings = getCloudflareContext().env as unknown as Record<string, unknown>
+    // Use the async context API so bindings are available in Node.js runtime routes.
+    const { env } = await getCloudflareContext({ async: true })
+    const bindings = env as unknown as Record<string, unknown>
     const value = bindings.GEMINI_API_KEY || bindings.GOOGLE_API_KEY
     if (typeof value === 'string' && value.trim()) return value.trim()
   } catch {
