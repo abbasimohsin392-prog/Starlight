@@ -127,3 +127,22 @@ test('does not retry an HTTP 429 without transient-rate-limit evidence', async (
   assert.equal(response.status, 429)
   assert.equal(calls.count, 1)
 })
+
+test('does not retry after the overall request signal is aborted', async () => {
+  const controller = new AbortController()
+  const calls = { count: 0 }
+  const delays = []
+  const pending = requestGeminiWithRetry('https://gemini.invalid', { signal: controller.signal }, {
+    fetchImpl: async (_input, init) => {
+      calls.count++
+      return await new Promise((_resolve, reject) => {
+        init.signal.addEventListener('abort', () => reject(init.signal.reason), { once: true })
+      })
+    },
+    sleepImpl: async (ms) => delays.push(ms),
+  })
+  controller.abort(new DOMException('Request timed out.', 'TimeoutError'))
+  await assert.rejects(pending, { name: 'TimeoutError' })
+  assert.equal(calls.count, 1)
+  assert.deepEqual(delays, [])
+})
