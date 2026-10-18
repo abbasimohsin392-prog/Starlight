@@ -191,7 +191,7 @@ export function VoiceReceptionist() {
     cleanupSession()
     endingRef.current = false
     setStatus('connecting')
-    setStatusMessage(withMicrophone ? 'Requesting microphone and starting Gemini…' : 'Starting a text-only Gemini session…')
+    setStatusMessage(withMicrophone ? 'Requesting microphone and starting Starlight AI…' : 'Starting Starlight AI text chat…')
     setErrorMessage('')
     setTextOnlyMode(textOnly)
     setTextRequestPending(false)
@@ -204,7 +204,7 @@ export function VoiceReceptionist() {
       readyRef.current = true
       setStatus('connected')
       setStatusMessage('Text chat ready — type a question below')
-      appendMessage('assistant', 'Text-only test is ready. Ask me about Starlight AI to verify the Gemini API connection.')
+      appendMessage('assistant', 'Text-only test is ready. Ask me about Starlight AI to try the assistant.')
       return
     }
 
@@ -272,11 +272,11 @@ export function VoiceReceptionist() {
       })
       if (!tokenResponse.ok) {
         const data = await tokenResponse.json().catch(() => ({})) as { error?: string }
-        throw new Error(data.error || 'Could not create a Gemini Live session. Please try again.')
+        throw new Error(data.error || 'Could not start the voice assistant. Please try again.')
       }
 
       const tokenData = await tokenResponse.json() as { token?: string }
-      if (!tokenData.token) throw new Error('Gemini did not return a short-lived session token.')
+      if (!tokenData.token) throw new Error('The assistant could not start a secure session.')
 
       const socketUrl = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=' + tokenData.token
       const socket = new WebSocket(socketUrl)
@@ -316,7 +316,7 @@ export function VoiceReceptionist() {
 
             const payload = JSON.parse(raw) as GeminiMessage
             if (payload.error) {
-              setErrorMessage(payload.error.message || 'Gemini returned a voice-session error.')
+              setErrorMessage(payload.error.message || 'The assistant returned a voice-session error.')
               if (!readyRef.current) {
                 setStatus('error')
                 setStatusMessage('Voice session unavailable')
@@ -383,14 +383,14 @@ export function VoiceReceptionist() {
       socket.onerror = () => {
         setStatus('error')
         setStatusMessage('Voice connection error')
-        setErrorMessage(textOnly ? 'Could not connect to Gemini text mode. The server may be rejecting the API key, model, or session configuration.' : 'Could not connect to Gemini Live. Check the server API key, model access, and network, then try again.')
+        setErrorMessage(textOnly ? 'Could not connect to the assistant. Please try again or use the text-only test.' : 'Could not connect to the voice assistant. Check your connection and try again.')
       }
       socket.onclose = () => {
         if (endingRef.current) return
         readyRef.current = false
         setStatus('error')
         setStatusMessage('Voice session ended')
-        setErrorMessage(textOnly ? 'The Gemini text session closed before it was ready. Try again or inspect the server/API error.' : 'The Gemini Live session closed. Start a new chat to continue.')
+        setErrorMessage(textOnly ? 'The assistant text session closed before it was ready. Please try again.' : 'The voice session closed. Start a new chat to continue.')
       }
     } catch (error) {
       cleanupSession()
@@ -421,7 +421,7 @@ export function VoiceReceptionist() {
       appendMessage('visitor', text)
       setDraft('')
       setErrorMessage('')
-      setStatusMessage('Asking Gemini…')
+      setStatusMessage('Asking Starlight AI…')
       setTextRequestPending(true)
 
       try {
@@ -432,12 +432,12 @@ export function VoiceReceptionist() {
           cache: 'no-store',
         })
         const data = await response.json().catch(() => ({})) as { reply?: string; error?: string }
-        if (!response.ok) throw new Error(data.error || `Gemini text request failed (HTTP ${response.status}).`)
-        if (!data.reply) throw new Error('Gemini returned an empty reply. Please try again.')
+        if (!response.ok) throw new Error(data.error || `Assistant request failed (HTTP ${response.status}).`)
+        if (!data.reply) throw new Error('The assistant returned an empty reply. Please try again.')
         appendMessage('assistant', data.reply)
         setStatusMessage('Text chat ready — type another question')
       } catch (error) {
-        setErrorMessage(error instanceof Error ? error.message : 'Could not reach Gemini text mode.')
+        setErrorMessage(error instanceof Error ? error.message : 'Could not reach the assistant.')
         setStatusMessage('Text chat request failed — you can retry')
       } finally {
         setTextRequestPending(false)
@@ -484,7 +484,7 @@ export function VoiceReceptionist() {
           <span className="flex size-11 items-center justify-center rounded-2xl bg-primary/15 text-primary"><Bot className="size-5" /></span>
           <div>
             <p className="font-semibold">Starlight AI Receptionist</p>
-            <p className="text-xs text-muted-foreground">Gemini Live voice conversation demo</p>
+            <p className="text-xs text-muted-foreground">Starlight AI voice assistant demo</p>
           </div>
         </div>
         <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-xs text-muted-foreground">
@@ -536,7 +536,7 @@ export function VoiceReceptionist() {
 
         <div className="flex min-h-[460px] flex-col">
           <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4 md:px-6">
-            <div><p className="font-semibold">Conversation</p><p className="text-xs text-muted-foreground">{textOnlyMode ? 'Text-only Gemini API test — no microphone required.' : 'Voice replies appear here as text when available.'}</p></div>
+            <div><p className="font-semibold">Conversation</p><p className="text-xs text-muted-foreground">{textOnlyMode ? 'Text-only assistant test — no microphone required.' : 'Voice replies appear here as text when available.'}</p></div>
             <button type="button" onClick={resetTranscript} disabled={messages.length === 0 && !liveTranscript} className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40" aria-label="Clear conversation transcript"><RotateCcw className="size-3.5" /> Clear</button>
           </div>
 
@@ -545,7 +545,7 @@ export function VoiceReceptionist() {
               <div className="flex h-full min-h-[230px] flex-col items-center justify-center text-center">
                 <span className="flex size-12 items-center justify-center rounded-2xl border border-border bg-background text-primary"><Sparkles className="size-5" /></span>
                 <p className="mt-4 font-semibold">Your conversation starts here</p>
-                <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">Start voice chat with microphone access, or choose Test text chat to check the Gemini text API independently.</p>
+                <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">Start voice chat with microphone access, or choose Test text chat to try the assistant without a microphone.</p>
               </div>
             )}
             {messages.map((message) => (
@@ -572,7 +572,7 @@ export function VoiceReceptionist() {
               {suggestions.map((suggestion) => <button key={suggestion} type="button" onClick={() => sendText(suggestion)} disabled={!connected} className="rounded-full border border-border px-3 py-2 text-left text-xs transition-colors hover:border-primary/50 hover:text-primary disabled:cursor-not-allowed disabled:opacity-40">{suggestion}</button>)}
             </div>
             <form onSubmit={(event) => { event.preventDefault(); sendText(draft) }} className="flex items-center gap-2 rounded-2xl border border-border bg-background p-2 pl-4 focus-within:border-primary/60">
-              <input value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={700} disabled={!connected || textRequestPending} placeholder={connected ? (textOnlyMode ? 'Type a message to test Gemini…' : 'Type a message…') : 'Start voice chat to send a message'} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70 disabled:cursor-not-allowed" aria-label="Message the AI receptionist" />
+              <input value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={700} disabled={!connected || textRequestPending} placeholder={connected ? (textOnlyMode ? 'Type a message to test the assistant…' : 'Type a message…') : 'Start voice chat to send a message'} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70 disabled:cursor-not-allowed" aria-label="Message the AI receptionist" />
               <button type="submit" disabled={!connected || !draft.trim() || textRequestPending} aria-label="Send message" className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40"><Send className="size-4" /></button>
             </form>
           </div>
@@ -581,7 +581,7 @@ export function VoiceReceptionist() {
 
       <div className="flex items-start gap-2 border-t border-border px-5 py-4 text-xs leading-relaxed text-muted-foreground md:px-7">
         <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-        <p>This is an illustrative demo, not a deployed business receptionist. It does not book meetings, contact staff, connect to WhatsApp or a CRM, or save this transcript to Starlight AI’s database. Live audio is sent directly to Google Gemini to generate responses.</p>
+        <p>This is an illustrative demo, not a deployed business receptionist. It does not book meetings, contact staff, connect to WhatsApp or a CRM, or save this transcript to Starlight AI’s database. Voice and text are processed by our AI provider to generate responses.</p>
       </div>
     </section>
   )

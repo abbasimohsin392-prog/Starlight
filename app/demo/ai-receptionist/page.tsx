@@ -6,7 +6,7 @@ import { VoiceReceptionist } from '@/components/site/voice-receptionist'
 
 export const metadata: Metadata = {
   title: 'AI Receptionist Demo',
-  description: 'Talk to Starlight AI’s live Gemini voice receptionist demo. Speak through your microphone or type a message to see how a conversational AI assistant could help visitors.',
+  description: 'Talk to Starlight AI’s branded voice receptionist demo. Speak through your microphone or type a message to see how a conversational AI assistant could help visitors.',
 }
 
 export default function AIReceptionistDemoPage() {
@@ -52,7 +52,7 @@ export default function AIReceptionistDemoPage() {
             <a href="/demo/real-estate" className="inline-flex h-12 items-center gap-2 rounded-full border border-border px-6 text-sm font-semibold transition-colors hover:border-primary/60">Explore the property demo <ArrowRight className="size-4" /></a>
           </div>
           <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-relaxed text-muted-foreground">
-            Uses Gemini Live with a short-lived browser token issued by your server. Add GEMINI_API_KEY privately in hosting settings. Google’s free tier may be available subject to quota, model availability, and its data-use terms; paid-tier use can incur charges. The microphone is requested only after you press Start.
+            Uses a secure, short-lived session issued by the server. The AI provider may process voice and text to generate replies; usage limits or charges may apply. The microphone is requested only after you press Start.
           </p>
         </section>
       </main>
