@@ -1,3 +1,5 @@
+import { getGeminiApiKey } from '@/lib/gemini-api-key'
+
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
