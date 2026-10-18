@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     return jsonError('Invalid request origin.', 403)
   }
 
-  const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY
+  const apiKey = getGeminiApiKey()
   if (!apiKey) {
     return jsonError(
       'The live AI receptionist is not configured yet. Add GEMINI_API_KEY as a private server-side secret in your hosting settings.',
