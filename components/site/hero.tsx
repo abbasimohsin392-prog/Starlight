@@ -75,7 +75,7 @@ export function Hero() {
           >
             <Magnetic>
               <a
-                href="#contact"
+                href="/contact"
                 className="glow-primary group inline-flex h-14 items-center gap-3 rounded-full bg-primary pl-7 pr-2 text-base font-semibold text-primary-foreground"
               >
                 Book a strategy call
@@ -86,7 +86,7 @@ export function Hero() {
             </Magnetic>
             <Magnetic strength={0.2}>
               <a
-                href="#systems"
+                href="/solutions"
                 className="inline-flex h-14 items-center rounded-full border border-border bg-surface/40 px-7 text-base font-semibold backdrop-blur transition-colors hover:border-foreground/40"
               >
                 See the systems
@@ -115,7 +115,7 @@ export function Hero() {
       </motion.div>
 
       <motion.a
-        href="#services"
+        href="/services"
         aria-label="Scroll to services"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
