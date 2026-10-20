@@ -12,11 +12,11 @@ export const site = {
 }
 
 export const navLinks = [
-  { id: 'services', label: 'Services' },
-  { id: 'process', label: 'Process' },
-  { id: 'systems', label: 'Systems' },
-  { id: 'about', label: 'About' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'services', label: 'Services', href: '/services' },
+  { id: 'process', label: 'Process', href: '/process' },
+  { id: 'systems', label: 'Solutions', href: '/solutions' },
+  { id: 'about', label: 'About', href: '/about' },
+  { id: 'contact', label: 'Contact', href: '/contact' },
 ]
 
 export const services = [
@@ -151,4 +151,3 @@ export const marqueeItems = [
   'Workflow monitoring',
   'Custom integrations',
 ]
-
