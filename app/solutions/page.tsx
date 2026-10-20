@@ -42,7 +42,7 @@ export default function SolutionsPage() {
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <a href="/demo/real-estate" className="inline-flex h-12 items-center gap-2 rounded-full border border-border px-6 text-sm font-semibold transition-colors hover:border-primary/60">Try the real-estate demo <ArrowRight className="size-4" /></a>
-            <a href="/#contact" className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]">Discuss a solution <ArrowRight className="size-4" /></a>
+            <a href="/contact" className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]">Discuss a solution <ArrowRight className="size-4" /></a>
           </div>
         </section>
       </main>
