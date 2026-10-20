@@ -22,7 +22,7 @@ export function Hero() {
     <section
       id="hero"
       ref={ref}
-      className="noise relative flex min-h-[100svh] flex-col justify-center overflow-hidden pt-32 pb-24"
+      className="noise relative flex min-h-[100svh] flex-col justify-center overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-24"
     >
       <motion.div aria-hidden style={reduced ? undefined : { y: bgY }} className="grid-fade absolute inset-0" />
       <motion.div
@@ -33,9 +33,9 @@ export function Hero() {
 
       <motion.div
         style={reduced ? undefined : { y: contentY, opacity: fade }}
-        className="relative mx-auto grid w-full max-w-7xl gap-16 px-6 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-8"
+        className="relative mx-auto grid w-full min-w-0 max-w-7xl gap-10 px-5 sm:gap-16 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-8"
       >
-        <div>
+        <div className="min-w-0">
           <motion.div
             initial={reduced ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,7 +51,7 @@ export function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="font-display text-[clamp(2.75rem,7.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.03em]">
+          <h1 className="font-display min-w-0 max-w-full text-[clamp(2rem,9vw,6.5rem)] font-bold leading-[0.98] tracking-[-0.035em] sm:text-[clamp(2.75rem,7.5vw,6.5rem)]">
             <SplitWords text="Less busywork," delay={introDelay + 0.1} />
             <br />
             <SplitWords text="more time for" delay={introDelay + 0.25} />{' '}
@@ -99,10 +99,10 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0, scale: 0.94, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.1, ease, delay: introDelay + 0.6 }}
-          className="relative"
+          className="relative min-w-0"
         >
           <div className="absolute -inset-6 rounded-[2.5rem] bg-[radial-gradient(closest-side,var(--glow),transparent)] opacity-60 blur-2xl" aria-hidden />
-          <div className="relative rounded-[2rem] border border-border bg-surface/40 p-6 backdrop-blur-sm md:p-8">
+          <div className="relative min-w-0 rounded-[2rem] border border-border bg-surface/40 p-4 backdrop-blur-sm sm:p-6 md:p-8">
             <div className="mb-6 flex items-center justify-between font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
               <span>Illustrative workflow</span>
               <span className="flex items-center gap-2">
