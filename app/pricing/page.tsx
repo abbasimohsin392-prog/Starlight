@@ -83,7 +83,7 @@ export default function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                <a href="/#contact" className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]">
+                <a href="/contact" className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]">
                   Discuss this plan
                 </a>
               </article>
