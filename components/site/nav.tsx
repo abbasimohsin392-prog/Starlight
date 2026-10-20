@@ -40,7 +40,7 @@ export function Nav() {
   return (
     <>
       <motion.header
-        className="fixed inset-x-0 top-0 z-[100] flex justify-center px-4 pt-4"
+        className="fixed inset-x-0 top-0 z-[100] flex w-full max-w-full justify-center px-3 pt-3 sm:px-4 sm:pt-4"
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.9, ease, delay: 0.2 }}
@@ -48,7 +48,7 @@ export function Nav() {
         <motion.nav
           aria-label="Primary"
           className={cn(
-            'flex w-full max-w-6xl items-center justify-between rounded-full border px-3 transition-[background-color,border-color,box-shadow] duration-500',
+            'relative isolate flex w-full min-w-0 max-w-6xl flex-row items-center justify-between gap-2 rounded-full border px-2.5 transition-[background-color,border-color,box-shadow] duration-500 sm:px-3',
             scrolled
               ? 'border-border bg-background/70 shadow-[0_8px_40px_-12px_oklch(0_0_0/0.5)] backdrop-blur-xl'
               : 'border-transparent bg-transparent',
@@ -56,8 +56,8 @@ export function Nav() {
           animate={{ height: scrolled ? 56 : 72 }}
           transition={{ duration: 0.5, ease }}
         >
-          <a href="/" aria-label="Starlight AI home" className="pl-2">
-            <Wordmark />
+          <a href="/" aria-label="Starlight AI home" className="relative z-10 flex min-w-0 shrink-0 items-center pl-1 sm:pl-2">
+            <Wordmark className="[&>svg]:size-7 [&>span]:text-base sm:[&>svg]:size-8 sm:[&>span]:text-lg" />
           </a>
 
           <ul className="hidden items-center gap-1 xl:flex">
@@ -83,7 +83,7 @@ export function Nav() {
             </li>
           </ul>
 
-          <div className="flex items-center gap-2">
+          <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
             <ThemeToggle />
             <Magnetic strength={0.25} className="hidden sm:inline-block">
               <a
@@ -99,7 +99,7 @@ export function Nav() {
               aria-expanded={open}
               aria-controls="mobile-navigation"
               onClick={() => setOpen((o) => !o)}
-              className="flex size-10 items-center justify-center rounded-full border border-border bg-surface/60 xl:hidden"
+              className="relative z-[101] flex size-10 shrink-0 items-center justify-center rounded-full border border-border bg-surface/90 text-foreground xl:hidden"
             >
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
