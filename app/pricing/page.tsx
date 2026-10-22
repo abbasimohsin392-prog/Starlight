@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const plans = [
   {
     name: 'Starter',
-    price: '$197',
+    price: '$149',
     summary: 'For one clearly defined enquiry workflow.',
     features: [
       'One agreed website chatbot or straightforward lead workflow',
@@ -22,7 +22,7 @@ const plans = [
   },
   {
     name: 'Growth',
-    price: '$397',
+    price: '$299',
     summary: 'For a tailored assistant connected to your day-to-day tools.',
     features: [
       'A customized assistant for one agreed business use case',
@@ -34,7 +34,7 @@ const plans = [
   },
   {
     name: 'Pro',
-    price: '$597+',
+    price: '$499+',
     summary: 'For more involved workflows and integrations.',
     features: [
       'Multi-step or multi-channel workflows, as scoped',
