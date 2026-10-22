@@ -55,8 +55,8 @@ export function About() {
         <div>
           <SectionHeader
             eyebrow="About Starlight AI"
-            title="A small studio obsessed with the unglamorous work."
-            description="Starlight AI started with a simple observation: most businesses don’t lose customers because of bad products. They lose them in the gaps: an unanswered call, a delayed lead response, or a follow-up nobody sent. We build AI workflows designed to reduce those gaps and make responses more consistent."
+            title="Making AI useful and affordable for businesses."
+            description="I’m Aoun Abbasi, founder of Starlight AI. I started it in February 2026 with one simple idea: businesses shouldn’t need a huge budget to benefit from AI. My goal is to help businesses save time, serve customers better, and automate repetitive work through affordable AI receptionists, chatbots, WhatsApp agents, and custom automation."
           />
 
           <StaggerGroup className="mt-14 space-y-10" delay={0.12}>
