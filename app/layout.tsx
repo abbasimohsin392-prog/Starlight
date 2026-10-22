@@ -66,11 +66,7 @@ export const metadata: Metadata = {
     images: ['/starlight-s-icon.png'],
   },
   icons: {
-    icon: [
-      { url: '/favicon.ico', type: 'image/x-icon', sizes: 'any' },
-      { url: '/favicon-48.png', type: 'image/png', sizes: '48x48' },
-      { url: '/starlight-s-icon.png', type: 'image/png', sizes: '192x192' },
-    ],
+    icon: [{ url: '/favicon-starlight-v2.ico', type: 'image/x-icon', sizes: '48x48' }],
     apple: '/apple-icon.png',
   },
 }
