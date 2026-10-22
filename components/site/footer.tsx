@@ -12,7 +12,7 @@ export function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-border">
       <div className="mx-auto max-w-7xl px-6 pt-20 pb-10">
-        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+        <div className="grid gap-x-6 gap-y-12 md:grid-cols-[1.5fr_1.5fr_1fr_0.75fr]">
           <div>
             <Wordmark />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
@@ -20,19 +20,23 @@ export function Footer() {
               businesses that want to respond consistently and spend less time on repetitive work.
             </p>
           </div>
-          <nav aria-label="Explore">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Explore</p>
-            <ul className="mt-5 space-y-3 text-sm">
-              <li><a href="/services" className="transition-colors hover:text-primary">Services</a></li>
-              <li><a href={pathname === '/' ? '#about' : '/#about'} className="transition-colors hover:text-primary">About</a></li>
-              <li><a href="/pricing" className="transition-colors hover:text-primary">Pricing</a></li>
-              <li><a href="/contact" className="transition-colors hover:text-primary">Contact</a></li>
-            </ul>
-            <p className="mt-7 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Demo</p>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li><a href="/demo/ai-receptionist" className="transition-colors hover:text-primary">AI receptionist</a></li>
-            </ul>
-          </nav>
+          <div className="grid grid-cols-[1fr_1fr] gap-5 md:gap-6">
+            <nav aria-label="Explore">
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Explore</p>
+              <ul className="mt-5 space-y-3 text-sm">
+                <li><a href="/services" className="transition-colors hover:text-primary">Services</a></li>
+                <li><a href={pathname === '/' ? '#about' : '/#about'} className="transition-colors hover:text-primary">About</a></li>
+                <li><a href="/pricing" className="transition-colors hover:text-primary">Pricing</a></li>
+                <li><a href="/contact" className="transition-colors hover:text-primary">Contact</a></li>
+              </ul>
+            </nav>
+            <nav aria-label="Demo">
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Demo</p>
+              <ul className="mt-5 space-y-3 text-sm">
+                <li><a href="/demo/ai-receptionist" className="transition-colors hover:text-primary">AI receptionist</a></li>
+              </ul>
+            </nav>
+          </div>
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Contact</p>
             <ul className="mt-5 space-y-3 text-sm">
