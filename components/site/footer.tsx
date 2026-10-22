@@ -2,7 +2,7 @@
 
 import { ArrowUpRight } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { navLinks, site } from '@/lib/data'
+import { site } from '@/lib/data'
 import { Wordmark } from './logo'
 import { Reveal } from '@/components/motion/reveal'
 
@@ -20,24 +20,20 @@ export function Footer() {
               businesses that want to respond consistently and spend less time on repetitive work.
             </p>
           </div>
-          <nav aria-label="Footer">
+          <nav aria-label="Explore">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Explore</p>
             <ul className="mt-5 space-y-3 text-sm">
-              {navLinks.map((l) => (
-                <li key={l.id}>
-                  <a href={pathname === '/' ? `#${l.id}` : `/#${l.id}`} className="transition-colors hover:text-primary">
-                    {l.label}
-                  </a>
-                </li>
-              ))}
+              <li><a href={pathname === '/' ? '#services' : '/#services'} className="transition-colors hover:text-primary">Services</a></li>
+              <li><a href={pathname === '/' ? '#process' : '/#process'} className="transition-colors hover:text-primary">Process</a></li>
+              <li><a href={pathname === '/' ? '#systems' : '/#systems'} className="transition-colors hover:text-primary">Systems</a></li>
+              <li><a href={pathname === '/' ? '#about' : '/#about'} className="transition-colors hover:text-primary">About</a></li>
               <li><a href="/pricing" className="transition-colors hover:text-primary">Pricing</a></li>
-              <li><a href="/services" className="transition-colors hover:text-primary">Services overview</a></li>
               <li><a href="/solutions" className="transition-colors hover:text-primary">Solutions</a></li>
-              <li><a href="/contact" className="transition-colors hover:text-primary">Contact page</a></li>
-              <li><a href="/demo/ai-receptionist" className="transition-colors hover:text-primary">AI receptionist demo</a></li>
+            </ul>
+            <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Try a demo</p>
+            <ul className="mt-5 space-y-3 text-sm">
+              <li><a href="/demo/ai-receptionist" className="transition-colors hover:text-primary">AI receptionist</a></li>
               <li><a href="/demo/real-estate" className="transition-colors hover:text-primary">Real estate demo</a></li>
-              <li><a href="/privacy" className="transition-colors hover:text-primary">Privacy policy</a></li>
-              <li><a href="/terms" className="transition-colors hover:text-primary">Terms of service</a></li>
             </ul>
           </nav>
           <div>
@@ -89,8 +85,12 @@ export function Footer() {
           </p>
         </Reveal>
 
-        <div className="mt-10 flex flex-col gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>© {year} Starlight AI. All rights reserved.</p>
+          <nav aria-label="Legal" className="flex items-center gap-5">
+            <a href="/privacy" className="transition-colors hover:text-foreground">Privacy</a>
+            <a href="/terms" className="transition-colors hover:text-foreground">Terms</a>
+          </nav>
           <p className="font-mono">Designed & engineered for businesses that never sleep.</p>
         </div>
       </div>
