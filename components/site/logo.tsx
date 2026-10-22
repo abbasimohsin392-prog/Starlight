@@ -43,7 +43,6 @@ export function Logo({ className }: { className?: string }) {
 export function Wordmark({ className }: { className?: string }) {
   return (
     <span className={cn('flex items-center gap-2.5', className)}>
-      <Logo className="size-8" />
       <span className="font-display text-lg font-bold tracking-tight">
         Starlight <span className="text-gradient">AI</span>
       </span>
