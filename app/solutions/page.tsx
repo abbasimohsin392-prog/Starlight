@@ -21,7 +21,7 @@ export default function SolutionsPage() {
           <div className="mx-auto mt-8 max-w-3xl text-center">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">Solutions</p>
             <h1 className="font-display mt-5 text-4xl font-bold tracking-tight md:text-6xl">Start with a real workflow.</h1>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">These examples show the kinds of workflows an implementation could cover. They are illustrative blueprints—not client case studies, measured outcomes, or live connected systems.</p>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">These examples show the kinds of workflows an implementation could cover. They are illustrative blueprints, not client case studies, measured outcomes, or live connected systems.</p>
           </div>
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {systems.map((system) => (

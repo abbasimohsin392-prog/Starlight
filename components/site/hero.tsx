@@ -64,7 +64,7 @@ export function Hero() {
             transition={{ duration: 0.8, ease, delay: introDelay + 0.7 }}
             className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl"
           >
-            We build AI receptionists, website chatbots, WhatsApp agents, and custom automations that can answer approved questions, capture enquiries, and route follow-ups—with clear human handoffs.
+            We build AI receptionists, website chatbots, WhatsApp agents, and custom automations that can answer approved questions, capture enquiries, and route follow-ups with clear human handoffs.
           </motion.p>
 
           <motion.div

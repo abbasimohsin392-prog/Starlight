@@ -203,7 +203,7 @@ export function VoiceReceptionist() {
     if (textOnly) {
       readyRef.current = true
       setStatus('connected')
-      setStatusMessage('Text chat ready — type a question below')
+      setStatusMessage('Text chat ready: type a question below')
       appendMessage('assistant', 'Text-only test is ready. Ask me about Starlight AI to try the assistant.')
       return
     }
@@ -327,7 +327,7 @@ export function VoiceReceptionist() {
             if (payload.setupComplete) {
               readyRef.current = true
               setStatus('connected')
-              setStatusMessage(withMicrophone ? 'Connected — speak naturally or type below' : 'Text test connected — type a message below')
+              setStatusMessage(withMicrophone ? 'Connected. Speak naturally or type below' : 'Text test connected. Type a message below')
               socket.send(JSON.stringify({
                 clientContent: {
                   turns: [{
@@ -363,7 +363,7 @@ export function VoiceReceptionist() {
               if (outputDraftRef.current.trim()) appendMessage('assistant', outputDraftRef.current)
               outputDraftRef.current = ''
               setLiveTranscript(null)
-              setStatusMessage('Listening — go ahead')
+              setStatusMessage('Listening. Go ahead.')
             }
 
             if (content.turnComplete) {
@@ -372,7 +372,7 @@ export function VoiceReceptionist() {
               inputDraftRef.current = ''
               outputDraftRef.current = ''
               setLiveTranscript(null)
-              setStatusMessage(withMicrophone ? 'Connected — speak naturally or type below' : 'Text test connected — type a message below')
+              setStatusMessage(withMicrophone ? 'Connected. Speak naturally or type below' : 'Text test connected. Type a message below')
             }
           } catch {
             setErrorMessage('A voice response could not be processed. Please end the chat and reconnect.')
@@ -435,10 +435,10 @@ export function VoiceReceptionist() {
         if (!response.ok) throw new Error(data.error || `Assistant request failed (HTTP ${response.status}).`)
         if (!data.reply) throw new Error('The assistant returned an empty reply. Please try again.')
         appendMessage('assistant', data.reply)
-        setStatusMessage('Text chat ready — type another question')
+        setStatusMessage('Text chat ready: type another question')
       } catch (error) {
         setErrorMessage(error instanceof Error ? error.message : 'Could not reach the assistant.')
-        setStatusMessage('Text chat request failed — you can retry')
+        setStatusMessage('Text chat request failed. You can retry.')
       } finally {
         setTextRequestPending(false)
       }
@@ -464,7 +464,7 @@ export function VoiceReceptionist() {
     const nextMuted = !mutedRef.current
     mutedRef.current = nextMuted
     setMuted(nextMuted)
-    setStatusMessage(nextMuted ? 'Microphone muted' : 'Connected — speak naturally or type below')
+    setStatusMessage(nextMuted ? 'Microphone muted' : 'Connected. Speak naturally or type below')
   }, [])
 
   const resetTranscript = useCallback(() => {
@@ -536,7 +536,7 @@ export function VoiceReceptionist() {
 
         <div className="flex min-h-[460px] flex-col">
           <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4 md:px-6">
-            <div><p className="font-semibold">Conversation</p><p className="text-xs text-muted-foreground">{textOnlyMode ? 'Text-only assistant test — no microphone required.' : 'Voice replies appear here as text when available.'}</p></div>
+            <div><p className="font-semibold">Conversation</p><p className="text-xs text-muted-foreground">{textOnlyMode ? 'Text-only assistant test. No microphone required.' : 'Voice replies appear here as text when available.'}</p></div>
             <button type="button" onClick={resetTranscript} disabled={messages.length === 0 && !liveTranscript} className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40" aria-label="Clear conversation transcript"><RotateCcw className="size-3.5" /> Clear</button>
           </div>
 
