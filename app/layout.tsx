@@ -56,12 +56,14 @@ export const metadata: Metadata = {
     description:
       'AI receptionists, website chatbots, WhatsApp agents, and custom workflows for enquiry handling, lead routing, and customer support.',
     locale: 'en_US',
+    images: [{ url: '/starlight-s-icon.png', width: 192, height: 192, alt: 'Starlight AI S icon' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Starlight AI | AI Automation Agency',
     description:
       'AI receptionists, website chatbots, WhatsApp agents, and custom workflows for enquiry handling, lead routing, and customer support.',
+    images: ['/starlight-s-icon.png'],
   },
   icons: {
     icon: [{ url: '/starlight-s-icon.png', type: 'image/png', sizes: '192x192' }],
