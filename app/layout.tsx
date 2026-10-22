@@ -64,8 +64,8 @@ export const metadata: Metadata = {
       'AI receptionists, website chatbots, WhatsApp agents, and custom workflows for enquiry handling, lead routing, and customer support.',
   },
   icons: {
-    icon: [{ url: '/favicon-192.png', type: 'image/png', sizes: '192x192' }],
-    apple: '/apple-icon.png',
+    icon: [{ url: '/starlight-s-icon.png', type: 'image/png', sizes: '192x192' }],
+    apple: '/starlight-s-icon.png',
   },
 }
 
