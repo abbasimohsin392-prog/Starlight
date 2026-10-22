@@ -23,17 +23,14 @@ export function Footer() {
           <nav aria-label="Explore">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Explore</p>
             <ul className="mt-5 space-y-3 text-sm">
-              <li><a href={pathname === '/' ? '#services' : '/#services'} className="transition-colors hover:text-primary">Services</a></li>
-              <li><a href={pathname === '/' ? '#process' : '/#process'} className="transition-colors hover:text-primary">Process</a></li>
-              <li><a href={pathname === '/' ? '#systems' : '/#systems'} className="transition-colors hover:text-primary">Systems</a></li>
+              <li><a href="/services" className="transition-colors hover:text-primary">Services</a></li>
               <li><a href={pathname === '/' ? '#about' : '/#about'} className="transition-colors hover:text-primary">About</a></li>
               <li><a href="/pricing" className="transition-colors hover:text-primary">Pricing</a></li>
-              <li><a href="/solutions" className="transition-colors hover:text-primary">Solutions</a></li>
+              <li><a href="/contact" className="transition-colors hover:text-primary">Contact</a></li>
             </ul>
-            <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Try a demo</p>
-            <ul className="mt-5 space-y-3 text-sm">
+            <p className="mt-7 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">Demo</p>
+            <ul className="mt-4 space-y-3 text-sm">
               <li><a href="/demo/ai-receptionist" className="transition-colors hover:text-primary">AI receptionist</a></li>
-              <li><a href="/demo/real-estate" className="transition-colors hover:text-primary">Real estate demo</a></li>
             </ul>
           </nav>
           <div>
