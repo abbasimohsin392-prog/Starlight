@@ -82,6 +82,7 @@ export function Contact() {
       <div className="relative mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[1fr_1fr] lg:gap-24">
         <div>
           <SectionHeader
+            headingLevel="h1"
             eyebrow="Let’s talk"
             title="Ready to stop losing leads to voicemail?"
             description="Book a free 30-minute strategy call. We’ll map one customer workflow, identify a practical opportunity, and outline what a scoped AI solution could look like."

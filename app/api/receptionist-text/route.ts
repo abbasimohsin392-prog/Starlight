@@ -1,4 +1,5 @@
 import { getGeminiApiKey } from '@/lib/gemini-api-key'
+import { enforceAiRateLimit } from '@/lib/rate-limit'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -25,6 +26,9 @@ export async function POST(request: Request) {
   } catch {
     return jsonError('Invalid request origin.', 403)
   }
+
+  const rateLimitResponse = await enforceAiRateLimit(request, 'text-chat')
+  if (rateLimitResponse) return rateLimitResponse
 
   const apiKey = await getGeminiApiKey()
   if (!apiKey) {

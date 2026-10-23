@@ -122,6 +122,12 @@ export function Nav() {
           </ul>
 
           <div className="flex items-center gap-2">
+            <a
+              href="/demo/ai-receptionist"
+              className="inline-flex items-center rounded-full px-2 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground xl:hidden"
+            >
+              Demo
+            </a>
             <ThemeToggle />
             <Magnetic strength={0.25} className="hidden sm:inline-block">
               <a

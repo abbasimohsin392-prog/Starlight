@@ -15,9 +15,9 @@ export default function PrivacyPage() {
         <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(ellipse_at_top,var(--glow),transparent_68%)] opacity-20" />
         <article className="relative mx-auto max-w-3xl px-6">
           <a href="/" className="text-sm text-muted-foreground transition-colors hover:text-foreground">← Back to Starlight AI</a>
-          <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-primary">Last updated October 17, 2026</p>
+          <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-primary">Last updated October 23, 2026</p>
           <h1 className="font-display mt-4 text-4xl font-bold tracking-tight md:text-5xl">Privacy Policy</h1>
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">This page explains how Starlight AI handles information you submit through starlightai.site. It covers this website and enquiry form, not every third-party service you may choose to use.</p>
+          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">This page explains how Starlight AI handles information submitted through starlightai.site, including the enquiry form and the illustrative AI receptionist demo. Third-party services have their own privacy practices, described below.</p>
 
           <div className="mt-10 space-y-8 text-sm leading-7 text-muted-foreground">
             <section>
@@ -30,7 +30,11 @@ export default function PrivacyPage() {
             </section>
             <section>
               <h2 className="font-display text-xl font-bold text-foreground">Service providers</h2>
-              <p className="mt-3">The contact form uses Brevo to send enquiry notifications to Starlight AI. The website also uses Vercel Analytics in production to understand site usage and performance. External links such as Calendly, WhatsApp, email, and social networks are operated by their respective providers and are subject to their own privacy practices.</p>
+              <p className="mt-3">The contact form uses Brevo to send enquiry notifications to Starlight AI. The website is delivered through Cloudflare, whose infrastructure may process connection metadata and security logs to deliver, protect, and troubleshoot the site. We do not currently run a separate third-party web analytics script on this deployment. External links such as Calendly, WhatsApp, email, and social networks are operated by their respective providers and are subject to their own privacy practices.</p>
+            </section>
+            <section>
+              <h2 className="font-display text-xl font-bold text-foreground">AI receptionist demo</h2>
+              <p className="mt-3">If you use the AI receptionist demo, the text or audio you provide is sent to Google Gemini to generate a response. The demo transcript is not stored in a Starlight AI database, but Google may process the content under its own terms and data practices. Do not enter passwords, payment details, health information, or other sensitive personal information into the demo. The demo does not submit leads, contact staff, or book appointments.</p>
             </section>
             <section>
               <h2 className="font-display text-xl font-bold text-foreground">Sharing and retention</h2>

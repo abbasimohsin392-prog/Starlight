@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Syne, Manrope, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/providers/theme-provider'
@@ -56,14 +55,12 @@ export const metadata: Metadata = {
     description:
       'AI receptionists, website chatbots, WhatsApp agents, and custom workflows for enquiry handling, lead routing, and customer support.',
     locale: 'en_US',
-    images: [{ url: '/starlight-s-icon.png', width: 192, height: 192, alt: 'Starlight AI S icon' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Starlight AI | AI Automation Agency',
     description:
       'AI receptionists, website chatbots, WhatsApp agents, and custom workflows for enquiry handling, lead routing, and customer support.',
-    images: ['/starlight-s-icon.png'],
   },
   icons: {
     icon: [{ url: '/favicon-starlight-v2.ico', type: 'image/x-icon', sizes: '48x48' }],
@@ -98,7 +95,6 @@ export default function RootLayout({
           <SmoothScroll>{children}</SmoothScroll>
           <Cursor />
         </ThemeProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
