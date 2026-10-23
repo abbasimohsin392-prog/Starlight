@@ -25,11 +25,12 @@ export function About() {
           <div className="sticky top-32 overflow-hidden rounded-[2rem] border border-border">
             <div className="relative aspect-[4/5] bg-black">
               <Image
-                src="/images/starlight-logo.png"
+                src="/images/unnamed.gif"
                 alt="Starlight AI brand mark"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-contain"
+                unoptimized
                 loading="lazy"
               />
             </div>
