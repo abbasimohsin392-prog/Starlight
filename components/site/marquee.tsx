@@ -4,7 +4,7 @@ import { Reveal } from '@/components/motion/reveal'
 export function Marquee() {
   const items = [...marqueeItems, ...marqueeItems]
   return (
-    <div className="relative border-y border-border bg-surface/40 py-5" aria-label="Automation stack and integrations">
+    <div className="relative overflow-x-clip border-y border-border bg-surface/40 py-5" aria-label="Automation stack and integrations">
       <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
       <div className="flex w-max animate-marquee motion-reduce:animate-none" style={{ animationDuration: '45s' }}>
