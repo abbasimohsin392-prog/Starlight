@@ -11,9 +11,9 @@ const nextConfig = {
       },
       {
         // Preserve the requested path and query for all non-root URLs.
-        source: '/:path*',
+        source: '/:path+',
         has: [{ type: 'host', value: 'www.starlightai.site' }],
-        destination: 'https://starlightai.site/:path*',
+        destination: 'https://starlightai.site/:path+',
         permanent: true,
       },
     ]
