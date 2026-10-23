@@ -63,8 +63,9 @@ jobs:
                 await successHeading.waitFor({ state: 'visible', timeout: 30000 });
               } catch {
                 const errorText = await page.locator('[role="alert"]').allTextContents().catch(() => []);
+                const errorCode = await page.locator('p[role="alert"][data-error-code]').first().getAttribute('data-error-code').catch(() => null);
                 throw new Error(
-                  'Contact form did not show success. Visible errors: ' + (errorText.join(' | ') || '(none)')
+                  'Contact form did not show success. Diagnostic code: ' + (errorCode || 'not available in deployed version') + '. Visible errors: ' + (errorText.join(' | ') || '(none)')
                 );
               }
 
