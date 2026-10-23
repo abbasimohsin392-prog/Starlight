@@ -1,0 +1,97 @@
+name: Production smoke check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * *"
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "components/**"
+      - "lib/**"
+      - "public/**"
+      - "wrangler.jsonc"
+      - "package.json"
+      - ".github/workflows/production-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  production-routes:
+    name: Check live production routes
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check public pages, robots, and sitemap
+        env:
+          SITE_URL: https://starlightai.site
+        run: |
+          python - <<'PY'
+          import concurrent.futures
+          import os
+          import sys
+          import time
+          from urllib.error import HTTPError, URLError
+          from urllib.request import Request, urlopen
+
+          base = os.environ["SITE_URL"].rstrip("/")
+          routes = {
+              "/": "busywork",
+              "/pricing": "pricing built around the workflow",
+              "/services": "automation for the work your team repeats",
+              "/solutions": "start with a real workflow",
+              "/contact": "ready to stop losing leads to voicemail",
+              "/privacy": "privacy policy",
+              "/terms": "terms of service",
+              "/demo/ai-receptionist": "meet your ai receptionist",
+              "/demo/real-estate": "see how an ai property assistant could respond",
+              "/robots.txt": "sitemap:",
+              "/sitemap.xml": "<urlset",
+          }
+
+          def check(item):
+              path, marker = item
+              url = base + path
+              req = Request(
+                  url,
+                  headers={
+                      "User-Agent": "Mozilla/5.0 (compatible; StarlightProductionSmoke/1.0)",
+                      "Accept": "text/html,application/xml,text/plain,*/*",
+                  },
+              )
+              try:
+                  with urlopen(req, timeout=12) as response:
+                      status = response.status
+                      final_url = response.geturl()
+                      body = response.read(2_000_000).decode("utf-8", errors="replace").lower()
+                  marker_ok = marker.lower() in body
+                  return path, status, final_url, marker_ok, marker, ""
+              except HTTPError as exc:
+                  return path, exc.code, exc.geturl(), False, marker, "HTTP error"
+              except (URLError, TimeoutError, OSError) as exc:
+                  return path, 0, url, False, marker, str(exc)[:180]
+
+          last_results = []
+          for attempt in range(1, 6):
+              with concurrent.futures.ThreadPoolExecutor(max_workers=12) as pool:
+                  results = list(pool.map(check, routes.items()))
+              failures = [r for r in results if r[1] != 200 or not r[3]]
+              last_results = results
+              if not failures:
+                  print(f"All {len(results)} production route checks passed on attempt {attempt}.")
+                  for path, status, final_url, marker_ok, marker, error in results:
+                      print(f"PASS {status} {path} -> {final_url}")
+                  sys.exit(0)
+
+              print(f"Attempt {attempt}/5: {len(failures)} route check(s) failed.")
+              for path, status, final_url, marker_ok, marker, error in failures:
+                  reason = error or (f"missing expected page content: {marker!r}" if status == 200 else "unexpected HTTP status")
+                  print(f"FAIL {status} {path} -> {final_url}: {reason}")
+              if attempt < 5:
+                  time.sleep(15)
+
+          print("Production route smoke check failed after retries.")
+          sys.exit(1)
+          PY
