@@ -4,6 +4,9 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-08-08",
   "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "BREVO_FROM_EMAIL": "hello@starlightai.site"
+  },
   "ratelimits": [
     {
       "name": "AI_SESSION_RATE_LIMITER",
