@@ -97,6 +97,39 @@ jobs:
           sys.exit(1)
           PY
 
+      - name: Check international contact links and USD pricing
+        run: |
+          python - <<'PY'
+          from urllib.request import Request, urlopen
+
+          def fetch(path):
+              req = Request(
+                  "https://starlightai.site" + path,
+                  headers={"User-Agent": "Mozilla/5.0 (compatible; StarlightProductionSmoke/1.0)"},
+              )
+              with urlopen(req, timeout=12) as response:
+                  if response.status != 200:
+                      raise SystemExit(f"FAIL {path}: HTTP {response.status}")
+                  return response.read(2_000_000).decode("utf-8", errors="replace").lower()
+
+          contact = fetch("/contact")
+          expected_links = {
+              "business email": "mailto:hello@starlightai.site",
+              "WhatsApp": "https://wa.me/923007657038",
+              "Calendly booking": "https://calendly.com/starlightai306/30min",
+          }
+          for label, link in expected_links.items():
+              if link.lower() not in contact:
+                  raise SystemExit(f"FAIL contact page is missing {label} link: {link}")
+              print(f"PASS contact page contains {label} link")
+
+          pricing = fetch("/pricing")
+          for price in ("$149", "$299", "$499+"):
+              if price.lower() not in pricing:
+                  raise SystemExit(f"FAIL pricing page is missing USD starting price {price}")
+              print(f"PASS pricing page contains {price} starting price")
+          PY
+
       - name: Inspect www canonicalization and email DNS
         run: |
           python - <<'PY'
@@ -185,7 +218,10 @@ jobs:
           else:
               print("WARN no MX records found; verify how hello@starlightai.site receives email")
 
-          for selector in ("sib1", "sib2", "mail", "default", "selector1", "google"):
+          brevo_code = [x for x in txt if "brevo-code:" in x.lower()]
+          print("Brevo domain-verification code records:", brevo_code or "(none found in root TXT records)")
+
+          for selector in ("brevo1", "brevo2", "sib1", "sib2", "sib3", "mail", "default", "selector1", "google"):
               for rtype in ("CNAME", "TXT"):
                   answers, status = records(f"{selector}._domainkey.starlightai.site", rtype)
                   if answers:
