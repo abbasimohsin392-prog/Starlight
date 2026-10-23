@@ -157,7 +157,11 @@ export function Contact() {
                   <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
 
                   {state.status === 'error' && state.message && (
-                    <p role="alert" className="text-sm text-red-400">
+                    <p
+                      role="alert"
+                      data-error-code={state.code ?? 'unknown'}
+                      className="text-sm text-red-400"
+                    >
                       {state.message}
                     </p>
                   )}
