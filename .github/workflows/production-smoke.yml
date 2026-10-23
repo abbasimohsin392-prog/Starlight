@@ -95,3 +95,93 @@ jobs:
           print("Production route smoke check failed after retries.")
           sys.exit(1)
           PY
+
+      - name: Inspect www canonicalization and email DNS
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.parse
+          import urllib.request
+          from urllib.error import HTTPError
+
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+
+          print("=== WWW HOST CANONICALIZATION ===")
+          req = urllib.request.Request(
+              "https://www.starlightai.site/",
+              headers={"User-Agent": "Mozilla/5.0 (compatible; StarlightProductionSmoke/1.0)"},
+          )
+          opener = urllib.request.build_opener(NoRedirect)
+          try:
+              with opener.open(req, timeout=12) as response:
+                  status = response.status
+                  location = response.headers.get("Location", "")
+                  body = response.read(500000).decode("utf-8", errors="replace").lower()
+          except HTTPError as exc:
+              status = exc.code
+              location = exc.headers.get("Location", "")
+              body = exc.read(500000).decode("utf-8", errors="replace").lower()
+          except Exception as exc:
+              status, location, body = 0, "", ""
+              print("WARN could not inspect www hostname:", repr(exc))
+          print("www status:", status)
+          print("www Location:", location or "(none)")
+          if status in (301, 302, 307, 308) and location.startswith("https://starlightai.site/"):
+              print("PASS www redirects to the canonical apex domain")
+          elif status == 200:
+              title_start = body.find("<title>")
+              title_end = body.find("</title>", title_start + 7) if title_start >= 0 else -1
+              title = body[title_start + 7:title_end].strip() if title_start >= 0 and title_end > title_start else "(no title found)"
+              print("WARN www serves content directly; title:", title)
+              print("WARN verify Cloudflare redirects www.starlightai.site to https://starlightai.site")
+          else:
+              print("WARN unexpected www response; verify hostname routing in Cloudflare")
+
+          def dns_query(name, rtype):
+              query = urllib.parse.urlencode({"name": name, "type": rtype})
+              url = "https://dns.google/resolve?" + query
+              with urllib.request.urlopen(url, timeout=12) as response:
+                  return json.load(response)
+
+          def records(name, rtype):
+              try:
+                  data = dns_query(name, rtype)
+                  answer = data.get("Answer", [])
+                  return [item.get("data", "") for item in answer], data.get("Status", 0)
+              except Exception as exc:
+                  print(f"WARN DNS lookup failed for {name} {rtype}:", repr(exc))
+                  return [], None
+
+          print("=== MAIL DNS AUTHENTICATION ===")
+          txt, txt_status = records("starlightai.site", "TXT")
+          spf = [x for x in txt if x.lower().startswith('"v=spf1') or x.lower().startswith("v=spf1")]
+          print("SPF records:", spf or "(none found)")
+          if len(spf) == 1:
+              print("PASS one SPF record found")
+          else:
+              print("WARN expected one SPF record; found", len(spf))
+
+          dmarc, dmarc_status = records("_dmarc.starlightai.site", "TXT")
+          dmarc_records = [x for x in dmarc if "v=dmarc1" in x.lower()]
+          print("DMARC records:", dmarc_records or "(none found)")
+          if len(dmarc_records) == 1:
+              print("PASS one DMARC record found")
+          else:
+              print("WARN expected one DMARC record; found", len(dmarc_records))
+
+          mx, mx_status = records("starlightai.site", "MX")
+          print("MX records:", mx or "(none found)")
+          if mx:
+              print("PASS inbound email MX record(s) found")
+          else:
+              print("WARN no MX records found; verify how hello@starlightai.site receives email")
+
+          for selector in ("sib1", "sib2", "mail", "default", "selector1", "google"):
+              for rtype in ("CNAME", "TXT"):
+                  answers, status = records(f"{selector}._domainkey.starlightai.site", rtype)
+                  if answers:
+                      print(f"DKIM candidate {selector} ({rtype}):", answers)
+          print("DNS diagnostic complete. Confirm DKIM selectors with Brevo before changing DNS.")
+          PY
