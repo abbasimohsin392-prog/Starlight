@@ -49,10 +49,16 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   }
 
   const apiKey = env.BREVO_API_KEY?.trim()
-  const fromEmail = env.BREVO_FROM_EMAIL?.trim()
+  // This is the active sender verified in Brevo. Keep it as the default so the
+  // form does not fail merely because BREVO_FROM_EMAIL was not set separately.
+  const fromEmail = (env.BREVO_FROM_EMAIL || 'hello@starlightai.site').trim()
 
-  if (!apiKey || !fromEmail || !EMAIL_RE.test(fromEmail)) {
-    console.error('[contact] Brevo notification is missing a valid API key or verified sender configuration.')
+  if (!apiKey) {
+    console.error('[contact] BREVO_API_KEY is missing from Cloudflare Worker secrets.')
+    return { status: 'error', message: FAILURE_MESSAGE }
+  }
+  if (!EMAIL_RE.test(fromEmail)) {
+    console.error('[contact] BREVO_FROM_EMAIL is invalid.')
     return { status: 'error', message: FAILURE_MESSAGE }
   }
 
