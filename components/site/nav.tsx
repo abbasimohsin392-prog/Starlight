@@ -168,7 +168,7 @@ export function Nav() {
             exit={{ opacity: 0, clipPath: 'circle(0% at 100% 0%)' }}
             transition={{ duration: 0.6, ease }}
           >
-            <nav aria-label="Mobile" className="mx-auto flex min-h-full w-full max-w-lg flex-col justify-center">
+            <nav aria-label="Mobile" className="mx-auto flex min-h-full w-full max-w-lg flex-col justify-start pt-4 sm:pt-8">
               <ul className="flex flex-col gap-1">
                 <motion.li
                   initial={{ opacity: 0, x: 24 }}
@@ -178,7 +178,7 @@ export function Nav() {
                   <a
                     href={pathname === '/' ? '#hero' : '/'}
                     onClick={goTo('hero')}
-                    className="font-display block py-2 text-3xl font-bold tracking-tight sm:text-4xl"
+                    className="font-display block py-2 text-2xl font-bold tracking-tight sm:text-3xl"
                   >
                     Home
                   </a>
@@ -193,7 +193,7 @@ export function Nav() {
                     <a
                       href={pathname === '/' ? `#${link.id}` : `/#${link.id}`}
                       onClick={goTo(link.id)}
-                      className="font-display block py-2 text-3xl font-bold tracking-tight sm:text-4xl"
+                      className="font-display block py-2 text-2xl font-bold tracking-tight sm:text-3xl"
                     >
                       {link.label}
                     </a>
@@ -204,7 +204,7 @@ export function Nav() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.15 + navLinks.length * 0.04, duration: 0.4, ease }}
                 >
-                  <a href="/pricing" onClick={() => setOpen(false)} className="font-display block py-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                  <a href="/pricing" onClick={() => setOpen(false)} className="font-display block py-2 text-2xl font-bold tracking-tight sm:text-3xl">
                     Pricing
                   </a>
                 </motion.li>
@@ -213,7 +213,7 @@ export function Nav() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 + navLinks.length * 0.04, duration: 0.4, ease }}
                 >
-                  <a href="/demo/ai-receptionist" onClick={() => setOpen(false)} className="font-display block py-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                  <a href="/demo/ai-receptionist" onClick={() => setOpen(false)} className="font-display block py-2 text-2xl font-bold tracking-tight sm:text-3xl">
                     AI Receptionist Demo
                   </a>
                 </motion.li>
