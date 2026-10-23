@@ -41,7 +41,8 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
 
   let env: ContactEnv
   try {
-    env = getCloudflareContext().env as unknown as ContactEnv
+    const context = await getCloudflareContext({ async: true })
+    env = context.env as unknown as ContactEnv
   } catch {
     console.error('[contact] Cloudflare runtime configuration is unavailable.')
     return { status: 'error', message: FAILURE_MESSAGE }

@@ -18,6 +18,21 @@
   ],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/",
+      "/pricing*",
+      "/services*",
+      "/solutions*",
+      "/contact*",
+      "/privacy*",
+      "/terms*",
+      "/demo/*",
+      "/api/*",
+      "/robots.txt",
+      "/sitemap.xml",
+      "/opengraph-image*",
+      "/twitter-image*"
+    ]
   }
 }
