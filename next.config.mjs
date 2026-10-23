@@ -3,6 +3,14 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        // Handle the homepage explicitly so an empty wildcard can never leak into the URL.
+        source: '/',
+        has: [{ type: 'host', value: 'www.starlightai.site' }],
+        destination: 'https://starlightai.site/',
+        permanent: true,
+      },
+      {
+        // Preserve the requested path and query for all non-root URLs.
         source: '/:path*',
         has: [{ type: 'host', value: 'www.starlightai.site' }],
         destination: 'https://starlightai.site/:path*',
