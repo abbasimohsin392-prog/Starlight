@@ -144,10 +144,11 @@ jobs:
                   return None
 
           print("=== WWW HOST CANONICALIZATION ===")
-          www_ok = False
-          for attempt in range(1, 7):
+
+          def check_www_redirect(path, expected_location):
+              url = "https://www.starlightai.site" + path
               req = urllib.request.Request(
-                  "https://www.starlightai.site/",
+                  url,
                   headers={"User-Agent": "Mozilla/5.0 (compatible; StarlightProductionSmoke/1.0)"},
               )
               opener = urllib.request.build_opener(NoRedirect)
@@ -155,29 +156,36 @@ jobs:
                   with opener.open(req, timeout=12) as response:
                       status = response.status
                       location = response.headers.get("Location", "")
-                      body = response.read(500000).decode("utf-8", errors="replace").lower()
               except HTTPError as exc:
                   status = exc.code
                   location = exc.headers.get("Location", "")
-                  body = exc.read(500000).decode("utf-8", errors="replace").lower()
               except Exception as exc:
-                  status, location, body = 0, "", ""
-                  print("WARN www probe failed:", repr(exc))
+                  print(f"WARN redirect probe failed for {path}:", repr(exc))
+                  return False
 
-              if status in (301, 302, 307, 308) and location.startswith("https://starlightai.site/"):
+              if status in (301, 302, 307, 308) and location == expected_location:
+                  print(f"PASS {url} -> {status} {location}")
+                  return True
+
+              print(f"FAIL {url} -> status={status}, location={location or '(none)'}; expected redirect to {expected_location}")
+              return False
+
+          www_ok = False
+          for attempt in range(1, 7):
+              root_ok = check_www_redirect("/", "https://starlightai.site/")
+              path_ok = check_www_redirect(
+                  "/pricing?redirect_smoke=keep-query",
+                  "https://starlightai.site/pricing?redirect_smoke=keep-query",
+              )
+              if root_ok and path_ok:
                   www_ok = True
-                  print(f"PASS www redirects to the canonical apex domain on attempt {attempt}; status={status}, location={location}")
+                  print(f"PASS www canonicalization and path/query preservation on attempt {attempt}")
                   break
-
-              title_start = body.find("<title>")
-              title_end = body.find("</title>", title_start + 7) if title_start >= 0 else -1
-              title = body[title_start + 7:title_end].strip() if title_start >= 0 and title_end > title_start else "(no title found)"
-              print(f"WARN www does not redirect on attempt {attempt}; status={status}; location={location or '(none)'}; title={title}")
               if attempt < 6:
                   time.sleep(15)
 
           if not www_ok:
-              print("FAIL www.starlightai.site must 301/308 redirect to https://starlightai.site while preserving the path and query.")
+              print("FAIL www must redirect the homepage and preserve non-root paths and query strings.")
 
           def dns_query(name, rtype):
               query = urllib.parse.urlencode({"name": name, "type": rtype})
