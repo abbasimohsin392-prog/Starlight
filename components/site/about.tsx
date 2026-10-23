@@ -16,7 +16,6 @@ export function About() {
   const ref = useRef<HTMLElement>(null)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const imgY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 360])
 
   return (
@@ -24,16 +23,16 @@ export function About() {
       <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
         <div className="relative">
           <div className="sticky top-32 overflow-hidden rounded-[2rem] border border-border">
-            <motion.div style={reduced ? undefined : { y: imgY }} className="relative aspect-[4/5] scale-110">
+            <div className="relative aspect-[4/5] bg-black">
               <Image
                 src="/images/starlight-logo.png"
                 alt="Starlight AI brand mark"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
-                className="object-cover"
+                className="object-contain"
                 loading="lazy"
               />
-            </motion.div>
+            </div>
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
             <motion.div
               aria-hidden
