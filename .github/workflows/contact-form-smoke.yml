@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/contact-form-smoke.yml"
+      - "app/actions/contact.ts"
+      - "components/site/contact.tsx"
 
 permissions:
   contents: read
