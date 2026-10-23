@@ -5,6 +5,8 @@ import { getCloudflareContext } from '@opennextjs/cloudflare'
 export type ContactState = {
   status: 'idle' | 'success' | 'error'
   message?: string
+  /** Non-sensitive diagnostic code for support; never includes form data or secrets. */
+  code?: string
   errors?: Partial<Record<'name' | 'email' | 'business' | 'message', string>>
 }
 
@@ -36,7 +38,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   else if (message.length > 5000) errors.message = 'Please keep your message under 5,000 characters.'
 
   if (Object.keys(errors).length) {
-    return { status: 'error', errors, message: 'Please fix the highlighted fields.' }
+    return { status: 'error', code: 'validation_error', errors, message: 'Please fix the highlighted fields.' }
   }
 
   let env: ContactEnv
@@ -45,7 +47,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
     env = context.env as unknown as ContactEnv
   } catch {
     console.error('[contact] Cloudflare runtime configuration is unavailable.')
-    return { status: 'error', message: FAILURE_MESSAGE }
+    return { status: 'error', code: 'cloudflare_context_unavailable', message: FAILURE_MESSAGE }
   }
 
   const apiKey = env.BREVO_API_KEY?.trim()
@@ -55,11 +57,11 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
 
   if (!apiKey) {
     console.error('[contact] BREVO_API_KEY is missing from Cloudflare Worker secrets.')
-    return { status: 'error', message: FAILURE_MESSAGE }
+    return { status: 'error', code: 'missing_brevo_api_key', message: FAILURE_MESSAGE }
   }
   if (!EMAIL_RE.test(fromEmail)) {
     console.error('[contact] BREVO_FROM_EMAIL is invalid.')
-    return { status: 'error', message: FAILURE_MESSAGE }
+    return { status: 'error', code: 'invalid_sender_email', message: FAILURE_MESSAGE }
   }
 
   const textContent = [
@@ -93,13 +95,13 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
 
     if (!response.ok) {
       console.error('[contact] Brevo rejected website enquiry', { status: response.status })
-      return { status: 'error', message: FAILURE_MESSAGE }
+      return { status: 'error', code: `brevo_rejected_${response.status}`, message: FAILURE_MESSAGE }
     }
   } catch (error) {
     console.error('[contact] Brevo request failed', {
       errorName: error instanceof Error ? error.name : 'UnknownError',
     })
-    return { status: 'error', message: FAILURE_MESSAGE }
+    return { status: 'error', code: 'brevo_request_failed', message: FAILURE_MESSAGE }
   }
 
   return {
