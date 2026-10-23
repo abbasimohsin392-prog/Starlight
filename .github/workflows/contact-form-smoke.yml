@@ -1,12 +1,7 @@
 name: One-time live contact form delivery test
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/contact-form-smoke.yml"
-      - "app/actions/contact.ts"
-      - "components/site/contact.tsx"
+  workflow_dispatch:
 
 permissions:
   contents: read
