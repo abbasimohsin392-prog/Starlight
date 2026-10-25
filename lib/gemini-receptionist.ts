@@ -1,5 +1,5 @@
 export const GEMINI_LIVE_MODEL = 'models/gemini-3.8-live'
-export const GEMINI_LIVE_VOICE = 'Sulafat'
+export const GEMINI_LIVE_VOICE = 'Aoede'
 
 /**
  * Shared knowledge and behaviour for the live voice receptionist and text demo.
