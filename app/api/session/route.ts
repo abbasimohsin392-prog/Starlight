@@ -46,7 +46,6 @@ export async function POST(request: Request) {
         newSessionExpireTime: new Date(now + 60 * 1000).toISOString(),
         bidiGenerateContentSetup: {
           model: GEMINI_LIVE_MODEL,
-          enableAffectiveDialog: true,
           generationConfig: {
             responseModalities: ['AUDIO'],
             speechConfig: {
