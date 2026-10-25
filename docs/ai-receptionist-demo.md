@@ -19,7 +19,7 @@ GEMINI_API_KEY=your_google_ai_studio_key_here
 
 The live receptionist uses the prebuilt `Sulafat` voice, which Google's voice catalogue describes as warm and female. The shared system instructions guide the assistant toward a natural American-English receptionist style: varied but restrained intonation, conversational pacing, empathy when appropriate, and concise answers.
 
-The `gemini-3.8-live` Live session enables `enableAffectiveDialog: true` for voice mode so the model can adapt its response style to the visitor's expression and tone. The ephemeral-token setup mirrors this setting. The assistant's shared system instructions also guide warm, natural pacing and appropriate empathy. Actual voice quality must be checked in a live browser test; prompt wording and voice selection alone cannot guarantee a particular result.
+The `gemini-3.8-live` model does not support affective dialogue; do not set `enableAffectiveDialog` in its Live configuration. The demo uses the existing `Aoede` prebuilt voice, with shared system instructions that guide a natural, warm, feminine receptionist style, varied pacing, and appropriate empathy. Actual voice quality must be verified in a live browser test; prompt wording alone cannot guarantee a particular result.
 
 ## Test the demo
 
