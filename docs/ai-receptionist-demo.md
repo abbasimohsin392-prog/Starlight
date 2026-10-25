@@ -15,6 +15,12 @@ For local development, put the key in an untracked `.env.local` file:
 GEMINI_API_KEY=your_google_ai_studio_key_here
 ```
 
+## Voice persona
+
+The live receptionist uses the prebuilt `Sulafat` voice, which Google's voice catalogue describes as warm and female. The shared system instructions guide the assistant toward a natural American-English receptionist style: varied but restrained intonation, conversational pacing, empathy when appropriate, and concise answers.
+
+The current `gemini-3.8-live` model no longer supports the `enableAffectiveDialog` configuration. Do not add that field to the Live session or ephemeral-token setup. This implementation uses voice selection and system instructions for delivery style. If stronger turn-by-turn emotional acting is needed later, evaluate a separate TTS-based speech architecture in a test branch rather than changing the working real-time voice flow without validation.
+
 ## Test the demo
 
 1. Open `/demo/ai-receptionist` over HTTPS in a recent version of Chrome or Edge.
