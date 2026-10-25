@@ -286,7 +286,6 @@ export function VoiceReceptionist() {
         socket.send(JSON.stringify({
           setup: {
             model: GEMINI_LIVE_MODEL,
-            enableAffectiveDialog: withMicrophone,
             generationConfig: withMicrophone ? {
               responseModalities: ['AUDIO'],
               speechConfig: {
