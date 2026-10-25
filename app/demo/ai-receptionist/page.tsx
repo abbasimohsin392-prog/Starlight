@@ -6,7 +6,7 @@ import { VoiceReceptionist } from '@/components/site/voice-receptionist'
 
 export const metadata: Metadata = {
   title: 'AI Receptionist Demo',
-  description: 'Talk to Starlight AI’s branded voice receptionist demo. Speak through your microphone or type a message to see how a conversational AI assistant could help visitors.',
+  description: 'Try Starlight AI’s warm, natural-sounding female AI receptionist demo. Speak through your microphone or type a message to explore conversational business support.',
 }
 
 export default function AIReceptionistDemoPage() {
@@ -32,8 +32,8 @@ export default function AIReceptionistDemoPage() {
           <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-3">
             <article className="rounded-2xl border border-border bg-surface/40 p-5">
               <Headphones className="size-5 text-primary" />
-              <h2 className="mt-4 font-semibold">Natural voice</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Use your microphone and hear spoken replies, with support for interruptions during a live conversation.</p>
+              <h2 className="mt-4 font-semibold">Warm, natural voice</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Try a warm female receptionist voice guided for natural pacing, expressive intonation, and considerate responses.</p>
             </article>
             <article className="rounded-2xl border border-border bg-surface/40 p-5">
               <MessageSquareText className="size-5 text-primary" />
