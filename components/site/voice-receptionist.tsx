@@ -286,6 +286,7 @@ export function VoiceReceptionist() {
         socket.send(JSON.stringify({
           setup: {
             model: GEMINI_LIVE_MODEL,
+            // Gemini 3.8 Live removed enableAffectiveDialog; voice style is guided by the shared system instructions.
             generationConfig: withMicrophone ? {
               responseModalities: ['AUDIO'],
               speechConfig: {
