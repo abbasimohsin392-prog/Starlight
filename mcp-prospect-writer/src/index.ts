@@ -1,3 +1,4 @@
+// Cloudflare MCP Worker entrypoint; do not replace with the default Hello World template.
 import { createMcpHandler } from "agents/mcp/server";
 import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
