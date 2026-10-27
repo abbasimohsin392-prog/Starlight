@@ -12,7 +12,7 @@ type Env = {
   PRODUCTION_SPREADSHEET_ID?: string;
   ENABLE_PRODUCTION_WRITES?: string;
   MCP_OAUTH_APPROVAL_SECRET?: string;
-  OAUTH_KV: KVNamespace;
+  OAUTH_KV: any;
   OAUTH_PROVIDER: OAuthHelpers;
 };
 
@@ -576,7 +576,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
     if (request.method === "GET") {
       const oauthRequest = await oauth.parseAuthRequest(request);
       const details = await oauth.describeConsent(oauthRequest);
-      const consent = await oauth.beginConsent(request, oauthRequest);
+      const consent = await oauth.beginConsent(oauthRequest);
       consent.headers.set("Content-Type", "text/html; charset=utf-8");
       consent.headers.set("Cache-Control", "no-store");
       consent.headers.set("X-Content-Type-Options", "nosniff");
