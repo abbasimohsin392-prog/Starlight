@@ -13,6 +13,12 @@ type Env = {
   ENABLE_PRODUCTION_WRITES?: string;
   MCP_OAUTH_APPROVAL_SECRET?: string;
   OAUTH_KV: any;
+  CONSENT_FORM_STORE: {
+    idFromName(name: string): unknown;
+    get(id: unknown): {
+      fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+    };
+  };
   OAUTH_PROVIDER: OAuthHelpers;
 };
 
@@ -574,6 +580,70 @@ type StoredOAuthConsent = {
   createdAt: number;
 };
 
+/**
+ * Strongly consistent one-time consent storage.
+ * One Durable Object instance is keyed by each random consent handle hash.
+ * This avoids Workers KV's cross-region eventual-consistency window and atomically
+ * consumes the form so it cannot be replayed.
+ */
+export class OAuthConsentFormStore {
+  private readonly state: any;
+
+  constructor(state: any, _env: unknown) {
+    this.state = state;
+  }
+
+  async fetch(request: Request): Promise<Response> {
+    if (request.method !== "POST") {
+      return new Response("Method not allowed", { status: 405, headers: { allow: "POST" } });
+    }
+
+    const url = new URL(request.url);
+    if (url.pathname === "/put") {
+      let record: StoredOAuthConsent;
+      try {
+        record = await request.json() as StoredOAuthConsent;
+      } catch {
+        return jsonResponse({ ok: false, error: "invalid_record" }, 400);
+      }
+      if (!record || !record.request || !Number.isFinite(record.createdAt)) {
+        return jsonResponse({ ok: false, error: "invalid_record" }, 400);
+      }
+
+      const existing = await this.state.storage.get("record");
+      if (existing) return jsonResponse({ ok: false, error: "already_exists" }, 409);
+
+      await this.state.storage.put("record", record);
+      await this.state.storage.setAlarm(Date.now() + 600_000);
+      return jsonResponse({ ok: true }, 201);
+    }
+
+    if (url.pathname === "/consume") {
+      const record = await this.state.storage.transaction(async (txn: any) => {
+        const saved = await txn.get("record") as StoredOAuthConsent | undefined;
+        if (!saved) return null;
+        await txn.delete("record");
+        if (!Number.isFinite(saved.createdAt) || Date.now() - saved.createdAt > 600_000) return null;
+        return saved;
+      });
+
+      // Clear both the record and alarm so successfully consumed objects can be cleaned up.
+      await this.state.storage.deleteAlarm();
+      await this.state.storage.deleteAll();
+      if (!record) return jsonResponse({ ok: false, error: "expired_or_used" }, 404);
+      return jsonResponse({ ok: true, record });
+    }
+
+    return new Response("Not found", { status: 404 });
+  }
+
+  async alarm(): Promise<void> {
+    await this.state.storage.deleteAll();
+    await this.state.storage.deleteAlarm();
+  }
+}
+
+
 function oauthErrorPage(title: string, message: string, status = 400): Response {
   return oauthHtmlResponse(
     "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>" +
@@ -592,6 +662,9 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
   }
   if (!env.OAUTH_KV) {
     return jsonResponse({ error: "server_error", error_description: "OAuth KV storage is not configured." }, 503);
+  }
+  if (!env.CONSENT_FORM_STORE) {
+    return jsonResponse({ error: "server_error", error_description: "Strongly consistent consent storage is not configured." }, 503);
   }
 
   const oauth = env.OAUTH_PROVIDER;
@@ -626,12 +699,20 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       // Grok's embedded consent browser is not returning cookies. Use a random, server-stored,
       // one-time synchronizer token instead of the provider helper's cookie-bound consent handle.
       const handle = base64Url(crypto.getRandomValues(new Uint8Array(32)));
-      const key = "grok-consent-form:" + await sha256Hex(handle);
+      const key = await sha256Hex(handle);
       const record: StoredOAuthConsent = {
         request: oauthRequest,
         createdAt: Date.now(),
       };
-      await env.OAUTH_KV.put(key, JSON.stringify(record), { expirationTtl: 600 });
+      const consentStore = env.CONSENT_FORM_STORE.get(env.CONSENT_FORM_STORE.idFromName(key));
+      const saved = await consentStore.fetch("https://consent-form-store/put", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(record),
+      });
+      if (!saved.ok) {
+        return oauthErrorPage("Authorization unavailable", "A secure one-time consent record could not be created. Start a fresh connection attempt.", 503);
+      }
       return oauthHtmlResponse(oauthConsentPage(details, handle));
     }
 
@@ -642,17 +723,23 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
         return oauthErrorPage("Invalid authorization request", "The one-time authorization form is missing or invalid.");
       }
 
-      const key = "grok-consent-form:" + await sha256Hex(handle);
-      const stored = await env.OAUTH_KV.get(key);
-      if (!stored) {
+      const key = await sha256Hex(handle);
+      const consentStore = env.CONSENT_FORM_STORE.get(env.CONSENT_FORM_STORE.idFromName(key));
+      const consumed = await consentStore.fetch("https://consent-form-store/consume", {
+        method: "POST",
+      });
+      if (consumed.status === 404) {
         return oauthErrorPage("Authorization expired", "This one-time authorization form is expired or already used.");
       }
+      if (!consumed.ok) {
+        return oauthErrorPage("Authorization unavailable", "The one-time authorization record could not be checked. Start a fresh attempt.", 503);
+      }
 
-      // Consume before processing approval or denial so the same form cannot be replayed.
-      await env.OAUTH_KV.delete(key);
       let saved: StoredOAuthConsent;
       try {
-        saved = JSON.parse(stored) as StoredOAuthConsent;
+        const payload = await consumed.json() as { record?: StoredOAuthConsent };
+        if (!payload.record) throw new Error("Missing consent record.");
+        saved = payload.record;
       } catch {
         return oauthErrorPage("Authorization unavailable", "The one-time authorization record was invalid.");
       }
