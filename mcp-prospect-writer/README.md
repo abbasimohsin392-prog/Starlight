@@ -66,3 +66,9 @@ Do not set the production flag or share the production tracker until the test pa
 - [Cloudflare remote MCP server guide](https://developers.cloudflare.com/agents/model-context-protocol/guides/remote-mcp-server/)
 - [Grok custom MCP connectors](https://docs.x.ai/grok/connectors)
 - [Google Sheets values.append](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/append)
+
+## Cloudflare Workers Builds (Git-integrated deployment)
+
+This repository's dedicated `starlight-prospect-mcp` Worker is configured to build from branch `feat/grok-prospect-mcp-test-bridge` with root directory `mcp-prospect-writer`, build command `npm run typecheck`, and deploy command `npm run deploy`. A commit to this branch triggers its Git-connected build.
+
+This is separate from the live Starlight website Worker named `starlight`. Do not merge this feature branch into `main` to deploy the MCP Worker. Keep `PRODUCTION_SPREADSHEET_ID` unset and `ENABLE_PRODUCTION_WRITES` unset until the test write/read-back succeeds and Aoun explicitly authorizes production writes.
