@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies and typecheck
         working-directory: mcp-prospect-writer
         run: |
-          echo "Validating latest OAuth browser-consent diagnostics; this workflow never deploys."
+          echo "Validating cookie-free OAuth consent on the latest feature-branch commit; this workflow never deploys."
           npm install --no-audit --no-fund
           npm run typecheck
           npx wrangler deploy --dry-run
