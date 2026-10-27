@@ -569,14 +569,9 @@ async function sha256Hex(value: string): Promise<string> {
 }
 
 type StoredOAuthConsent = {
-  request: {
-    clientId: string;
-    redirectUri: string;
-    scope: string[];
-    state?: string;
-    resource?: string;
-    [key: string]: unknown;
-  };
+  // AuthRequest is validated by OAuthProvider before storage; JSON restores its plain fields.
+  // Runtime checks below fail closed before this value reaches completeAuthorization().
+  request: any;
   createdAt: number;
 };
 
@@ -614,7 +609,12 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       if (!GROK_REDIRECT_URIS.has(oauthRequest.redirectUri)) {
         return oauthErrorPage("Unapproved callback", "The OAuth callback is not one of the official Grok connector callback URLs.", 403);
       }
-      if (oauthRequest.resource && oauthRequest.resource !== MCP_RESOURCE_URL) {
+      const requestedResources = Array.isArray(oauthRequest.resource)
+        ? oauthRequest.resource
+        : oauthRequest.resource
+          ? [oauthRequest.resource]
+          : [];
+      if (requestedResources.some((resource: string) => resource !== MCP_RESOURCE_URL)) {
         return oauthErrorPage("Invalid resource", "The OAuth request targets a resource other than this MCP server.", 400);
       }
 
