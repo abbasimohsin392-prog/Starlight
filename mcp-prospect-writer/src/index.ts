@@ -660,8 +660,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       const oauthRequest = saved.request;
       if (
         !oauthRequest ||
-        oauthRequest.clientId !== GROK_CLIENT_ID ||
-        !GROK_REDIRECT_URIS.has(oauthRequest.redirectUri) ||
+!GROK_REDIRECT_URIS.has(oauthRequest.redirectUri) ||
         Date.now() - saved.createdAt > 600_000
       ) {
         return oauthErrorPage("Authorization expired", "The authorization request is invalid, expired, or has already been used.");
