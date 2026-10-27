@@ -27,5 +27,6 @@ jobs:
       - name: Install dependencies and typecheck
         working-directory: mcp-prospect-writer
         run: |
+          echo "Validation-only run; no deployment step exists in this workflow."
           npm install --no-audit --no-fund
           npm run typecheck
