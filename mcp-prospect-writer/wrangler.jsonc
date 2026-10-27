@@ -15,5 +15,19 @@
       "binding": "OAUTH_KV",
       "id": "f8694a64c6e1474c8df5967e1bdab153"
     }
-  ]
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CONSENT_FORM_STORE",
+        "class_name": "OAuthConsentFormStore"
+      }
+    ]
+  },
+  "exports": {
+    "OAuthConsentFormStore": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
+  }
 }
