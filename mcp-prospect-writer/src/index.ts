@@ -491,7 +491,6 @@ function createServer(env: Env): McpServer {
 
 const MCP_PUBLIC_ORIGIN = "https://starlight-prospect-mcp.starlightai306.workers.dev";
 const MCP_RESOURCE_URL = MCP_PUBLIC_ORIGIN + "/mcp";
-const GROK_CLIENT_ID = "https://grok.com/oauth/mcp-client.json";
 const MCP_OAUTH_SCOPES = ["mcp:write", "offline_access"];
 const GROK_REDIRECT_URIS = new Set([
   "https://grok.com/connectors-oauth-exchange-code/",
@@ -602,10 +601,10 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
     if (request.method === "GET") {
       const oauthRequest = await oauth.parseAuthRequest(request);
 
-      // This Worker is specifically the Starlight Grok connector. Fail closed for other OAuth clients.
-      if (oauthRequest.clientId !== GROK_CLIENT_ID) {
-        return oauthErrorPage("Unrecognized OAuth client", "Only the official Grok connector client is allowed to authorize this MCP server.", 403);
-      }
+      // Do not hard-code one client_id: Grok may use a client-ID metadata URL or an instance-specific
+      // DCR client ID. parseAuthRequest() has already validated the client through the OAuth provider.
+      // The exact callback allow-list below is the boundary for this integration; DCR is also restricted
+      // by clientRegistrationCallback to those same callback URLs.
       if (!GROK_REDIRECT_URIS.has(oauthRequest.redirectUri)) {
         return oauthErrorPage("Unapproved callback", "The OAuth callback is not one of the official Grok connector callback URLs.", 403);
       }
