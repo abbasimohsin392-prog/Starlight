@@ -91,7 +91,7 @@ function base64UrlText(value: string): string {
   return base64Url(encoder.encode(value));
 }
 
-function decodePem(pem: string): Uint8Array {
+function decodePem(pem: string): ArrayBuffer {
   const clean = pem
     .replace(/\\n/g, "\n")
     .replace(/-----BEGIN PRIVATE KEY-----/g, "")
@@ -100,7 +100,7 @@ function decodePem(pem: string): Uint8Array {
   const binary = atob(clean);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  return bytes;
+  return bytes.buffer;
 }
 
 async function getGoogleAccessToken(env: Env): Promise<string> {
@@ -445,7 +445,7 @@ function createServer(env: Env): McpServer {
     "write_test_row",
     {
       description: "Append one clearly labelled test row to Starlight Automation Test > API Test Leads, then read it back. Never writes to the production tracker.",
-      inputSchema: {},
+      inputSchema: z.object({}),
     },
     async () => {
       try {
