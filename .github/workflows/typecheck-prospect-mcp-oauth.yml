@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies and typecheck
         working-directory: mcp-prospect-writer
         run: |
-          echo "Validate dynamic Grok client IDs, exact callbacks, and cookie-free consent; this workflow never deploys."
+          echo "Confirm deployed dynamic-client OAuth consent flow; this workflow never deploys."
           npm install --no-audit --no-fund
           npm run typecheck
           npx wrangler deploy --dry-run
