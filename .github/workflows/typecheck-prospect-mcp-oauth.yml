@@ -1,0 +1,31 @@
+name: Typecheck Prospect MCP OAuth Branch
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typecheck:
+    name: Typecheck isolated MCP branch (no deployment)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out OAuth implementation branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/grok-prospect-mcp-test-bridge
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies and typecheck
+        working-directory: mcp-prospect-writer
+        run: |
+          npm install --no-audit --no-fund
+          npm run typecheck
