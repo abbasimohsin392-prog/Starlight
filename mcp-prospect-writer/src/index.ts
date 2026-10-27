@@ -1,5 +1,6 @@
 // Cloudflare MCP Worker entrypoint; do not replace with the default Hello World template.
 // Build trigger after Cloudflare Git integration reconnection (no runtime behavior change).
+import { OAuthProvider, type OAuthHelpers, type ConsentDescription } from "@cloudflare/workers-oauth-provider";
 import { createMcpHandler } from "agents/mcp/server";
 import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
@@ -10,6 +11,9 @@ type Env = {
   TEST_SPREADSHEET_ID?: string;
   PRODUCTION_SPREADSHEET_ID?: string;
   ENABLE_PRODUCTION_WRITES?: string;
+  MCP_OAUTH_APPROVAL_SECRET?: string;
+  OAUTH_KV: KVNamespace;
+  OAUTH_PROVIDER: OAuthHelpers;
 };
 
 type WorkerContext = {
@@ -484,23 +488,221 @@ function createServer(env: Env): McpServer {
   return server;
 }
 
+
+const MCP_PUBLIC_ORIGIN = "https://starlight-prospect-mcp.starlightai306.workers.dev";
+const MCP_RESOURCE_URL = MCP_PUBLIC_ORIGIN + "/mcp";
+const MCP_OAUTH_SCOPES = ["mcp:write", "offline_access"];
+const GROK_REDIRECT_URIS = new Set([
+  "https://grok.com/connectors-oauth-exchange-code/",
+  "https://console.x.ai/connectors-oauth-exchange-code/",
+]);
+
+function htmlEscape(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[character] || character);
+}
+
+function oauthHtmlResponse(html: string, status = 200): Response {
+  return new Response(html, {
+    status,
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "no-store",
+      "x-content-type-options": "nosniff",
+      "referrer-policy": "no-referrer",
+      "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+      "x-frame-options": "DENY",
+    },
+  });
+}
+
+function oauthConsentPage(details: ConsentDescription, handle: string, message = ""): string {
+  const name = htmlEscape(details.clientName);
+  const publisher = details.clientDomain
+    ? "Published by <strong>" + htmlEscape(details.clientDomain) + "</strong>."
+    : "This client has not published a verified domain.";
+  const scopesHtml = details.scope
+    .map((scope) =>
+      "<label><input type=\"checkbox\" name=\"scope\" value=\"" +
+      htmlEscape(scope) + "\" checked> " + htmlEscape(scope) + "</label>"
+    )
+    .join("<br>");
+  const messageHtml = message ? "<p role=\"alert\">" + htmlEscape(message) + "</p>" : "";
+  const loopbackWarning = details.redirectIsLoopback
+    ? "<p><strong>This sends access to an app on your computer. Continue only if you initiated this sign-in.</strong></p>"
+    : "";
+  return [
+    "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">",
+    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+    "<title>Authorize Starlight Prospect MCP</title>",
+    "<style>body{font:16px system-ui,sans-serif;max-width:640px;margin:8vh auto;padding:0 20px;color:#1b1b1b}",
+    "main{border:1px solid #ddd;border-radius:16px;padding:24px}label{display:block;margin:10px 0}",
+    "input[type=password]{box-sizing:border-box;width:100%;padding:12px;border:1px solid #888;border-radius:8px}",
+    "button{padding:11px 16px;border:0;border-radius:8px;cursor:pointer}",
+    "button[name=decision][value=approve]{background:#111;color:white}.muted{color:#555}</style></head><body><main>",
+    "<h1>Authorize Starlight Prospect MCP</h1>",
+    "<p>Allow <strong>", name, "</strong> to access the MCP tools?</p>",
+    "<p>", publisher, " Access will be sent to <strong>", htmlEscape(details.redirectHost), "</strong>.</p>",
+    loopbackWarning,
+    "<p><strong>Requested permissions</strong></p><form method=\"post\" action=\"/authorize\" autocomplete=\"off\">",
+    "<input type=\"hidden\" name=\"handle\" value=\"", htmlEscape(handle), "\">",
+    scopesHtml,
+    "<p class=\"muted\">Confirm this is your Grok connector. Enter the separate MCP OAuth approval secret stored in Cloudflare. Do not enter your Bearer token, Google service-account JSON, or GitHub deployment token.</p>",
+    messageHtml,
+    "<label for=\"approval_secret\">MCP OAuth approval secret</label>",
+    "<input id=\"approval_secret\" name=\"approval_secret\" type=\"password\" minlength=\"32\" required autocomplete=\"off\">",
+    "<p><button name=\"decision\" value=\"approve\" type=\"submit\">Approve access</button> ",
+    "<button name=\"decision\" value=\"deny\" type=\"submit\">Deny</button></p>",
+    "</form></main></body></html>",
+  ].join("");
+}
+
+async function handleOAuthAuthorization(request: Request, env: Env): Promise<Response> {
+  if (!env.MCP_OAUTH_APPROVAL_SECRET || env.MCP_OAUTH_APPROVAL_SECRET.length < 32) {
+    return jsonResponse({
+      error: "server_error",
+      error_description: "MCP_OAUTH_APPROVAL_SECRET is not configured or is too short.",
+    }, 503);
+  }
+  const oauth = env.OAUTH_PROVIDER;
+  if (!oauth) return jsonResponse({ error: "server_error", error_description: "OAuth provider is not initialized." }, 503);
+
+  try {
+    if (request.method === "GET") {
+      const oauthRequest = await oauth.parseAuthRequest(request);
+      const details = await oauth.describeConsent(oauthRequest);
+      const consent = await oauth.beginConsent(request, oauthRequest);
+      consent.headers.set("Content-Type", "text/html; charset=utf-8");
+      consent.headers.set("Cache-Control", "no-store");
+      consent.headers.set("X-Content-Type-Options", "nosniff");
+      consent.headers.set("Referrer-Policy", "no-referrer");
+      consent.headers.set("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'");
+      consent.headers.set("X-Frame-Options", "DENY");
+      return new Response(oauthConsentPage(details, consent.handle), { headers: consent.headers });
+    }
+
+    if (request.method === "POST") {
+      const form = await request.formData();
+      const handle = String(form.get("handle") || "");
+      if (!handle) return oauthHtmlResponse("<h1>Invalid authorization request</h1><p>Return to Grok and start again.</p>", 400);
+
+      if (String(form.get("decision") || "") !== "approve") {
+        const denied = await oauth.denyConsent(request, handle);
+        return new Response(null, { status: 302, headers: denied.headers });
+      }
+
+      const suppliedSecret = String(form.get("approval_secret") || "");
+      if (!constantTimeEqual(suppliedSecret, env.MCP_OAUTH_APPROVAL_SECRET)) {
+        return oauthHtmlResponse(
+          "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Authorization not approved</title></head><body><h1>Authorization not approved</h1><p>The approval secret did not match. Return to Grok and restart the authorization flow.</p></body></html>",
+          403,
+        );
+      }
+
+      const scope = form.getAll("scope").map(String).filter((value) => MCP_OAUTH_SCOPES.includes(value));
+      if (!scope.includes("mcp:write")) {
+        return oauthHtmlResponse("<h1>Authorization not approved</h1><p>The MCP write permission is required. Return to Grok and restart.</p>", 403);
+      }
+      const approved = await oauth.approveConsent(request, handle, { scope });
+      const completed = await oauth.completeAuthorization({
+        request: approved.request,
+        userId: "starlight-ai-owner",
+        metadata: {},
+        scope: approved.request.scope,
+        props: { userId: "starlight-ai-owner" },
+      });
+      approved.headers.set("Location", completed.redirectTo);
+      return new Response(null, { status: 302, headers: approved.headers });
+    }
+
+    return new Response("Method not allowed", { status: 405, headers: { allow: "GET, POST" } });
+  } catch (error) {
+    const redirectTo = error && typeof error === "object" && "redirectTo" in error
+      ? (error as { redirectTo?: unknown }).redirectTo
+      : undefined;
+    if (typeof redirectTo === "string") return Response.redirect(redirectTo, 302);
+    const message = error instanceof Error ? error.message : "Invalid OAuth authorization request.";
+    return oauthHtmlResponse("<h1>Authorization could not be completed</h1><p>" + htmlEscape(message) + "</p><p>Return to Grok and start again if this persists.</p>", 400);
+  }
+}
+
+const oauthApiHandler = {
+  fetch(request: Request, env: Env, ctx: WorkerContext) {
+    return createMcpHandler(() => createServer(env))(request, env, ctx);
+  },
+};
+
+const oauthDefaultHandler = {
+  fetch(request: Request, env: Env, _ctx: WorkerContext) {
+    const url = new URL(request.url);
+    if (url.pathname === "/authorize") return handleOAuthAuthorization(request, env);
+    if (url.pathname === "/health") {
+      return jsonResponse({
+        ok: true,
+        service: "starlight-prospect-mcp",
+        authenticationRequiredForTools: true,
+        oauthEnabled: true,
+      });
+    }
+    return jsonResponse({ ok: false, error: "Not found" }, 404);
+  },
+};
+
+const oauthHandler = new OAuthProvider<Env>({
+  apiRoute: "/mcp",
+  apiHandler: oauthApiHandler,
+  defaultHandler: oauthDefaultHandler,
+  authorizeEndpoint: "/authorize",
+  tokenEndpoint: "/oauth/token",
+  clientRegistrationEndpoint: "/oauth/register",
+  scopesSupported: MCP_OAUTH_SCOPES,
+  requiredScopes: ["mcp:write"],
+  resourceMetadata: {
+    resource: MCP_RESOURCE_URL,
+    authorization_servers: [MCP_PUBLIC_ORIGIN],
+  },
+  clientIdMetadataDocumentEnabled: true,
+  clientRegistrationCallback: ({ clientMetadata }) => {
+    const rawUris = clientMetadata.redirect_uris;
+    const redirectUris = Array.isArray(rawUris) ? rawUris.map(String) : [];
+    if (redirectUris.length === 0 || redirectUris.some((uri) => !GROK_REDIRECT_URIS.has(uri))) {
+      return {
+        code: "invalid_client_metadata",
+        description: "Only the official Grok connector callback URLs are allowed.",
+        status: 400,
+      };
+    }
+  },
+});
+
 export default {
   async fetch(request: Request, env: Env, ctx: WorkerContext): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === "/health") {
-      return jsonResponse({ ok: true, service: "starlight-prospect-mcp", authenticationRequiredForTools: true });
-    }
-    if (url.pathname !== "/mcp") return jsonResponse({ ok: false, error: "Not found" }, 404);
-    if (!env.MCP_BEARER_TOKEN || env.MCP_BEARER_TOKEN.length < 32) {
-      return jsonResponse({ ok: false, error: "MCP_BEARER_TOKEN secret is not configured or is too short." }, 503);
-    }
-    const authorization = request.headers.get("authorization") || "";
-    if (!constantTimeEqual(authorization, "Bearer " + env.MCP_BEARER_TOKEN)) {
-      return new Response("Unauthorized", {
-        status: 401,
-        headers: { "www-authenticate": "Bearer", "cache-control": "no-store" },
+      return jsonResponse({
+        ok: true,
+        service: "starlight-prospect-mcp",
+        authenticationRequiredForTools: true,
+        oauthEnabled: true,
       });
     }
-    return createMcpHandler(() => createServer(env))(request, env, ctx);
+
+    // Preserve the established, secret-authenticated test workflow. Grok uses OAuth.
+    const authorization = request.headers.get("authorization") || "";
+    if (
+      url.pathname === "/mcp" &&
+      env.MCP_BEARER_TOKEN &&
+      env.MCP_BEARER_TOKEN.length >= 32 &&
+      constantTimeEqual(authorization, "Bearer " + env.MCP_BEARER_TOKEN)
+    ) {
+      return createMcpHandler(() => createServer(env))(request, env, ctx);
+    }
+
+    return oauthHandler.fetch(request, env, ctx);
   },
 };
