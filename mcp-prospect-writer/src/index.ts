@@ -549,7 +549,7 @@ function oauthConsentPage(details: ConsentDescription, handle: string, message =
     "<p>Allow <strong>", name, "</strong> to access the MCP tools?</p>",
     "<p>", publisher, " Access will be sent to <strong>", htmlEscape(details.redirectHost), "</strong>.</p>",
     loopbackWarning,
-    "<p><strong>Requested permissions</strong></p><form method=\"post\" action=\"/authorize\" autocomplete=\"off\">",
+    "<p><strong>Requested permissions</strong></p><form method=\"post\" autocomplete=\"off\">",
     "<input type=\"hidden\" name=\"handle\" value=\"", htmlEscape(handle), "\">",
     scopesHtml,
     "<p class=\"muted\">Confirm this is your Grok connector. Enter the separate MCP OAuth approval secret stored in Cloudflare. Do not enter your Bearer token, Google service-account JSON, or GitHub deployment token.</p>",
@@ -572,6 +572,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
   const oauth = env.OAUTH_PROVIDER;
   if (!oauth) return jsonResponse({ error: "server_error", error_description: "OAuth provider is not initialized." }, 503);
 
+  let postedHandle = "";
   try {
     if (request.method === "GET") {
       const oauthRequest = await oauth.parseAuthRequest(request);
@@ -589,6 +590,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
     if (request.method === "POST") {
       const form = await request.formData();
       const handle = String(form.get("handle") || "");
+      postedHandle = handle;
       if (!handle) return oauthHtmlResponse("<h1>Invalid authorization request</h1><p>Return to Grok and start again.</p>", 400);
 
       if (String(form.get("decision") || "") !== "approve") {
@@ -627,6 +629,30 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       : undefined;
     if (typeof redirectTo === "string") return Response.redirect(redirectTo, 302);
     const message = error instanceof Error ? error.message : "Invalid OAuth authorization request.";
+    if (request.method === "POST" && postedHandle && /browser|handle|started in this browser|expired|already used/i.test(message)) {
+      const cookieHeader = request.headers.get("cookie") || "";
+      const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", encoder.encode(postedHandle)));
+      const digestHex = Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("");
+      const expectedCookieName = "__Host-oauth-consent-" + digestHex.slice(0, 16);
+      const cookieParts = cookieHeader.split(/;\\s*/);
+      const expectedCookiePresent = cookieParts.some((part) => part.startsWith(expectedCookieName + "="));
+      const consentCookieCount = cookieParts.filter((part) => part.startsWith("__Host-oauth-consent-")).length;
+      const origin = request.headers.get("origin") || "(not supplied)";
+      const fetchSite = request.headers.get("sec-fetch-site") || "(not supplied)";
+      const diagnostic = [
+        "<!doctype html><html lang=\\"en\\"><head><meta charset=\\"utf-8\\"><meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1\\"><title>OAuth browser-session check</title></head><body>",
+        "<h1>OAuth browser-session check failed</h1>",
+        "<p>Cloudflare rejected the one-time consent handle because its browser binding could not be validated, or the handle has expired or already been used.</p>",
+        "<h2>Safe diagnostics</h2><ul>",
+        "<li>Cookie header received: <strong>", cookieHeader ? "yes" : "no", "</strong></li>",
+        "<li>Expected consent cookie received: <strong>", expectedCookiePresent ? "yes" : "no", "</strong></li>",
+        "<li>Consent-cookie count received: <strong>", String(consentCookieCount), "</strong></li>",
+        "<li>Request origin: <code>", htmlEscape(origin), "</code></li>",
+        "<li>Fetch site: <code>", htmlEscape(fetchSite), "</code></li>",
+        "</ul><p>No cookie values or secrets are displayed. Return to Grok and start a completely new connection attempt.</p></body></html>",
+      ].join("");
+      return oauthHtmlResponse(diagnostic, 400);
+    }
     return oauthHtmlResponse("<h1>Authorization could not be completed</h1><p>" + htmlEscape(message) + "</p><p>Return to Grok and start again if this persists.</p>", 400);
   }
 }
