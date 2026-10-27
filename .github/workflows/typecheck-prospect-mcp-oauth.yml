@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies and typecheck
         working-directory: mcp-prospect-writer
         run: |
-          echo "Typecheck, dry-run, and live cookie-free consent smoke test; this workflow never deploys."
+          echo "Validate flexible Grok client IDs, callback allow-list, and cookie-free consent; this workflow never deploys."
           npm install --no-audit --no-fund
           npm run typecheck
           npx wrangler deploy --dry-run
