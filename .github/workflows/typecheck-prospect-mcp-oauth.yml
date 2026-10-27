@@ -1,0 +1,86 @@
+name: Typecheck Prospect MCP OAuth Branch
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typecheck:
+    name: Typecheck isolated MCP branch (no deployment)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out OAuth implementation branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/grok-prospect-mcp-test-bridge
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies and typecheck
+        working-directory: mcp-prospect-writer
+        run: |
+          echo "Verify deployed Durable Object-backed consent store and cookie-free OAuth flow; this workflow never deploys."
+          npm install --no-audit --no-fund
+          npm run typecheck
+          npx wrangler deploy --dry-run
+
+      - name: Smoke-test live cookie-free consent handling (no token issued)
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          const origin = "https://starlight-prospect-mcp.starlightai306.workers.dev";
+          const authUrl = new URL("/authorize", origin);
+          authUrl.search = new URLSearchParams({
+            client_id: "https://grok.com/oauth/mcp-client.json",
+            redirect_uri: "https://grok.com/connectors-oauth-exchange-code/",
+            response_type: "code",
+            scope: "mcp:write offline_access",
+            state: "STARLIGHT_COOKIE_FREE_CONSENT_SMOKE_TEST",
+            resource: origin + "/mcp",
+            code_challenge: "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+            code_challenge_method: "S256"
+          }).toString();
+
+          const start = await fetch(authUrl, { redirect: "manual" });
+          const page = await start.text();
+          if (start.status !== 200 || !page.includes("Authorize Starlight Prospect MCP")) {
+            throw new Error("Live OAuth authorization page failed: HTTP " + start.status + " " + page.slice(0, 500));
+          }
+          if (page.includes("oauthConsent") && page.includes("beginConsent")) {
+            throw new Error("Live response unexpectedly appears to use the cookie-bound consent flow.");
+          }
+          const handleMatch = page.match(/name="handle" value="([^"]+)"/);
+          if (!handleMatch) throw new Error("Authorization form did not contain its one-time handle.");
+
+          // Node fetch does not maintain a cookie jar. Deliberately submit without Cookie or Origin.
+          const submitted = await fetch(origin + "/authorize", {
+            method: "POST",
+            redirect: "manual",
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+              handle: handleMatch[1],
+              decision: "approve",
+              scope: "mcp:write",
+              approval_secret: "invalid-smoke-test-secret"
+            })
+          });
+          const response = await submitted.text();
+          if (
+            submitted.status !== 403 ||
+            !response.includes("The approval secret did not match") ||
+            response.includes("browser-session check failed")
+          ) {
+            throw new Error("Cookie-free consent POST did not reach the expected approval-secret gate: HTTP " +
+              submitted.status + " " + response.slice(0, 500));
+          }
+
+          console.log("PASS: live consent page accepted a cookie-free POST through the one-time handle and stopped at the approval-secret gate. No token was issued.");
+          NODE
