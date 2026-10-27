@@ -1,0 +1,102 @@
+name: Verify Starlight Prospect MCP Test Write
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: starlight-prospect-mcp-test-write
+  cancel-in-progress: false
+
+jobs:
+  verify-test-write:
+    name: Verify MCP tool and Google Sheets read-back
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Connect to MCP and run the test-only writer
+        env:
+          MCP_TEST_BEARER_TOKEN: ${{ secrets.PROSPECT_MCP_TEST_BEARER_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${MCP_TEST_BEARER_TOKEN:-}" ]]; then
+            echo "::error::Missing repository secret PROSPECT_MCP_TEST_BEARER_TOKEN. Set it to the same value as the Cloudflare MCP_BEARER_TOKEN secret. Do not put the token in source code or logs."
+            exit 1
+          fi
+
+          mkdir -p "$RUNNER_TEMP/mcp-test-client"
+          npm install --prefix "$RUNNER_TEMP/mcp-test-client" --no-audit --no-fund @modelcontextprotocol/client@2.3.1
+
+          cat > "$RUNNER_TEMP/mcp-test-client/verify.mjs" <<'EOF'
+          import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
+
+          const token = process.env.MCP_TEST_BEARER_TOKEN;
+          if (!token) throw new Error("MCP_TEST_BEARER_TOKEN is required.");
+
+          const client = new Client({
+            name: "starlight-prospect-mcp-test-verifier",
+            version: "1.0.0"
+          });
+          const transport = new StreamableHTTPClientTransport(
+            new URL("https://starlight-prospect-mcp.starlightai306.workers.dev/mcp"),
+            { authProvider: { token: async () => token } }
+          );
+
+          try {
+            await client.connect(transport);
+
+            const { tools } = await client.listTools();
+            if (!tools.some((tool) => tool.name === "write_test_row")) {
+              throw new Error("The deployed MCP server did not expose write_test_row.");
+            }
+
+            const result = await client.callTool({
+              name: "write_test_row",
+              arguments: {}
+            });
+
+            const responseText = (result.content ?? [])
+              .filter((part) => part.type === "text")
+              .map((part) => part.text)
+              .join("\n");
+            let payload;
+            try {
+              payload = JSON.parse(responseText);
+            } catch {
+              throw new Error("MCP test tool returned a response that was not JSON.");
+            }
+
+            const acceptableActions = new Set(["added_and_verified", "skipped_duplicate_test_marker"]);
+            if (
+              result.isError ||
+              payload.ok !== true ||
+              payload.readBackVerified !== true ||
+              !acceptableActions.has(payload.action) ||
+              payload.spreadsheet !== "Starlight Automation Test" ||
+              payload.tab !== "API Test Leads"
+            ) {
+              console.error("Test-only MCP write/read-back failed:", JSON.stringify(payload));
+              process.exitCode = 1;
+            } else {
+              console.log("Verified MCP test write/read-back:", JSON.stringify({
+                action: payload.action,
+                readBackVerified: payload.readBackVerified,
+                spreadsheet: payload.spreadsheet,
+                tab: payload.tab,
+                marker: payload.marker
+              }));
+            }
+          } finally {
+            await client.close().catch(() => {});
+          }
+          EOF
+
+          node "$RUNNER_TEMP/mcp-test-client/verify.mjs"
