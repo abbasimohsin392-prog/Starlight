@@ -491,6 +491,7 @@ function createServer(env: Env): McpServer {
 
 const MCP_PUBLIC_ORIGIN = "https://starlight-prospect-mcp.starlightai306.workers.dev";
 const MCP_RESOURCE_URL = MCP_PUBLIC_ORIGIN + "/mcp";
+const GROK_CLIENT_ID = "https://grok.com/oauth/mcp-client.json";
 const MCP_OAUTH_SCOPES = ["mcp:write", "offline_access"];
 const GROK_REDIRECT_URIS = new Set([
   "https://grok.com/connectors-oauth-exchange-code/",
@@ -562,6 +563,32 @@ function oauthConsentPage(details: ConsentDescription, handle: string, message =
   ].join("");
 }
 
+async function sha256Hex(value: string): Promise<string> {
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", encoder.encode(value)));
+  return Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+type StoredOAuthConsent = {
+  request: {
+    clientId: string;
+    redirectUri: string;
+    scope: string[];
+    state?: string;
+    resource?: string;
+    [key: string]: unknown;
+  };
+  createdAt: number;
+};
+
+function oauthErrorPage(title: string, message: string, status = 400): Response {
+  return oauthHtmlResponse(
+    "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>" +
+    htmlEscape(title) + "</title></head><body><main><h1>" + htmlEscape(title) +
+    "</h1><p>" + htmlEscape(message) + "</p><p>Return to Grok and start a fresh connection attempt.</p></main></body></html>",
+    status,
+  );
+}
+
 async function handleOAuthAuthorization(request: Request, env: Env): Promise<Response> {
   if (!env.MCP_OAUTH_APPROVAL_SECRET || env.MCP_OAUTH_APPROVAL_SECRET.length < 32) {
     return jsonResponse({
@@ -569,57 +596,108 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       error_description: "MCP_OAUTH_APPROVAL_SECRET is not configured or is too short.",
     }, 503);
   }
+  if (!env.OAUTH_KV) {
+    return jsonResponse({ error: "server_error", error_description: "OAuth KV storage is not configured." }, 503);
+  }
+
   const oauth = env.OAUTH_PROVIDER;
   if (!oauth) return jsonResponse({ error: "server_error", error_description: "OAuth provider is not initialized." }, 503);
 
-  let postedHandle = "";
   try {
     if (request.method === "GET") {
       const oauthRequest = await oauth.parseAuthRequest(request);
+
+      // This Worker is specifically the Starlight Grok connector. Fail closed for other OAuth clients.
+      if (oauthRequest.clientId !== GROK_CLIENT_ID) {
+        return oauthErrorPage("Unrecognized OAuth client", "Only the official Grok connector client is allowed to authorize this MCP server.", 403);
+      }
+      if (!GROK_REDIRECT_URIS.has(oauthRequest.redirectUri)) {
+        return oauthErrorPage("Unapproved callback", "The OAuth callback is not one of the official Grok connector callback URLs.", 403);
+      }
+      if (oauthRequest.resource && oauthRequest.resource !== MCP_RESOURCE_URL) {
+        return oauthErrorPage("Invalid resource", "The OAuth request targets a resource other than this MCP server.", 400);
+      }
+
+      const requestedScopes = Array.isArray(oauthRequest.scope) ? oauthRequest.scope : [];
+      if (!requestedScopes.includes("mcp:write") || requestedScopes.some((scope: string) => !MCP_OAUTH_SCOPES.includes(scope))) {
+        return oauthErrorPage("Invalid permissions", "The request must use the supported Starlight MCP scopes.", 400);
+      }
+
       const details = await oauth.describeConsent(oauthRequest);
-      const consent = await oauth.beginConsent(oauthRequest);
-      consent.headers.set("Content-Type", "text/html; charset=utf-8");
-      consent.headers.set("Cache-Control", "no-store");
-      consent.headers.set("X-Content-Type-Options", "nosniff");
-      consent.headers.set("Referrer-Policy", "no-referrer");
-      consent.headers.set("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'");
-      consent.headers.set("X-Frame-Options", "DENY");
-      return new Response(oauthConsentPage(details, consent.handle), { headers: consent.headers });
+      // Grok's embedded consent browser is not returning cookies. Use a random, server-stored,
+      // one-time synchronizer token instead of the provider helper's cookie-bound consent handle.
+      const handle = base64Url(crypto.getRandomValues(new Uint8Array(32)));
+      const key = "grok-consent-form:" + await sha256Hex(handle);
+      const record: StoredOAuthConsent = {
+        request: oauthRequest,
+        createdAt: Date.now(),
+      };
+      await env.OAUTH_KV.put(key, JSON.stringify(record), { expirationTtl: 600 });
+      return oauthHtmlResponse(oauthConsentPage(details, handle));
     }
 
     if (request.method === "POST") {
       const form = await request.formData();
       const handle = String(form.get("handle") || "");
-      postedHandle = handle;
-      if (!handle) return oauthHtmlResponse("<h1>Invalid authorization request</h1><p>Return to Grok and start again.</p>", 400);
+      if (!handle || handle.length > 200) {
+        return oauthErrorPage("Invalid authorization request", "The one-time authorization form is missing or invalid.");
+      }
+
+      const key = "grok-consent-form:" + await sha256Hex(handle);
+      const stored = await env.OAUTH_KV.get(key);
+      if (!stored) {
+        return oauthErrorPage("Authorization expired", "This one-time authorization form is expired or already used.");
+      }
+
+      // Consume before processing approval or denial so the same form cannot be replayed.
+      await env.OAUTH_KV.delete(key);
+      let saved: StoredOAuthConsent;
+      try {
+        saved = JSON.parse(stored) as StoredOAuthConsent;
+      } catch {
+        return oauthErrorPage("Authorization unavailable", "The one-time authorization record was invalid.");
+      }
+
+      const oauthRequest = saved.request;
+      if (
+        !oauthRequest ||
+        oauthRequest.clientId !== GROK_CLIENT_ID ||
+        !GROK_REDIRECT_URIS.has(oauthRequest.redirectUri) ||
+        Date.now() - saved.createdAt > 600_000
+      ) {
+        return oauthErrorPage("Authorization expired", "The authorization request is invalid, expired, or has already been used.");
+      }
 
       if (String(form.get("decision") || "") !== "approve") {
-        const denied = await oauth.denyConsent(request, handle);
-        return new Response(null, { status: 302, headers: denied.headers });
+        const denied = new URL(oauthRequest.redirectUri);
+        denied.searchParams.set("error", "access_denied");
+        denied.searchParams.set("error_description", "The user denied access.");
+        if (oauthRequest.state) denied.searchParams.set("state", oauthRequest.state);
+        denied.searchParams.set("iss", MCP_PUBLIC_ORIGIN);
+        return Response.redirect(denied.toString(), 302);
       }
 
       const suppliedSecret = String(form.get("approval_secret") || "");
       if (!constantTimeEqual(suppliedSecret, env.MCP_OAUTH_APPROVAL_SECRET)) {
-        return oauthHtmlResponse(
-          "<!doctype html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Authorization not approved</title></head><body><h1>Authorization not approved</h1><p>The approval secret did not match. Return to Grok and restart the authorization flow.</p></body></html>",
-          403,
-        );
+        return oauthErrorPage("Authorization not approved", "The approval secret did not match. Start a fresh authorization attempt.", 403);
       }
 
-      const scope = form.getAll("scope").map(String).filter((value) => MCP_OAUTH_SCOPES.includes(value));
+      const requestedScopes = Array.isArray(oauthRequest.scope) ? oauthRequest.scope : [];
+      const scope = form.getAll("scope").map(String).filter((value) =>
+        MCP_OAUTH_SCOPES.includes(value) && requestedScopes.includes(value)
+      );
       if (!scope.includes("mcp:write")) {
-        return oauthHtmlResponse("<h1>Authorization not approved</h1><p>The MCP write permission is required. Return to Grok and restart.</p>", 403);
+        return oauthErrorPage("Authorization not approved", "The MCP write permission is required. Start a fresh authorization attempt.", 403);
       }
-      const approved = await oauth.approveConsent(request, handle, { scope });
+
       const completed = await oauth.completeAuthorization({
-        request: approved.request,
+        request: oauthRequest,
         userId: "starlight-ai-owner",
         metadata: {},
-        scope: approved.request.scope,
+        scope,
         props: { userId: "starlight-ai-owner" },
       });
-      approved.headers.set("Location", completed.redirectTo);
-      return new Response(null, { status: 302, headers: approved.headers });
+      return Response.redirect(completed.redirectTo, 302);
     }
 
     return new Response("Method not allowed", { status: 405, headers: { allow: "GET, POST" } });
@@ -629,31 +707,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       : undefined;
     if (typeof redirectTo === "string") return Response.redirect(redirectTo, 302);
     const message = error instanceof Error ? error.message : "Invalid OAuth authorization request.";
-    if (request.method === "POST" && postedHandle && /browser|handle|started in this browser|expired|already used/i.test(message)) {
-      const cookieHeader = request.headers.get("cookie") || "";
-      const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", encoder.encode(postedHandle)));
-      const digestHex = Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("");
-      const expectedCookieName = "__Host-oauth-consent-" + digestHex.slice(0, 16);
-      const cookieParts = cookieHeader.split(/;\s*/);
-      const expectedCookiePresent = cookieParts.some((part) => part.startsWith(expectedCookieName + "="));
-      const consentCookieCount = cookieParts.filter((part) => part.startsWith("__Host-oauth-consent-")).length;
-      const origin = request.headers.get("origin") || "(not supplied)";
-      const fetchSite = request.headers.get("sec-fetch-site") || "(not supplied)";
-      const diagnostic = [
-        "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>OAuth browser-session check</title></head><body>",
-        "<h1>OAuth browser-session check failed</h1>",
-        "<p>Cloudflare rejected the one-time consent handle because its browser binding could not be validated, or the handle has expired or already been used.</p>",
-        "<h2>Safe diagnostics</h2><ul>",
-        "<li>Cookie header received: <strong>", cookieHeader ? "yes" : "no", "</strong></li>",
-        "<li>Expected consent cookie received: <strong>", expectedCookiePresent ? "yes" : "no", "</strong></li>",
-        "<li>Consent-cookie count received: <strong>", String(consentCookieCount), "</strong></li>",
-        "<li>Request origin: <code>", htmlEscape(origin), "</code></li>",
-        "<li>Fetch site: <code>", htmlEscape(fetchSite), "</code></li>",
-        "</ul><p>No cookie values or secrets are displayed. Return to Grok and start a completely new connection attempt.</p></body></html>",
-      ].join("");
-      return oauthHtmlResponse(diagnostic, 400);
-    }
-    return oauthHtmlResponse("<h1>Authorization could not be completed</h1><p>" + htmlEscape(message) + "</p><p>Return to Grok and start again if this persists.</p>", 400);
+    return oauthErrorPage("Authorization could not be completed", message, 400);
   }
 }
 
