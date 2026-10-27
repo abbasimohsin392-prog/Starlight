@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies and typecheck
         working-directory: mcp-prospect-writer
         run: |
-          echo "Validate strongly consistent Durable Object consent storage; this workflow never deploys."
+          echo "Verify deployed Durable Object-backed consent store and cookie-free OAuth flow; this workflow never deploys."
           npm install --no-audit --no-fund
           npm run typecheck
           npx wrangler deploy --dry-run
