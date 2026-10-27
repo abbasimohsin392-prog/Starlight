@@ -634,13 +634,13 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", encoder.encode(postedHandle)));
       const digestHex = Array.from(digest, (byte) => byte.toString(16).padStart(2, "0")).join("");
       const expectedCookieName = "__Host-oauth-consent-" + digestHex.slice(0, 16);
-      const cookieParts = cookieHeader.split(/;\\s*/);
+      const cookieParts = cookieHeader.split(/;\s*/);
       const expectedCookiePresent = cookieParts.some((part) => part.startsWith(expectedCookieName + "="));
       const consentCookieCount = cookieParts.filter((part) => part.startsWith("__Host-oauth-consent-")).length;
       const origin = request.headers.get("origin") || "(not supplied)";
       const fetchSite = request.headers.get("sec-fetch-site") || "(not supplied)";
       const diagnostic = [
-        "<!doctype html><html lang=\\"en\\"><head><meta charset=\\"utf-8\\"><meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1\\"><title>OAuth browser-session check</title></head><body>",
+        "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>OAuth browser-session check</title></head><body>",
         "<h1>OAuth browser-session check failed</h1>",
         "<p>Cloudflare rejected the one-time consent handle because its browser binding could not be validated, or the handle has expired or already been used.</p>",
         "<h2>Safe diagnostics</h2><ul>",
