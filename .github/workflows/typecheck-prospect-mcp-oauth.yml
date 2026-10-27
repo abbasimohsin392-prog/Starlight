@@ -30,3 +30,4 @@ jobs:
           echo "Validation-only run; no deployment step exists in this workflow."
           npm install --no-audit --no-fund
           npm run typecheck
+          npx wrangler deploy --dry-run
