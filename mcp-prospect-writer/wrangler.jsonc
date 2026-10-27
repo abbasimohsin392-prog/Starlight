@@ -9,5 +9,11 @@
   "keep_vars": true,
   "compatibility_flags": [
     "global_fetch_strictly_public"
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "OAUTH_KV",
+      "id": "f8694a64c6e1474c8df5967e1bdab153"
+    }
   ]
 }
