@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:consent": "node tests/consent-store.mjs",
+    "test:oauth": "node tests/oauth-flow.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.3.1",

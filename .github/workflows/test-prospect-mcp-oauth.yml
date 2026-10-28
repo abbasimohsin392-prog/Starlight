@@ -1,0 +1,37 @@
+name: Starlight Prospect MCP OAuth regression
+
+on:
+  push:
+    branches:
+      - fix/grok-oauth-expired-consent
+  pull_request:
+    branches:
+      - feat/grok-prospect-mcp-test-bridge
+    paths:
+      - "mcp-prospect-writer/**"
+      - ".github/workflows/test-prospect-mcp-oauth.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  oauth-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        working-directory: mcp-prospect-writer
+        run: npm install --no-audit --no-fund
+      - name: Typecheck
+        working-directory: mcp-prospect-writer
+        run: npm run typecheck
+      - name: Consent storage regression tests
+        working-directory: mcp-prospect-writer
+        run: npm run test:consent
+      - name: OAuth authorization and PKCE regression tests
+        working-directory: mcp-prospect-writer
+        run: npm run test:oauth

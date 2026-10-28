@@ -6,6 +6,7 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 
 type Env = {
+  __oauthTrace?: (stage: string) => void;
   MCP_BEARER_TOKEN?: string;
   GOOGLE_SERVICE_ACCOUNT_JSON?: string;
   TEST_SPREADSHEET_ID?: string;
@@ -513,7 +514,7 @@ function htmlEscape(value: string): string {
   })[character] || character);
 }
 
-function oauthHtmlResponse(html: string, status = 200): Response {
+function oauthHtmlResponse(html: string, status = 200, nonce?: string): Response {
   return new Response(html, {
     status,
     headers: {
@@ -521,13 +522,15 @@ function oauthHtmlResponse(html: string, status = 200): Response {
       "cache-control": "no-store",
       "x-content-type-options": "nosniff",
       "referrer-policy": "no-referrer",
-      "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+      "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; " +
+        (nonce ? "script-src 'nonce-" + nonce + "'; " : "") +
+        "form-action 'self' https://grok.com https://console.x.ai; base-uri 'none'; frame-ancestors 'none'",
       "x-frame-options": "DENY",
     },
   });
 }
 
-function oauthConsentPage(details: ConsentDescription, handle: string, message = ""): string {
+function oauthConsentPage(details: ConsentDescription, handle: string, nonce: string, message = ""): string {
   const name = htmlEscape(details.clientName);
   const publisher = details.clientDomain
     ? "Published by <strong>" + htmlEscape(details.clientDomain) + "</strong>."
@@ -555,7 +558,7 @@ function oauthConsentPage(details: ConsentDescription, handle: string, message =
     "<p>Allow <strong>", name, "</strong> to access the MCP tools?</p>",
     "<p>", publisher, " Access will be sent to <strong>", htmlEscape(details.redirectHost), "</strong>.</p>",
     loopbackWarning,
-    "<p><strong>Requested permissions</strong></p><form method=\"post\" autocomplete=\"off\">",
+    "<p><strong>Requested permissions</strong></p><form method=\"post\" action=\"/authorize\" autocomplete=\"off\">",
     "<input type=\"hidden\" name=\"handle\" value=\"", htmlEscape(handle), "\">",
     scopesHtml,
     "<p class=\"muted\">Confirm this is your Grok connector. Enter the separate MCP OAuth approval secret stored in Cloudflare. Do not enter your Bearer token, Google service-account JSON, or GitHub deployment token.</p>",
@@ -563,8 +566,16 @@ function oauthConsentPage(details: ConsentDescription, handle: string, message =
     "<label for=\"approval_secret\">MCP OAuth approval secret</label>",
     "<input id=\"approval_secret\" name=\"approval_secret\" type=\"password\" minlength=\"32\" required autocomplete=\"off\">",
     "<p><button name=\"decision\" value=\"approve\" type=\"submit\">Approve access</button> ",
-    "<button name=\"decision\" value=\"deny\" type=\"submit\">Deny</button></p>",
-    "</form></main></body></html>",
+    "<button name=\"decision\" value=\"deny\" type=\"submit\" formnovalidate>Deny</button></p>",
+    "</form><p id=\"submission-status\" role=\"status\"></p></main>",
+    "<script nonce=\"", htmlEscape(nonce), "\">",
+    "const form=document.querySelector('form');let submitted=false;",
+    "form.addEventListener('submit',event=>{if(submitted){event.preventDefault();return;}",
+    "submitted=true;const decision=document.createElement('input');decision.type='hidden';",
+    "decision.name='decision';decision.value=event.submitter?.value||'approve';form.append(decision);",
+    "form.querySelectorAll('button').forEach(button=>button.disabled=true);",
+    "document.getElementById('submission-status').textContent='Completing authorization. If navigation fails, return to Grok and start a fresh connection.';});",
+    "</script></body></html>",
   ].join("");
 }
 
@@ -653,7 +664,8 @@ function oauthErrorPage(title: string, message: string, status = 400): Response 
   );
 }
 
-async function handleOAuthAuthorization(request: Request, env: Env): Promise<Response> {
+async function handleOAuthAuthorization(request: Request, env: Env, trace: (stage: string) => void): Promise<Response> {
+  trace("configuration_check");
   if (!env.MCP_OAUTH_APPROVAL_SECRET || env.MCP_OAUTH_APPROVAL_SECRET.length < 32) {
     return jsonResponse({
       error: "server_error",
@@ -672,6 +684,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
 
   try {
     if (request.method === "GET") {
+      trace("parse_authorization");
       const oauthRequest = await oauth.parseAuthRequest(request);
 
       // Do not hard-code one client_id: Grok may use a client-ID metadata URL or an instance-specific
@@ -695,6 +708,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
         return oauthErrorPage("Invalid permissions", "The request must use the supported Starlight MCP scopes.", 400);
       }
 
+      trace("describe_consent");
       const details = await oauth.describeConsent(oauthRequest);
       // Grok's embedded consent browser is not returning cookies. Use a random, server-stored,
       // one-time synchronizer token instead of the provider helper's cookie-bound consent handle.
@@ -705,6 +719,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
         createdAt: Date.now(),
       };
       const consentStore = env.CONSENT_FORM_STORE.get(env.CONSENT_FORM_STORE.idFromName(key));
+      trace("consent_store_put");
       const saved = await consentStore.fetch("https://consent-form-store/put", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -713,10 +728,13 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       if (!saved.ok) {
         return oauthErrorPage("Authorization unavailable", "A secure one-time consent record could not be created. Start a fresh connection attempt.", 503);
       }
-      return oauthHtmlResponse(oauthConsentPage(details, handle));
+      trace("consent_render");
+      const nonce = base64Url(crypto.getRandomValues(new Uint8Array(24)));
+      return oauthHtmlResponse(oauthConsentPage(details, handle, nonce), 200, nonce);
     }
 
     if (request.method === "POST") {
+      trace("parse_form");
       const form = await request.formData();
       const handle = String(form.get("handle") || "");
       if (!handle || handle.length > 200) {
@@ -725,9 +743,11 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
 
       const key = await sha256Hex(handle);
       const consentStore = env.CONSENT_FORM_STORE.get(env.CONSENT_FORM_STORE.idFromName(key));
+      trace("consent_consume");
       const consumed = await consentStore.fetch("https://consent-form-store/consume", {
         method: "POST",
       });
+      trace(consumed.status === 404 ? "consent_expired_or_used" : consumed.ok ? "consent_found_and_consumed" : "consent_store_error");
       if (consumed.status === 404) {
         return oauthErrorPage("Authorization expired", "This one-time authorization form is expired or already used.");
       }
@@ -747,7 +767,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
       const oauthRequest = saved.request;
       if (
         !oauthRequest ||
-!GROK_REDIRECT_URIS.has(oauthRequest.redirectUri) ||
+        !GROK_REDIRECT_URIS.has(oauthRequest.redirectUri) ||
         Date.now() - saved.createdAt > 600_000
       ) {
         return oauthErrorPage("Authorization expired", "The authorization request is invalid, expired, or has already been used.");
@@ -762,6 +782,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
         return Response.redirect(denied.toString(), 302);
       }
 
+      trace("approval_secret_check");
       const suppliedSecret = String(form.get("approval_secret") || "");
       if (!constantTimeEqual(suppliedSecret, env.MCP_OAUTH_APPROVAL_SECRET)) {
         return oauthErrorPage("Authorization not approved", "The approval secret did not match. Start a fresh authorization attempt.", 403);
@@ -775,6 +796,7 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
         return oauthErrorPage("Authorization not approved", "The MCP write permission is required. Start a fresh authorization attempt.", 403);
       }
 
+      trace("complete_authorization");
       const completed = await oauth.completeAuthorization({
         request: oauthRequest,
         userId: "starlight-ai-owner",
@@ -782,7 +804,13 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
         scope,
         props: { userId: "starlight-ai-owner" },
       });
-      return Response.redirect(completed.redirectTo, 302);
+      const callback = new URL(completed.redirectTo);
+      if (!GROK_REDIRECT_URIS.has(callback.origin + callback.pathname)) {
+        trace("unexpected_callback");
+        return oauthErrorPage("Authorization unavailable", "The provider returned an unexpected callback.", 500);
+      }
+      trace("authorization_redirect");
+      return Response.redirect(completed.redirectTo, 303);
     }
 
     return new Response("Method not allowed", { status: 405, headers: { allow: "GET, POST" } });
@@ -790,9 +818,12 @@ async function handleOAuthAuthorization(request: Request, env: Env): Promise<Res
     const redirectTo = error && typeof error === "object" && "redirectTo" in error
       ? (error as { redirectTo?: unknown }).redirectTo
       : undefined;
-    if (typeof redirectTo === "string") return Response.redirect(redirectTo, 302);
-    const message = error instanceof Error ? error.message : "Invalid OAuth authorization request.";
-    return oauthErrorPage("Authorization could not be completed", message, 400);
+    if (typeof redirectTo === "string") {
+      trace("provider_error_redirect");
+      return Response.redirect(redirectTo, 302);
+    }
+    trace("authorization_exception");
+    return oauthErrorPage("Authorization could not be completed", "The authorization request could not be completed safely. Start a fresh connection; provide the response request ID to support.", 400);
   }
 }
 
@@ -805,7 +836,7 @@ const oauthApiHandler = {
 const oauthDefaultHandler = {
   fetch(request: Request, env: Env, _ctx: WorkerContext) {
     const url = new URL(request.url);
-    if (url.pathname === "/authorize") return handleOAuthAuthorization(request, env);
+    if (url.pathname === "/authorize") return handleOAuthAuthorization(request, env, env.__oauthTrace || (() => {}));
     if (url.pathname === "/health") {
       return jsonResponse({
         ok: true,
@@ -868,6 +899,33 @@ export default {
       return createMcpHandler(() => createServer(env))(request, env, ctx);
     }
 
+    // Whitelist diagnostics: never serialize request URLs, headers, bodies, errors or credentials.
+    if (url.pathname === "/authorize" || url.pathname === "/oauth/token") {
+      const requestId = crypto.randomUUID();
+      let stage = "provider_dispatch";
+      const trace = (next: string) => {
+        stage = next;
+        console.log(JSON.stringify({ event: "oauth_stage", requestId, method: request.method, endpoint: url.pathname, stage }));
+      };
+      try {
+        const response = url.pathname === "/authorize"
+          ? await oauthHandler.fetch(request, { ...env, __oauthTrace: trace } as Env, ctx)
+          : await oauthHandler.fetch(request, env, ctx);
+        const location = response.headers.get("location");
+        const callback = location ? new URL(location, MCP_PUBLIC_ORIGIN) : null;
+        console.log(JSON.stringify({ event: "oauth_response", requestId, method: request.method,
+          endpoint: url.pathname, stage, status: response.status, redirect: !!callback,
+          redirectTarget: callback && GROK_REDIRECT_URIS.has(callback.origin + callback.pathname)
+            ? callback.origin + callback.pathname : callback ? "unrecognized" : undefined }));
+        const headers = new Headers(response.headers);
+        headers.set("x-oauth-request-id", requestId);
+        return new Response(response.body, { status: response.status, headers });
+      } catch {
+        console.log(JSON.stringify({ event: "oauth_failure", requestId, method: request.method,
+          endpoint: url.pathname, stage, status: 500, category: "provider_exception" }));
+        return jsonResponse({ error: "server_error", requestId }, 500);
+      }
+    }
     return oauthHandler.fetch(request, env, ctx);
   },
 };
