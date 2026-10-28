@@ -23,8 +23,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: mcp-prospect-writer/package-lock.json
       - name: Install dependencies
         working-directory: mcp-prospect-writer
         run: npm install --no-audit --no-fund
