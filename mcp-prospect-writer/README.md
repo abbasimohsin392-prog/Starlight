@@ -72,3 +72,7 @@ Do not set the production flag or share the production tracker until the test pa
 This repository's dedicated `starlight-prospect-mcp` Worker is configured to build from branch `feat/grok-prospect-mcp-test-bridge` with root directory `mcp-prospect-writer`, build command `npm run typecheck`, and deploy command `npm run deploy`. A commit to this branch triggers its Git-connected build.
 
 This is separate from the live Starlight website Worker named `starlight`. Do not merge this feature branch into `main` to deploy the MCP Worker. Keep `PRODUCTION_SPREADSHEET_ID` unset and `ENABLE_PRODUCTION_WRITES` unset until the test write/read-back succeeds and Aoun explicitly authorizes production writes.
+
+## Git-connected build troubleshooting
+
+If Cloudflare Build history says no builds exist yet, it means no Git-connected build run has been recorded for this Worker. Check that the production branch, root directory, build/deploy commands, and include path match the settings above. Manual Wrangler or Dashboard deployments are listed in deployment history, not as Git-connected build runs. A new commit that changes a file under `mcp-prospect-writer/` should trigger the configured build.
