@@ -42,8 +42,7 @@ function validatePublicWebUrl(value: string, base?: URL): URL {
   try {
     const trimmed = value.trim()
     const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(trimmed)
-    const isRelativeTarget = !!base && (/^[/?#]/.test(trimmed) || trimmed.startsWith('//'))
-    const withScheme = hasScheme || isRelativeTarget ? trimmed : 'https://' + trimmed
+    const withScheme = hasScheme || base ? trimmed : 'https://' + trimmed
     url = base ? new URL(withScheme, base) : new URL(withScheme)
   } catch {
     throw new WebsiteAuditError('That doesn’t look like a valid website URL. Please paste a public website such as https://example.com.', 400)
