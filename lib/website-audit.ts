@@ -219,35 +219,73 @@ function isPublicIpv6(address: string): boolean {
  * Check DNS A and AAAA answers before fetching. This is a defense-in-depth
  * check; the website fetch also rejects IP literals and revalidates redirects.
  */
+type DnsLookupResult = {
+  receivedResponse: boolean
+  addresses: string[]
+}
+
+/**
+ * Query independent DNS-over-HTTPS resolvers. A failure from one resolver
+ * must not disable the website review when another resolver is healthy.
+ */
+async function queryDnsResolver(host: string, type: 'A' | 'AAAA', resolver: 'google' | 'cloudflare'): Promise<DnsLookupResult> {
+  const queryUrl = resolver === 'google'
+    ? 'https://dns.google/resolve?name=' + encodeURIComponent(host) + '&type=' + type
+    : 'https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(host) + '&type=' + type
+
+  try {
+    const response = await fetch(queryUrl, {
+      headers: { Accept: 'application/dns-json' },
+      cache: 'no-store',
+      redirect: 'error',
+      signal: AbortSignal.timeout(5000),
+    })
+    if (!response.ok) return { receivedResponse: false, addresses: [] }
+
+    const data = await response.json().catch(() => null) as {
+      Status?: number
+      Answer?: Array<{ type?: number; data?: string }>
+    } | null
+    if (!data || typeof data.Status !== 'number') {
+      return { receivedResponse: false, addresses: [] }
+    }
+
+    const addresses = data.Status === 0
+      ? (data.Answer || [])
+          .filter((answer) => (type === 'A' ? answer.type === 1 : answer.type === 28))
+          .map((answer) => answer.data)
+          .filter((address): address is string => typeof address === 'string')
+      : []
+
+    return { receivedResponse: true, addresses }
+  } catch {
+    return { receivedResponse: false, addresses: [] }
+  }
+}
+
 async function assertPublicDns(host: string): Promise<void> {
-  const addressRecords: string[] = []
-  for (const type of ['A', 'AAAA']) {
-    let response: Response
-    try {
-      const queryUrl = 'https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(host) + '&type=' + type
-      response = await fetch(queryUrl, {
-        headers: { Accept: 'application/dns-json' },
-        cache: 'no-store',
-        redirect: 'error',
-        signal: AbortSignal.timeout(4000),
-      })
-    } catch {
-      throw new WebsiteAuditError('We couldn’t verify that domain’s public DNS records. Please try again shortly.', 422)
-    }
-    if (!response.ok) throw new WebsiteAuditError('We couldn’t verify that domain’s public DNS records. Please try again shortly.', 422)
-    const data = await response.json().catch(() => null) as { Status?: number; Answer?: Array<{ type?: number; data?: string }> } | null
-    if (!data || (typeof data.Status === 'number' && data.Status !== 0)) continue
-    for (const answer of data.Answer || []) {
-      if (answer.type === 1 || answer.type === 28) {
-        if (typeof answer.data === 'string') addressRecords.push(answer.data)
-      }
-    }
+  // Check A and AAAA through both providers in parallel. In particular, do not
+  // treat a timeout from Cloudflare's DoH endpoint as proof that the target
+  // domain is unverifiable; it may be the resolver request itself that failed.
+  const lookups = await Promise.all(
+    (['A', 'AAAA'] as const).flatMap((type) =>
+      (['google', 'cloudflare'] as const).map((resolver) =>
+        queryDnsResolver(host, type, resolver),
+      ),
+    ),
+  )
+
+  if (!lookups.some((lookup) => lookup.receivedResponse)) {
+    throw new WebsiteAuditError('We couldn’t reach a public DNS resolver to verify that domain. Please retry shortly.', 422)
   }
 
+  const addressRecords = lookups.flatMap((lookup) => lookup.addresses)
   if (addressRecords.length === 0) {
     throw new WebsiteAuditError('That domain did not resolve to a public web address. Check the URL and try again.', 422)
   }
 
+  // If any resolver returns a private or reserved address, fail closed instead
+  // of accepting a conflicting public answer from another resolver.
   for (const address of addressRecords) {
     const isV4 = address.includes('.')
     const isPublic = isV4 ? isPublicIpv4(address) : isPublicIpv6(address)
