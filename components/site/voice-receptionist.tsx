@@ -468,8 +468,13 @@ export function VoiceReceptionist() {
           }
         }
       } catch (error) {
-        setErrorMessage(error instanceof Error ? error.message : 'Could not review that website. Please try again.')
-        setStatusMessage('Website review could not be completed.')
+        const detail = error instanceof Error ? error.message : 'Could not review that website. Please try again.'
+        setErrorMessage('')
+        appendMessage(
+          'assistant',
+          'I couldn’t complete the website review on this attempt. ' + detail + ' The demo can review public webpages when the scan succeeds; this does not mean external websites are unsupported. Please try again in a moment.',
+        )
+        setStatusMessage('Website review could not be completed. You can retry.')
       } finally {
         setTextRequestPending(false)
       }
