@@ -157,7 +157,7 @@ export async function POST(request: Request) {
       return jsonError('The page loaded, but the AI review service could not complete the analysis (HTTP ' + aiResult.status + '). Please try again shortly.', 502)
     }
 
-    const reply = aiResult.reply    const reply = (aiData.candidates?.[0]?.content?.parts || [])
+    const reply = aiResult.reply
     if (!reply) return jsonError('The reviewer returned no recommendations. Please try again.', 502)
 
     return Response.json({
