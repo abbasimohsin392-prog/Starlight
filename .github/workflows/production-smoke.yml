@@ -97,6 +97,70 @@ jobs:
           sys.exit(1)
           PY
 
+      - name: Exercise the live website-review API
+        env:
+          SITE_URL: https://starlightai.site
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import sys
+          import time
+          from urllib.error import HTTPError, URLError
+          from urllib.request import Request, urlopen
+
+          endpoint = os.environ["SITE_URL"].rstrip("/") + "/api/website-audit"
+          payload = json.dumps({"url": "https://example.com"}).encode("utf-8")
+          last_error = "No response received"
+
+          for attempt in range(1, 4):
+              request = Request(
+                  endpoint,
+                  data=payload,
+                  method="POST",
+                  headers={
+                      "Content-Type": "application/json",
+                      "Origin": "https://starlightai.site",
+                      "User-Agent": "StarlightWebsiteAuditSmoke/1.0",
+                  },
+              )
+              try:
+                  with urlopen(request, timeout=45) as response:
+                      status = response.status
+                      body = response.read(200_000).decode("utf-8", errors="replace")
+              except HTTPError as exc:
+                  status = exc.code
+                  body = exc.read(200_000).decode("utf-8", errors="replace")
+              except (URLError, TimeoutError, OSError) as exc:
+                  status = 0
+                  body = repr(exc)
+
+              if status == 200:
+                  try:
+                      data = json.loads(body)
+                  except json.JSONDecodeError:
+                      data = {}
+                  if isinstance(data.get("reply"), str) and data["reply"].strip():
+                      print(f"PASS live website-review API returned findings on attempt {attempt}.")
+                      print(f"Reviewed URL: {data.get('url', '(no URL returned)')}")
+                      print(f"Finding length: {len(data['reply'])} characters")
+                      sys.exit(0)
+                  last_error = f"HTTP 200 but no review reply was returned: {body[:600]}"
+              else:
+                  try:
+                      detail = json.loads(body).get("error", body[:600])
+                  except (json.JSONDecodeError, AttributeError):
+                      detail = body[:600]
+                  last_error = f"HTTP {status}: {detail}"
+
+              print(f"Attempt {attempt}/3 failed: {last_error}")
+              if attempt < 3:
+                  time.sleep(8)
+
+          print("FAIL live website-review API did not return findings after retries.")
+          sys.exit(1)
+          PY
+
       - name: Check international contact links and USD pricing
         run: |
           python - <<'PY'
