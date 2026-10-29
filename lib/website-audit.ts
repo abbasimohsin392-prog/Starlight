@@ -41,7 +41,9 @@ function validatePublicWebUrl(value: string, base?: URL): URL {
   let url: URL
   try {
     const trimmed = value.trim()
-    const withScheme = /^[a-z][a-z0-9+.-]*:/i.test(trimmed) ? trimmed : 'https://' + trimmed
+    const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(trimmed)
+    const isRelativeTarget = !!base && (/^[/?#]/.test(trimmed) || trimmed.startsWith('//'))
+    const withScheme = hasScheme || isRelativeTarget ? trimmed : 'https://' + trimmed
     url = base ? new URL(withScheme, base) : new URL(withScheme)
   } catch {
     throw new WebsiteAuditError('That doesn’t look like a valid website URL. Please paste a public website such as https://example.com.', 400)
@@ -75,8 +77,11 @@ function validatePublicWebUrl(value: string, base?: URL): URL {
     throw new WebsiteAuditError('For safety, please use a public domain name rather than a local or private network address.', 400)
   }
 
-  if (url.port && url.port !== '80' && url.port !== '443') {
-    throw new WebsiteAuditError('The website review supports standard public web ports only (80 or 443).', 400)
+  if (
+    url.port
+    && !((url.protocol === 'https:' && url.port === '443') || (url.protocol === 'http:' && url.port === '80'))
+  ) {
+    throw new WebsiteAuditError('The website review supports standard public web ports only (80 for HTTP or 443 for HTTPS).', 400)
   }
 
   url.hostname = host
@@ -180,6 +185,79 @@ async function readHtmlWithinLimit(response: Response): Promise<string> {
   return new TextDecoder('utf-8', { fatal: false }).decode(bytes)
 }
 
+function isPublicIpv4(address: string): boolean {
+  const parts = address.split('.').map(Number)
+  if (parts.length !== 4 || parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) return false
+  const [a, b, c] = parts
+  if (a === 0 || a === 10 || a === 127 || a >= 224) return false
+  if (a === 100 && b >= 64 && b <= 127) return false
+  if (a === 169 && b === 254) return false
+  if (a === 172 && b >= 16 && b <= 31) return false
+  if (a === 192 && (b === 0 || b === 168 || (b === 88 && c === 99))) return false
+  if (a === 198 && (b === 18 || b === 19 || b === 51)) return false
+  if (a === 203 && b === 0 && c === 113) return false
+  return true
+}
+
+function isPublicIpv6(address: string): boolean {
+  const value = address.toLowerCase()
+  if (
+    !value.includes(':')
+    || value === '::'
+    || value === '::1'
+    || value.startsWith('fc')
+    || value.startsWith('fd')
+    || /^fe[89ab]/.test(value)
+    || value.startsWith('ff')
+    || value.startsWith('2001:db8:')
+    || value.startsWith('2002:')
+    || value.startsWith('::ffff:')
+  ) return false
+  return true
+}
+
+/**
+ * Check DNS A and AAAA answers before fetching. This is a defense-in-depth
+ * check; the website fetch also rejects IP literals and revalidates redirects.
+ */
+async function assertPublicDns(host: string): Promise<void> {
+  const addressRecords: string[] = []
+  for (const type of ['A', 'AAAA']) {
+    let response: Response
+    try {
+      const queryUrl = 'https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(host) + '&type=' + type
+      response = await fetch(queryUrl, {
+        headers: { Accept: 'application/dns-json' },
+        cache: 'no-store',
+        redirect: 'error',
+        signal: AbortSignal.timeout(4000),
+      })
+    } catch {
+      throw new WebsiteAuditError('We couldn’t verify that domain’s public DNS records. Please try again shortly.', 422)
+    }
+    if (!response.ok) throw new WebsiteAuditError('We couldn’t verify that domain’s public DNS records. Please try again shortly.', 422)
+    const data = await response.json().catch(() => null) as { Status?: number; Answer?: Array<{ type?: number; data?: string }> } | null
+    if (!data || (typeof data.Status === 'number' && data.Status !== 0)) continue
+    for (const answer of data.Answer || []) {
+      if (answer.type === 1 || answer.type === 28) {
+        if (typeof answer.data === 'string') addressRecords.push(answer.data)
+      }
+    }
+  }
+
+  if (addressRecords.length === 0) {
+    throw new WebsiteAuditError('That domain did not resolve to a public web address. Check the URL and try again.', 422)
+  }
+
+  for (const address of addressRecords) {
+    const isV4 = address.includes('.')
+    const isPublic = isV4 ? isPublicIpv4(address) : isPublicIpv6(address)
+    if (!isPublic) {
+      throw new WebsiteAuditError('For safety, the review can only access domains that resolve to public internet addresses.', 400)
+    }
+  }
+}
+
 /**
  * Downloads one public homepage only. It follows a small number of redirects,
  * revalidating each target, caps response size, and never executes page scripts.
@@ -194,6 +272,7 @@ export async function fetchWebsiteSnapshot(input: string): Promise<WebsiteSnapsh
   let response: Response | undefined
 
   for (let redirectCount = 0; redirectCount <= MAX_REDIRECTS; redirectCount++) {
+    await assertPublicDns(currentUrl.hostname)
     try {
       response = await fetch(currentUrl, {
         method: 'GET',
