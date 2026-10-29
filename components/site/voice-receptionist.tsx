@@ -645,7 +645,7 @@ export function VoiceReceptionist() {
 
       <div className="flex items-start gap-2 border-t border-border px-5 py-4 text-xs leading-relaxed text-muted-foreground md:px-7">
         <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-        <p>This is an illustrative demo, not a deployed business receptionist. It does not book meetings, contact staff, connect to WhatsApp or a CRM, or save this transcript to Starlight AI’s database. Voice and text are processed by our AI provider to generate responses.</p>
+        <p>This is an illustrative demo, not a deployed business receptionist. It does not book meetings, contact staff, connect to WhatsApp or a CRM, or save the transcript or website snapshot to Starlight AI’s database. Website review inspects one accessible public page; its URL and extracted page text are processed by our AI provider to generate recommendations.</p>
       </div>
     </section>
   )
