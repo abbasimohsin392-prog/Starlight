@@ -475,7 +475,7 @@ function createServer(env: Env): McpServer {
     server.registerTool(
       "append_verified_prospects",
       {
-        description: "Append 1-5 verified, deduplicated HVAC prospect records to the production Leads tab. Only exposed when production writes have been deliberately enabled in Worker settings. Never sends outreach.",
+        description: "Append 1-5 verified, deduplicated business prospects to the production Leads tab. Prioritize property-management companies; secondary niches include clinics, law firms, home services, real estate, dental, HVAC, staffing, and other suitable small-to-medium businesses. Include official websites, locations, source URLs, evidence-based fit scores, and personalization angles. Only exposed when production writes have been deliberately enabled in Worker settings. Never sends outreach.",
         inputSchema: { prospects: z.array(prospectSchema).min(1).max(5) },
       },
       async ({ prospects }) => {
