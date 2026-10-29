@@ -391,7 +391,7 @@ export async function POST(request: Request) {
 
     const aiResult = await requestWebsiteReview(apiKey, prompt)
     if (!aiResult.ok) {
-      if ([429, 502, 503].includes(aiResult.status)) {
+      if ([402, 429, 502, 503].includes(aiResult.status)) {
         const reply = buildBasicWebsiteReview(snapshot)
         console.warn('[website-audit] Returning a clearly labeled basic review after AI provider failure', {
           status: aiResult.status,
