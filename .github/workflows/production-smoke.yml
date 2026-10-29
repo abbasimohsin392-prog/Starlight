@@ -104,7 +104,7 @@ jobs:
           from urllib.request import Request, urlopen
 
           endpoint = os.environ["SITE_URL"].rstrip("/") + "/api/website-audit"
-          payload = json.dumps({"url": "https://aaassociates.biz/"}).encode("utf-8")
+          payload = json.dumps({"url": "https://aa-associates.com/"}).encode("utf-8")
           last_error = "No response received"
 
           for attempt in range(1, 4):
@@ -137,15 +137,21 @@ jobs:
                   if isinstance(data.get("reply"), str) and data["reply"].strip():
                       reply = data["reply"].strip()
                       lower_reply = reply.lower()
-                      if len(reply) < 500:
-                          last_error = f"Review was too short to be actionable ({len(reply)} characters)."
-                      elif "priority 1" not in lower_reply or "quick wins" not in lower_reply:
-                          last_error = "Review did not include the required prioritized recommendations and quick wins."
+                      if len(reply) < 350 or len(reply) > 2500:
+                          last_error = f"Review was not concise/actionable ({len(reply)} characters; expected 350–2500)."
+                      elif (
+                          "top 3 improvements" not in lower_reply
+                          or "best-fit starlight ai services" not in lower_reply
+                          or "website redesign" not in lower_reply
+                          or "website chatbot" not in lower_reply
+                          or "ai receptionist" not in lower_reply
+                      ):
+                          last_error = "Review did not include the three improvements and business-fit checks for the three key services."
                       else:
-                          print(f"PASS live website-review API returned a detailed improvement plan on attempt {attempt}.")
+                          print(f"PASS live website-review API returned a concise, business-aware plan on attempt {attempt}.")
                           print(f"Reviewed URL: {data.get('url', '(no URL returned)')}")
                           print(f"Finding length: {len(reply)} characters")
-                          print("PASS report contains a Priority 1 recommendation and Quick wins section.")
+                          print("PASS report contains three improvements and fit checks for website redesign, chatbot, and AI receptionist.")
                           sys.exit(0)
                   else:
                       last_error = f"HTTP 200 but no review reply was returned: {body[:600]}"
