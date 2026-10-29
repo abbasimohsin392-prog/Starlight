@@ -141,11 +141,20 @@ jobs:
                   except json.JSONDecodeError:
                       data = {}
                   if isinstance(data.get("reply"), str) and data["reply"].strip():
-                      print(f"PASS live website-review API returned findings on attempt {attempt}.")
-                      print(f"Reviewed URL: {data.get('url', '(no URL returned)')}")
-                      print(f"Finding length: {len(data['reply'])} characters")
-                      sys.exit(0)
-                  last_error = f"HTTP 200 but no review reply was returned: {body[:600]}"
+                      reply = data["reply"].strip()
+                      lower_reply = reply.lower()
+                      if len(reply) < 500:
+                          last_error = f"Review was too short to be actionable ({len(reply)} characters)."
+                      elif "priority 1" not in lower_reply or "quick wins" not in lower_reply:
+                          last_error = "Review did not include the required prioritized recommendations and quick wins."
+                      else:
+                          print(f"PASS live website-review API returned a detailed improvement plan on attempt {attempt}.")
+                          print(f"Reviewed URL: {data.get('url', '(no URL returned)')}")
+                          print(f"Finding length: {len(reply)} characters")
+                          print("PASS report contains a Priority 1 recommendation and Quick wins section.")
+                          sys.exit(0)
+                  else:
+                      last_error = f"HTTP 200 but no review reply was returned: {body[:600]}"
               else:
                   try:
                       detail = json.loads(body).get("error", body[:600])

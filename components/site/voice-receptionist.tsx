@@ -40,6 +40,14 @@ function extractUrlForClient(text: string): string | null {
   return bare ? bare.replace(/[),.;!?]+$/, '') : null
 }
 
+function isRepeatWebsiteReviewRequest(text: string): boolean {
+  return (
+    /\b(?:analy[sz]e|review|scan|audit|check)\b.{0,45}\b(?:again|once more|another time)\b/i.test(text)
+    || /\b(?:run|do|perform)\s+(?:another|a new|the)\s+(?:website\s+)?(?:review|scan|audit)\b/i.test(text)
+    || /\b(?:take|have)\s+another\s+look\b/i.test(text)
+  )
+}
+
 function floatToPcm16Base64(input: Float32Array, inputRate: number, targetRate = 16000) {
   const ratio = inputRate / targetRate
   const length = Math.floor(input.length / ratio)
@@ -101,6 +109,7 @@ export function VoiceReceptionist() {
   const outputDraftRef = useRef('')
   const messageIdRef = useRef(0)
   const transcriptEndRef = useRef<HTMLDivElement | null>(null)
+  const lastReviewedUrlRef = useRef<string | null>(null)
 
   const appendMessage = useCallback((role: TranscriptRole, value: string) => {
     const text = value.trim()
@@ -422,7 +431,11 @@ export function VoiceReceptionist() {
     const text = value.trim()
     if (!text || status !== 'connected' || !readyRef.current || textRequestPending) return
 
-    const websiteUrl = extractUrlForClient(text)
+    const typedWebsiteUrl = extractUrlForClient(text)
+    const retryLastReview = !typedWebsiteUrl
+      && Boolean(lastReviewedUrlRef.current)
+      && isRepeatWebsiteReviewRequest(text)
+    const websiteUrl = typedWebsiteUrl || (retryLastReview ? lastReviewedUrlRef.current : null)
     if (websiteUrl) {
       appendMessage('visitor', text)
       setDraft('')
@@ -441,6 +454,8 @@ export function VoiceReceptionist() {
         if (!response.ok) throw new Error(data.error || 'The website review could not be completed.')
         if (!data.reply) throw new Error('The website reviewer returned no findings. Please try again.')
 
+        lastReviewedUrlRef.current = data.url || websiteUrl
+
         if (textOnlyMode) {
           appendMessage('assistant', data.reply)
           setStatusMessage('Website review complete. Ask another question anytime.')
@@ -450,11 +465,13 @@ export function VoiceReceptionist() {
             const auditContext = [
               'A public homepage review has completed for the visitor.',
               'Reviewed URL: ' + (data.url || websiteUrl),
-              'Use the following review to give the visitor a warm, concise spoken explanation. Prioritize two practical opportunities.',
+              'The complete written improvement plan is also displayed in the chat. Do not read the whole report aloud. Give a 2–4 sentence spoken summary naming the top two numbered changes, then tell the visitor to ask you to expand any recommendation.',
+              'For follow-up questions, treat these findings as active context and answer with concrete edits, rationale, and example wording. Do not say that findings will remain the same or switch to a sales pitch.',
               'Be transparent that this is a first-pass review of one accessible public HTML page. Do not claim full-site crawling, analytics, performance tests, mobile-layout testing, search-ranking checks, or verified form behavior.',
               'Website review findings:',
               data.reply,
             ].join('\n\n')
+            appendMessage('assistant', data.reply)
             socket.send(JSON.stringify({
               clientContent: {
                 turns: [{ role: 'user', parts: [{ text: auditContext }] }],
@@ -540,6 +557,7 @@ export function VoiceReceptionist() {
     setLiveTranscript(null)
     inputDraftRef.current = ''
     outputDraftRef.current = ''
+    lastReviewedUrlRef.current = null
   }, [])
 
   const connected = status === 'connected'
@@ -643,7 +661,7 @@ export function VoiceReceptionist() {
               <input value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={700} disabled={!connected || textRequestPending} placeholder={connected ? (textOnlyMode ? 'Type a message to test the assistant…' : 'Type a message…') : 'Start voice chat to send a message'} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70 disabled:cursor-not-allowed" aria-label="Message the AI receptionist" />
               <button type="submit" disabled={!connected || !draft.trim() || textRequestPending} aria-label="Send message" className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40"><Send className="size-4" /></button>
             </form>
-            <p className="mt-3 px-1 text-xs leading-relaxed text-muted-foreground">Website review: ask for a review, then paste a public URL here. We inspect one accessible homepage, not the entire site.</p>
+            <p className="mt-3 px-1 text-xs leading-relaxed text-muted-foreground">Website review: paste a public homepage URL for a practical improvement plan. Ask “analyze it again” to rerun the last page, or ask me to expand recommendation 1, 2, or 3. We inspect one accessible homepage, not the entire site.</p>
           </div>
         </div>
       </div>
