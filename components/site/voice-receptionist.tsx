@@ -36,7 +36,7 @@ function extractUrlForClient(text: string): string | null {
   const explicit = text.match(/https?:\/\/[^\s<>"']+/i)?.[0]
   if (explicit) return explicit.replace(/[),.;!?]+$/, '')
 
-  const bare = text.match(/(?:^|[\s(])((?:www\.)?(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}(?::\d{1,5})?(?:\/[^\s<>"')]*?)?)/i)?.[1]
+  const bare = text.match(/(?:^|[\s(])((?:www\.)?(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}(?::\d{1,5})?(?:\/[^\s<>"')]+)?)/i)?.[1]
   return bare ? bare.replace(/[),.;!?]+$/, '') : null
 }
 
