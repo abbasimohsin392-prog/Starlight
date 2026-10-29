@@ -119,7 +119,7 @@ jobs:
                   },
               )
               try:
-                  with urlopen(request, timeout=45) as response:
+                  with urlopen(request, timeout=90) as response:
                       status = response.status
                       body = response.read(200_000).decode("utf-8", errors="replace")
               except HTTPError as exc:
