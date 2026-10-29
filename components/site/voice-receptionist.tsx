@@ -29,7 +29,16 @@ const suggestions = [
   'Tell me about AI receptionists.',
   'How does pricing work?',
   'Can you automate WhatsApp enquiries?',
+  'Can you review my website?',
 ]
+
+function extractUrlForClient(text: string): string | null {
+  const explicit = text.match(/https?:\/\/[^\s<>"']+/i)?.[0]
+  if (explicit) return explicit.replace(/[),.;!?]+$/, '')
+
+  const bare = text.match(/(?:^|[\s(])((?:www\.)?(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}(?::\d{1,5})?(?:\/[^\s<>"')]+)?)/i)?.[1]
+  return bare ? bare.replace(/[),.;!?]+$/, '') : null
+}
 
 function floatToPcm16Base64(input: Float32Array, inputRate: number, targetRate = 16000) {
   const ratio = inputRate / targetRate
@@ -413,6 +422,60 @@ export function VoiceReceptionist() {
     const text = value.trim()
     if (!text || status !== 'connected' || !readyRef.current || textRequestPending) return
 
+    const websiteUrl = extractUrlForClient(text)
+    if (websiteUrl) {
+      appendMessage('visitor', text)
+      setDraft('')
+      setErrorMessage('')
+      setTextRequestPending(true)
+      setStatusMessage('Reviewing the public homepage…')
+
+      try {
+        const response = await fetch('/api/website-audit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: websiteUrl }),
+          cache: 'no-store',
+        })
+        const data = await response.json().catch(() => ({})) as { reply?: string; error?: string; url?: string }
+        if (!response.ok) throw new Error(data.error || 'The website review could not be completed.')
+        if (!data.reply) throw new Error('The website reviewer returned no findings. Please try again.')
+
+        if (textOnlyMode) {
+          appendMessage('assistant', data.reply)
+          setStatusMessage('Website review complete. Ask another question anytime.')
+        } else {
+          const socket = socketRef.current
+          if (socket && socket.readyState === WebSocket.OPEN) {
+            const auditContext = [
+              'A public homepage review has completed for the visitor.',
+              'Reviewed URL: ' + (data.url || websiteUrl),
+              'Use the following review to give the visitor a warm, concise spoken explanation. Prioritize two practical opportunities.',
+              'Be transparent that this is a first-pass review of one accessible public HTML page. Do not claim full-site crawling, analytics, performance tests, mobile-layout testing, search-ranking checks, or verified form behavior.',
+              'Website review findings:',
+              data.reply,
+            ].join('\n\n')
+            socket.send(JSON.stringify({
+              clientContent: {
+                turns: [{ role: 'user', parts: [{ text: auditContext }] }],
+                turnComplete: true,
+              },
+            }))
+            setStatusMessage('Website review ready. Explaining the findings…')
+          } else {
+            appendMessage('assistant', data.reply)
+            setStatusMessage('Website review complete.')
+          }
+        }
+      } catch (error) {
+        setErrorMessage(error instanceof Error ? error.message : 'Could not review that website. Please try again.')
+        setStatusMessage('Website review could not be completed.')
+      } finally {
+        setTextRequestPending(false)
+      }
+      return
+    }
+
     if (textOnlyMode) {
       const history = messages.slice(-12).map((message) => ({
         role: message.role,
@@ -575,13 +638,14 @@ export function VoiceReceptionist() {
               <input value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={700} disabled={!connected || textRequestPending} placeholder={connected ? (textOnlyMode ? 'Type a message to test the assistant…' : 'Type a message…') : 'Start voice chat to send a message'} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70 disabled:cursor-not-allowed" aria-label="Message the AI receptionist" />
               <button type="submit" disabled={!connected || !draft.trim() || textRequestPending} aria-label="Send message" className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40"><Send className="size-4" /></button>
             </form>
+            <p className="mt-3 px-1 text-xs leading-relaxed text-muted-foreground">Website review: ask for a review, then paste a public URL here. We inspect one accessible homepage, not the entire site.</p>
           </div>
         </div>
       </div>
 
       <div className="flex items-start gap-2 border-t border-border px-5 py-4 text-xs leading-relaxed text-muted-foreground md:px-7">
         <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-        <p>This is an illustrative demo, not a deployed business receptionist. It does not book meetings, contact staff, connect to WhatsApp or a CRM, or save this transcript to Starlight AI’s database. Voice and text are processed by our AI provider to generate responses.</p>
+        <p>This is an illustrative demo, not a deployed business receptionist. It does not book meetings, contact staff, connect to WhatsApp or a CRM, or save the transcript or website snapshot to Starlight AI’s database. Website review inspects one accessible public page; its URL and extracted page text are processed by our AI provider to generate recommendations.</p>
       </div>
     </section>
   )
