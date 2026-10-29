@@ -21,7 +21,7 @@ export default function AIReceptionistDemoPage() {
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">Try a live voice workflow</p>
             <h1 className="font-display mt-5 text-4xl font-bold tracking-tight md:text-6xl">Meet your AI receptionist.</h1>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Speak naturally, ask follow-up questions, or type a message. Hear how a conversational receptionist could answer enquiries and explain your next steps.
+              Speak naturally, ask follow-up questions, or type a message. You can also paste a public website URL into the chat for a first-pass homepage review and tailored AI recommendations.
             </p>
           </div>
 
