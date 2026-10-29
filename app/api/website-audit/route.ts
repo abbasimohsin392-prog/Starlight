@@ -1,6 +1,6 @@
 import { getGeminiApiKey } from '@/lib/gemini-api-key'
 import { enforceAiRateLimit } from '@/lib/rate-limit'
-import { fetchWebsiteSnapshot, formatWebsiteSnapshot, WebsiteAuditError } from '@/lib/website-audit'
+import { fetchWebsiteSnapshot, formatWebsiteSnapshot, WebsiteAuditError, type WebsiteSnapshot } from '@/lib/website-audit'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -119,12 +119,118 @@ function formatStructuredWebsiteReview(value: unknown): string | null {
   return sections.join('\n\n')
 }
 
+
+/**
+ * Keeps the demo useful when the model provider is temporarily rate-limited.
+ * This uses only observed HTML snapshot signals and clearly labels the result
+ * as a basic text-only review rather than pretending the AI review succeeded.
+ */
+function buildBasicWebsiteReview(snapshot: WebsiteSnapshot): string {
+  const pageText = [
+    snapshot.title,
+    snapshot.description,
+    ...snapshot.headings,
+    snapshot.visibleText,
+  ].join(' ').toLowerCase()
+  const siteName = snapshot.title.trim() || new URL(snapshot.finalUrl).hostname
+  const hasPrimaryAction = snapshot.callsToAction.some((item) =>
+    /contact|book|schedule|quote|get started|call|request|enquir|inquir|consult/i.test(item)
+  )
+  const hasBookingSignals = /\b(appointment|booking|book online|reservation|schedule|consultation)\b/i.test(pageText)
+  const isAppointmentBusiness = /\b(clinic|medical|dental|dentist|salon|spa|hotel|restaurant|real estate|property management|rental|repair service|law firm)\b/i.test(pageText)
+  const isProjectBusiness = /\b(engineer|engineering|architecture|construction|infrastructure|industrial|manufacturing|contractor|consultancy|consultant|civil works|bridges?|highways?)\b/i.test(pageText)
+  const isOnlineStore = /\b(e-?commerce|online store|shop online|cart|checkout|shipping|product catalog)\b/i.test(pageText)
+
+  const fixes: Array<{ title: string; action: string }> = []
+
+  if (snapshot.headings.length < 2) {
+    fixes.push({
+      title: 'Clarify the offer',
+      action: 'Add a clear headline and a short summary of your main services and customers.',
+    })
+  } else if (!hasPrimaryAction) {
+    fixes.push({
+      title: 'Add a clear next step',
+      action: 'Place a prominent “Contact us” or “Request a quote” action near your main services.',
+    })
+  } else {
+    fixes.push({
+      title: 'Strengthen enquiries',
+      action: 'Keep one clear contact or quote action close to the services visitors are evaluating.',
+    })
+  }
+
+  if (!snapshot.hasEmailLink && !snapshot.hasPhoneLink) {
+    fixes.push({
+      title: 'Make contact easier',
+      action: 'Add a monitored email or phone link so visitors can reach the right person quickly.',
+    })
+  } else if (snapshot.formCount === 0) {
+    fixes.push({
+      title: 'Simplify enquiries',
+      action: 'Offer a short enquiry form or a direct contact route for new project requests.',
+    })
+  } else {
+    fixes.push({
+      title: 'Keep the form simple',
+      action: 'Ask only for the contact details and project information needed for a useful follow-up.',
+    })
+  }
+
+  if (isProjectBusiness) {
+    fixes.push({
+      title: 'Show relevant work',
+      action: 'Group key projects by sector and link each group to a short project example.',
+    })
+  } else if (isOnlineStore) {
+    fixes.push({
+      title: 'Answer buying questions',
+      action: 'Make delivery, returns, and product FAQs easy to find before checkout.',
+    })
+  } else if (!snapshot.description) {
+    fixes.push({
+      title: 'Add a search summary',
+      action: 'Write a page description that names your core service and the market you serve.',
+    })
+  } else {
+    fixes.push({
+      title: 'Answer common questions',
+      action: 'Add a short FAQ covering the questions customers ask before contacting you.',
+    })
+  }
+
+  const services: string[] = []
+  const hasLimitedStructure = snapshot.headings.length < 2 && snapshot.callsToAction.length === 0
+  if (hasLimitedStructure) {
+    services.push('Website redesign — A clearer service-led structure may help if the live layout is difficult to scan.')
+  }
+  if (isOnlineStore || isAppointmentBusiness) {
+    services.push('Website chatbot — May help answer recurring questions and guide enquiries.')
+  }
+  if (isAppointmentBusiness && (snapshot.hasPhoneLink || hasBookingSignals)) {
+    services.push('AI receptionist — Relevant when your team handles recurring calls or booking requests.')
+  }
+
+  const sections = [
+    'Quick review (basic mode)',
+    siteName + ': the AI review service is temporarily limited, so these suggestions use the available page text only.',
+    'Top fixes',
+    ...fixes.slice(0, 3).map((item, index) => String(index + 1) + '. ' + item.title + ' — ' + item.action),
+  ]
+  if (services.length) {
+    sections.push('Relevant Starlight AI services')
+    sections.push(...services)
+  }
+  sections.push('Which fix would you like to start with?')
+  return sections.join('\n\n')
+}
+
 async function requestWebsiteReview(apiKey: string, prompt: string): Promise<WebsiteReviewResult> {
-  // Retry a transient failure on the primary model once, then switch to the fallback.
-  // Gemini recommends exponential backoff for transient 429/5xx responses.
+  // Move to a lighter model quickly when a model-specific quota or capacity limit is hit.
+  // Do not spend a retry on the same model before trying an independent fallback.
   const attempts = [
     { model: 'gemini-3.8-flash', index: 0 },
-    { model: 'gemini-3.8-flash', index: 1 },
+    { model: 'gemini-3.5-flash-lite', index: 1 },
     { model: 'gemini-3.6-flash', index: 2 },
   ] as const
   let lastStatus = 502
@@ -132,7 +238,7 @@ async function requestWebsiteReview(apiKey: string, prompt: string): Promise<Web
 
   for (const attempt of attempts) {
     if (attempt.index > 0) {
-      const backoffMs = attempt.index === 1 ? 900 : 1800
+      const backoffMs = attempt.index === 1 ? 700 : 1400
       await new Promise((resolve) => setTimeout(resolve, backoffMs))
     }
 
@@ -160,7 +266,7 @@ async function requestWebsiteReview(apiKey: string, prompt: string): Promise<Web
           },
           contents: [{ role: 'user', parts: [{ text: modelPrompt }] }],
           generationConfig: {
-            maxOutputTokens: 1800,
+            maxOutputTokens: 800,
             thinkingConfig: { thinkingLevel: 'low' },
             responseMimeType: 'application/json',
             responseJsonSchema: WEBSITE_REVIEW_RESPONSE_SCHEMA,
@@ -285,13 +391,24 @@ export async function POST(request: Request) {
 
     const aiResult = await requestWebsiteReview(apiKey, prompt)
     if (!aiResult.ok) {
-      if (aiResult.status === 429) {
-        return jsonError('The AI service is at its current usage limit. Please try again shortly.', 429)
+      if ([402, 429, 502, 503].includes(aiResult.status)) {
+        const reply = buildBasicWebsiteReview(snapshot)
+        console.warn('[website-audit] Returning a clearly labeled basic review after AI provider failure', {
+          status: aiResult.status,
+          reason: aiResult.error.slice(0, 240),
+        })
+        return Response.json({
+          url: snapshot.finalUrl,
+          title: snapshot.title || new URL(snapshot.finalUrl).hostname,
+          reply,
+          mode: 'basic',
+          scope: 'Basic suggestions from one public HTML snapshot; the full AI review could not run.',
+        }, { headers: { 'Cache-Control': 'no-store' } })
       }
       if (aiResult.status === 401 || aiResult.status === 403) {
-        return jsonError('The page loaded, but the AI review service rejected the request because of an access or configuration issue. Please try again later.', 502)
+        return jsonError('The page loaded, but the AI review service has an access or configuration issue. Please try again later.', 502)
       }
-      return jsonError('The page loaded, but the AI review service could not complete the analysis (HTTP ' + aiResult.status + '). Please try again shortly.', 502)
+      return jsonError('The AI review service could not complete this scan. Please try again later.', 502)
     }
 
     const reply = aiResult.reply
@@ -301,6 +418,7 @@ export async function POST(request: Request) {
       url: snapshot.finalUrl,
       title: snapshot.title || new URL(snapshot.finalUrl).hostname,
       reply,
+      mode: 'ai',
       scope: 'One public page snapshot; JavaScript-rendered content may be incomplete.',
     }, { headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
