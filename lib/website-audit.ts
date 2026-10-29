@@ -1,3 +1,5 @@
+import dns from 'node:dns'
+
 export type WebsiteSnapshot = {
   requestedUrl: string
   finalUrl: string
@@ -220,63 +222,40 @@ function isPublicIpv6(address: string): boolean {
  * check; the website fetch also rejects IP literals and revalidates redirects.
  */
 type DnsLookupResult = {
-  receivedResponse: boolean
+  completed: boolean
   addresses: string[]
 }
 
+type DnsLookupError = Error & { code?: string }
+
 /**
- * Query independent DNS-over-HTTPS resolvers. A failure from one resolver
- * must not disable the website review when another resolver is healthy.
+ * Resolve through Cloudflare Workers' supported node:dns API. On Workers this
+ * API performs DNS-over-HTTPS via Cloudflare DNS, avoiding manual outbound
+ * calls to public resolver URL endpoints.
  */
-async function queryDnsResolver(host: string, type: 'A' | 'AAAA', resolver: 'google' | 'cloudflare'): Promise<DnsLookupResult> {
-  const queryUrl = resolver === 'google'
-    ? 'https://dns.google/resolve?name=' + encodeURIComponent(host) + '&type=' + type
-    : 'https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(host) + '&type=' + type
-
+async function queryDnsResolver(host: string, type: 'A' | 'AAAA'): Promise<DnsLookupResult> {
   try {
-    const response = await fetch(queryUrl, {
-      headers: { Accept: 'application/dns-json' },
-      cache: 'no-store',
-      redirect: 'error',
-      signal: AbortSignal.timeout(5000),
-    })
-    if (!response.ok) return { receivedResponse: false, addresses: [] }
-
-    const data = await response.json().catch(() => null) as {
-      Status?: number
-      Answer?: Array<{ type?: number; data?: string }>
-    } | null
-    if (!data || typeof data.Status !== 'number') {
-      return { receivedResponse: false, addresses: [] }
+    const addresses = type === 'A'
+      ? await dns.promises.resolve4(host)
+      : await dns.promises.resolve6(host)
+    return { completed: true, addresses }
+  } catch (error) {
+    const code = (error as DnsLookupError | null)?.code
+    // A missing record or nonexistent domain is still a completed DNS lookup.
+    if (code === 'ENODATA' || code === 'ENOTFOUND' || code === 'EAI_NODATA') {
+      return { completed: true, addresses: [] }
     }
-
-    const addresses = data.Status === 0
-      ? (data.Answer || [])
-          .filter((answer) => (type === 'A' ? answer.type === 1 : answer.type === 28))
-          .map((answer) => answer.data)
-          .filter((address): address is string => typeof address === 'string')
-      : []
-
-    return { receivedResponse: true, addresses }
-  } catch {
-    return { receivedResponse: false, addresses: [] }
+    return { completed: false, addresses: [] }
   }
 }
 
 async function assertPublicDns(host: string): Promise<void> {
-  // Check A and AAAA through both providers in parallel. In particular, do not
-  // treat a timeout from Cloudflare's DoH endpoint as proof that the target
-  // domain is unverifiable; it may be the resolver request itself that failed.
   const lookups = await Promise.all(
-    (['A', 'AAAA'] as const).flatMap((type) =>
-      (['google', 'cloudflare'] as const).map((resolver) =>
-        queryDnsResolver(host, type, resolver),
-      ),
-    ),
+    (['A', 'AAAA'] as const).map((type) => queryDnsResolver(host, type)),
   )
 
-  if (!lookups.some((lookup) => lookup.receivedResponse)) {
-    throw new WebsiteAuditError('We couldn’t reach a public DNS resolver to verify that domain. Please retry shortly.', 422)
+  if (!lookups.some((lookup) => lookup.completed)) {
+    throw new WebsiteAuditError('Cloudflare could not complete DNS verification for that domain. Please retry shortly.', 422)
   }
 
   const addressRecords = lookups.flatMap((lookup) => lookup.addresses)
@@ -284,8 +263,7 @@ async function assertPublicDns(host: string): Promise<void> {
     throw new WebsiteAuditError('That domain did not resolve to a public web address. Check the URL and try again.', 422)
   }
 
-  // If any resolver returns a private or reserved address, fail closed instead
-  // of accepting a conflicting public answer from another resolver.
+  // If any returned address is private or reserved, reject the hostname.
   for (const address of addressRecords) {
     const isV4 = address.includes('.')
     const isPublic = isV4 ? isPublicIpv4(address) : isPublicIpv6(address)
