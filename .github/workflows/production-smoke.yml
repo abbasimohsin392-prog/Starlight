@@ -137,21 +137,17 @@ jobs:
                   if isinstance(data.get("reply"), str) and data["reply"].strip():
                       reply = data["reply"].strip()
                       lower_reply = reply.lower()
-                      if len(reply) < 350 or len(reply) > 2500:
-                          last_error = f"Review was not concise/actionable ({len(reply)} characters; expected 350–2500)."
-                      elif (
-                          "top 3 improvements" not in lower_reply
-                          or "best-fit starlight ai services" not in lower_reply
-                          or "website redesign" not in lower_reply
-                          or "website chatbot" not in lower_reply
-                          or "ai receptionist" not in lower_reply
-                      ):
-                          last_error = "Review did not include the three improvements and business-fit checks for the three key services."
+                      if len(reply) < 250 or len(reply) > 1600:
+                          last_error = f"Review was too long or too short ({len(reply)} characters; expected 250–1600)."
+                      elif "top fixes" not in lower_reply or not all(f"{i}." in reply for i in (1, 2, 3)):
+                          last_error = "Review did not include exactly three concise fixes."
+                      elif any(phrase in lower_reply for phrase in ("not a priority", "consider if needed", "strong fit")):
+                          last_error = "Review still contains redundant service-fit labels instead of only relevant recommendations."
                       else:
-                          print(f"PASS live website-review API returned a concise, business-aware plan on attempt {attempt}.")
+                          print(f"PASS live website-review API returned a short, business-aware plan on attempt {attempt}.")
                           print(f"Reviewed URL: {data.get('url', '(no URL returned)')}")
                           print(f"Finding length: {len(reply)} characters")
-                          print("PASS report contains three improvements and fit checks for website redesign, chatbot, and AI receptionist.")
+                          print("PASS report contains three fixes and no redundant service-fit labels.")
                           sys.exit(0)
                   else:
                       last_error = f"HTTP 200 but no review reply was returned: {body[:600]}"
