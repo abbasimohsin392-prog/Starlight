@@ -661,7 +661,7 @@ export function VoiceReceptionist() {
               <input value={draft} onChange={(event) => setDraft(event.target.value)} maxLength={700} disabled={!connected || textRequestPending} placeholder={connected ? (textOnlyMode ? 'Type a message to test the assistant…' : 'Type a message…') : 'Start voice chat to send a message'} className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/70 disabled:cursor-not-allowed" aria-label="Message the AI receptionist" />
               <button type="submit" disabled={!connected || !draft.trim() || textRequestPending} aria-label="Send message" className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40"><Send className="size-4" /></button>
             </form>
-            <p className="mt-3 px-1 text-xs leading-relaxed text-muted-foreground">Website review: paste a public homepage URL for a practical improvement plan. Ask “analyze it again” to rerun the last page, or ask me to expand recommendation 1, 2, or 3. We inspect one accessible homepage, not the entire site.</p>
+            <p className="mt-3 px-1 text-xs leading-relaxed text-muted-foreground">Website review: paste a public homepage URL for a concise review with 3 key fixes and a fit check for website redesign, chatbot, and AI receptionist. Ask me to expand recommendation 1, 2, or 3. We review one accessible homepage, not the entire site.</p>
           </div>
         </div>
       </div>
