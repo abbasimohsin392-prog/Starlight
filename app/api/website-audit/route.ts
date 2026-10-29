@@ -130,27 +130,38 @@ function formatStructuredWebsiteReview(value: unknown): string | null {
 }
 
 async function requestWebsiteReview(apiKey: string, prompt: string): Promise<WebsiteReviewResult> {
-  // Try the primary model, then the fallback model if it errors or returns an invalid report.
-  const models = ['gemini-3.8-flash', 'gemini-3.6-flash']
+  // Retry a transient failure on the primary model once, then switch to the fallback.
+  // Gemini recommends exponential backoff for transient 429/5xx responses.
+  const attempts = [
+    { model: 'gemini-3.8-flash', index: 0 },
+    { model: 'gemini-3.8-flash', index: 1 },
+    { model: 'gemini-3.6-flash', index: 2 },
+  ] as const
   let lastStatus = 502
   let lastError = 'The AI reviewer returned no usable report.'
 
-  for (const [attemptIndex, model] of models.entries()) {
+  for (const attempt of attempts) {
+    if (attempt.index > 0) {
+      const backoffMs = attempt.index === 1 ? 900 : 1800
+      await new Promise((resolve) => setTimeout(resolve, backoffMs))
+    }
+
     try {
-      const modelPrompt = attemptIndex === 0 ? prompt : [
+      const modelPrompt = attempt.index === 0 ? prompt : [
         prompt,
         '',
         'OUTPUT CONTRACT: Fill every required structured field. The final formatted report must contain three concrete priorities, two quick wins, manual checks, and be about 250–400 words. If snapshot evidence is limited, label suggestions as checks to verify rather than inventing facts. Do not return a brief summary.',
       ].join('\n')
 
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent', {
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + attempt.model + ':generateContent', {
         method: 'POST',
         headers: {
           'x-goog-api-key': apiKey,
           'Content-Type': 'application/json',
         },
         cache: 'no-store',
-        signal: AbortSignal.timeout(15000),
+        // Give the API enough time to create a structured report, while keeping retries bounded.
+        signal: AbortSignal.timeout(20000),
         body: JSON.stringify({
           systemInstruction: {
             parts: [{
@@ -160,6 +171,7 @@ async function requestWebsiteReview(apiKey: string, prompt: string): Promise<Web
           contents: [{ role: 'user', parts: [{ text: modelPrompt }] }],
           generationConfig: {
             maxOutputTokens: 1800,
+            thinkingConfig: { thinkingLevel: 'low' },
             responseMimeType: 'application/json',
             responseJsonSchema: WEBSITE_REVIEW_RESPONSE_SCHEMA,
           },
@@ -171,10 +183,16 @@ async function requestWebsiteReview(apiKey: string, prompt: string): Promise<Web
         lastStatus = response.status
         lastError = data?.error?.message || data?.error?.status || ('HTTP ' + response.status)
         console.error('[website-audit] Gemini model request failed', {
-          model,
+          model: attempt.model,
+          attempt: attempt.index + 1,
           status: response.status,
           error: lastError.slice(0, 400),
         })
+
+        // These are request/configuration errors rather than transient capacity failures.
+        if ([400, 401, 402, 403].includes(response.status)) {
+          return { ok: false, status: response.status, error: lastError }
+        }
         continue
       }
 
@@ -190,16 +208,20 @@ async function requestWebsiteReview(apiKey: string, prompt: string): Promise<Web
       }
       const reply = formatStructuredWebsiteReview(parsed)
       if (reply && reply.length >= 500) {
-        if (attemptIndex > 0) {
-          console.warn('[website-audit] Review succeeded using fallback model', model)
+        if (attempt.index > 0) {
+          console.warn('[website-audit] Review succeeded after retry/fallback', {
+            model: attempt.model,
+            attempt: attempt.index + 1,
+          })
         }
-        return { ok: true, reply, model }
+        return { ok: true, reply, model: attempt.model }
       }
 
       lastStatus = 502
       lastError = 'The model returned an incomplete structured website improvement plan.'
       console.warn('[website-audit] Gemini response did not meet report requirements', {
-        model,
+        model: attempt.model,
+        attempt: attempt.index + 1,
         rawCharacters: rawReply.length,
         formattedCharacters: reply?.length || 0,
         validStructure: Boolean(reply),
@@ -208,7 +230,8 @@ async function requestWebsiteReview(apiKey: string, prompt: string): Promise<Web
       lastStatus = 502
       lastError = error instanceof Error ? error.message : 'Unknown network error'
       console.error('[website-audit] Gemini request threw an error', {
-        model,
+        model: attempt.model,
+        attempt: attempt.index + 1,
         error: lastError.slice(0, 300),
       })
     }
