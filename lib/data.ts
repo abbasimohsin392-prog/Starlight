@@ -6,8 +6,8 @@ export const site = {
   whatsapp: '+923007657038',
   whatsappUrl: 'https://wa.me/923007657038',
   socials: [
-    { label: 'Instagram', href: 'https://instagram.com/starlight_.ai' },
-    { label: 'X', href: 'https://x.com/MAoun_onrise' },
+    { label: 'Instagram', href: 'https://instagram.com/trystarlightai' },
+
   ],
 }
 
