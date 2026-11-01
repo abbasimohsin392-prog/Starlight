@@ -4,6 +4,7 @@ import { OAuthProvider, type OAuthHelpers, type ConsentDescription } from "@clou
 import { createMcpHandler } from "agents/mcp/server";
 import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
+import { registerEmailDomainCheckTool, checkEmailDomains } from "./email-domain-check";
 
 type Env = {
   __oauthTrace?: (stage: string) => void;
@@ -400,18 +401,59 @@ async function appendProductionProspects(env: Env, prospects: Prospect[]): Promi
     return { ok: true, added: 0, skippedDuplicates, rejected: [], readBackVerified: true, message: "All submitted prospects were already present; no rows were written." };
   }
 
-  const rows = addedCandidates.map((prospect) => mapProductionRow(headers, prospect));
+  const emailCandidates = addedCandidates.filter((prospect) => Boolean(prospect.email?.trim()));
+  const domainChecks = emailCandidates.length
+    ? await checkEmailDomains(emailCandidates.map((prospect) => prospect.email as string))
+    : [];
+  const checksByEmail = new Map(domainChecks.map((result) => [result.email, result]));
+  const rejected = emailCandidates
+    .filter((prospect) => checksByEmail.get(prospect.email!.trim().toLowerCase())?.decision !== "domain_routable")
+    .map((prospect) => {
+      const result = checksByEmail.get(prospect.email!.trim().toLowerCase());
+      return {
+        business_name: prospect.business_name,
+        email: prospect.email,
+        routing_status: result?.routing_status || "dns_error",
+        decision: result?.decision || "manual_review",
+        explanation: result?.explanation || "No usable DNS result; held from the production tracker.",
+      };
+    });
+  const rejectedEmails = new Set(rejected.map((item) => item.email.trim().toLowerCase()));
+  const acceptedCandidates = addedCandidates.filter((prospect) =>
+    !prospect.email || !rejectedEmails.has(prospect.email.trim().toLowerCase())
+  );
+
+  if (acceptedCandidates.length === 0) {
+    return {
+      ok: true,
+      added: 0,
+      skippedDuplicates,
+      rejected,
+      mailRouting: {
+        checked: domainChecks.length,
+        mxFound: domainChecks.filter((result) => result.routing_status === "mx_records_found").length,
+        implicitMxHeld: domainChecks.filter((result) => result.routing_status === "implicit_mx_possible").length,
+        noRouting: domainChecks.filter((result) => result.routing_status === "no_mail_routing").length,
+        manualReview: domainChecks.filter((result) => result.decision === "manual_review").length,
+        mailboxVerification: "not_performed",
+      },
+      readBackVerified: true,
+      message: "No email-bearing prospects passed the domain mail-routing checks; no rows were written.",
+    };
+  }
+
+  const rows = acceptedCandidates.map((prospect) => mapProductionRow(headers, prospect));
   const appendResult = await sheetsAppend(env, env.PRODUCTION_SPREADSHEET_ID, PRODUCTION_TAB, rows);
   const verify = await sheetsGet(env, env.PRODUCTION_SPREADSHEET_ID, range);
   const verifyValues = verify.values || [];
   const verifyHeaders = verifyValues[0] || [];
   const verifyBusinessIndex = findHeaderIndex(verifyHeaders, ["Business Name", "Company Name", "Company", "Lead Name", "Prospect"]);
   const verifyWebsiteIndex = findHeaderIndex(verifyHeaders, ["Website", "Official Website", "URL"]);
-  const verified = addedCandidates.filter((prospect) => verifyValues.slice(1).some((row) =>
+  const verified = acceptedCandidates.filter((prospect) => verifyValues.slice(1).some((row) =>
     normalizeName(row[verifyBusinessIndex]) === normalizeName(prospect.business_name) &&
     normalizeDomain(row[verifyWebsiteIndex]) === normalizeDomain(prospect.website)
   ));
-  if (verified.length !== addedCandidates.length) {
+  if (verified.length !== acceptedCandidates.length) {
     throw new Error("The append request returned but read-back could not verify every submitted row. Do not retry blindly; inspect the Leads tab to avoid duplicates.");
   }
   return {
@@ -419,7 +461,15 @@ async function appendProductionProspects(env: Env, prospects: Prospect[]): Promi
     added: verified.length,
     addedBusinessNames: verified.map((prospect) => prospect.business_name),
     skippedDuplicates,
-    rejected: [],
+    rejected,
+    mailRouting: {
+      checked: domainChecks.length,
+      mxFound: domainChecks.filter((result) => result.routing_status === "mx_records_found").length,
+      implicitMxHeld: domainChecks.filter((result) => result.routing_status === "implicit_mx_possible").length,
+      noRouting: domainChecks.filter((result) => result.routing_status === "no_mail_routing").length,
+      manualReview: domainChecks.filter((result) => result.decision === "manual_review").length,
+      mailboxVerification: "not_performed",
+    },
     readBackVerified: true,
     updatedRange: appendResult.updates?.updatedRange || null,
   };
@@ -449,8 +499,10 @@ const prospectSchema = z.object({
 function createServer(env: Env): McpServer {
   const server = new McpServer({
     name: "Starlight Prospect Sheet Writer",
-    version: "1.0.0",
+    version: "1.1.0",
   });
+
+  registerEmailDomainCheckTool(server);
 
   server.registerTool(
     "write_test_row",
