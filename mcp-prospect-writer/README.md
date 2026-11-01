@@ -19,7 +19,6 @@ Isolated Cloudflare Worker intended to let Grok call a narrowly scoped Google Sh
 4. In a dedicated Cloudflare Worker named `starlight-prospect-mcp`, set the variable `TEST_SPREADSHEET_ID` to the test spreadsheet ID and add these secrets:
    - `GOOGLE_SERVICE_ACCOUNT_JSON`: full service-account JSON key content.
    - `MCP_BEARER_TOKEN`: a randomly generated secret of at least 32 characters.
-   - `HUNTER_API_KEY`: your Hunter API key, stored only as a Cloudflare Worker secret. Never commit it or paste it into chat.
 5. Deploy this folder as its own Worker. Do not change the existing `starlight` website Worker. From a terminal in this folder, run:
 
    ```bash
@@ -27,23 +26,10 @@ Isolated Cloudflare Worker intended to let Grok call a narrowly scoped Google Sh
    npx wrangler login
    npx wrangler secret put MCP_BEARER_TOKEN
    npx wrangler secret put GOOGLE_SERVICE_ACCOUNT_JSON
-   npx wrangler secret put HUNTER_API_KEY
    npx wrangler deploy
    ```
 
    Enter the secret values only into the terminal prompts. Never paste them into chat or code.
-
-## Email verification service
-
-The MCP server exposes `verify_email_addresses`, which accepts up to 20 addresses per call and checks them through Hunter's Email Verifier API. It reports the provider status, MX/SMTP checks, catch-all, disposable and webmail flags, plus a conservative decision:
-
-- `sendable`: Hunter reports `valid`, confirms MX, SMTP server and mailbox SMTP check, and does not report catch-all, block, disposable or webmail.
-- `do_not_send`: the address is invalid or has a confirmed negative DNS/SMTP/disposable result.
-- `manual_review`: catch-all, unknown, blocked, pending or otherwise inconclusive.
-
-The production `append_verified_prospects` tool now re-verifies every supplied email before writing. Only `sendable` addresses pass; uncertain or negative addresses are returned in `rejected` and are not written. Prospects without an email may still be stored for research, but are not considered email-ready.
-
-To enable it, add `HUNTER_API_KEY` as a Cloudflare Worker secret and redeploy. Hunter's free plan has a small monthly credit allowance; 100 prospect checks per day will require an appropriate paid quota. A verification result is a point-in-time SMTP signal, not a guarantee of inbox placement or delivery. Catch-all domains are never auto-approved.
 
 ## Grok setup
 
