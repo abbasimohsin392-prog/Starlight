@@ -31,6 +31,20 @@ Isolated Cloudflare Worker intended to let Grok call a narrowly scoped Google Sh
 
    Enter the secret values only into the terminal prompts. Never paste them into chat or code.
 
+## Email domain checks
+
+The MCP server exposes `check_email_domain_routing`, which accepts up to 20 addresses per request. It runs address syntax checks and DNS-over-HTTPS lookups for MX records, with A/AAAA checks for possible SMTP implicit-MX fallback. It requires no paid verification API and no additional secret.
+
+Results are deliberately conservative:
+
+- `domain_routable`: valid address syntax and an MX record exists for the domain. This is domain-level routing only.
+- `manual_review`: DNS is inconclusive or only an A/AAAA implicit-MX fallback appears.
+- `do_not_use`: address syntax is invalid or the domain has no mail-routing records.
+
+The production `append_verified_prospects` writer now checks each supplied email's syntax and domain mail routing before it adds the email-bearing prospect to the production tracker. Addresses that fail or need review are returned in `rejected` and are not added. Prospects without an email may still be stored for research.
+
+**Important:** this service does not connect to the recipient SMTP server, confirm that an individual mailbox exists, or guarantee delivery or inbox placement. It must never be described as mailbox verification. Continue to monitor actual Gmail bounces and suppress failed or opted-out addresses.
+
 ## Grok setup
 
 1. Open Grok's custom connectors page and add a custom MCP connector using the deployed URL ending in `/mcp`.
