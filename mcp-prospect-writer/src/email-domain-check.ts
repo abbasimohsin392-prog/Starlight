@@ -26,7 +26,11 @@ function parseEmail(value: string): { normalized: string; domain: string } | nul
   if (local.startsWith('.') || local.endsWith('.') || local.includes('..')) return null;
   let domain: string;
   try {
-    domain = new URL('https://' + rawDomain).hostname.toLowerCase();
+    const parsedUrl = new URL('https://' + rawDomain);
+    if (parsedUrl.pathname !== '/' || parsedUrl.search || parsedUrl.hash || parsedUrl.username || parsedUrl.password || parsedUrl.port) {
+      return null;
+    }
+    domain = parsedUrl.hostname.toLowerCase();
   } catch {
     return null;
   }
@@ -62,6 +66,14 @@ async function checkOneEmail(email: string): Promise<DomainCheckResult> {
   try {
     const mxResponse = await queryDns(parsed.domain, 'MX');
     const mxAnswers = (mxResponse.Answer || []).filter((answer) => answer.type === 15 && typeof answer.data === 'string');
+    const isNullMx = mxAnswers.length === 1 && (mxAnswers[0].data || '').trim().split(/\s+/).slice(1).join(' ') === '.';
+    if (mxResponse.Status === 0 && isNullMx) {
+      return {
+        email: parsed.normalized, syntax_valid: true, routing_status: 'no_mail_routing',
+        decision: 'do_not_use', domain: parsed.domain, mx_hosts: [], checked_at: checkedAt,
+        explanation: 'The domain publishes a Null MX record, explicitly indicating that it does not accept email. This does not test an individual mailbox.',
+      };
+    }
     if (mxResponse.Status === 0 && mxAnswers.length > 0) {
       const hosts = mxAnswers.map((answer) => (answer.data || '').trim().split(/\s+/).slice(1).join(' ').replace(/\.$/, '')).filter(Boolean);
       return {
