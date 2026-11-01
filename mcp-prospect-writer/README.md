@@ -27,6 +27,7 @@ Isolated Cloudflare Worker intended to let Grok call a narrowly scoped Google Sh
    npx wrangler login
    npx wrangler secret put MCP_BEARER_TOKEN
    npx wrangler secret put GOOGLE_SERVICE_ACCOUNT_JSON
+   npx wrangler secret put HUNTER_API_KEY
    npx wrangler deploy
    ```
 
