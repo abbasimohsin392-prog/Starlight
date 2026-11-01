@@ -4,12 +4,10 @@ import { OAuthProvider, type OAuthHelpers, type ConsentDescription } from "@clou
 import { createMcpHandler } from "agents/mcp/server";
 import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { registerEmailVerificationTool, verifyEmailAddresses } from "./email-verifier";
 
 type Env = {
   __oauthTrace?: (stage: string) => void;
   MCP_BEARER_TOKEN?: string;
-  HUNTER_API_KEY?: string;
   GOOGLE_SERVICE_ACCOUNT_JSON?: string;
   TEST_SPREADSHEET_ID?: string;
   PRODUCTION_SPREADSHEET_ID?: string;
@@ -398,60 +396,22 @@ async function appendProductionProspects(env: Env, prospects: Prospect[]): Promi
     existingDomains.add(domain);
   }
 
-  const rejected: Array<{ business_name: string; email: string; status: string; decision: string; reasons: string[] }> = [];
-  const emailAddresses = Array.from(new Set(addedCandidates
-    .map((prospect) => prospect.email?.trim().toLowerCase())
-    .filter((email): email is string => Boolean(email))));
-  const verificationByEmail = new Map<string, Awaited<ReturnType<typeof verifyEmailAddresses>>[number]>();
-  if (emailAddresses.length > 0) {
-    const verificationResults = await verifyEmailAddresses(env, emailAddresses);
-    for (const result of verificationResults) verificationByEmail.set(result.email, result);
-  }
-
-  // Any supplied email must pass a fresh SMTP-backed verification before it is added to the production tracker.
-  const acceptedCandidates = addedCandidates.filter((prospect) => {
-    const email = prospect.email?.trim().toLowerCase();
-    if (!email) return true;
-    const verification = verificationByEmail.get(email);
-    if (verification?.decision === "sendable") return true;
-    rejected.push({
-      business_name: prospect.business_name,
-      email,
-      status: verification?.status || "unknown",
-      decision: verification?.decision || "manual_review",
-      reasons: verification?.reasons || ["No verified result returned; not added."],
-    });
-    return false;
-  });
-
   if (addedCandidates.length === 0) {
     return { ok: true, added: 0, skippedDuplicates, rejected: [], readBackVerified: true, message: "All submitted prospects were already present; no rows were written." };
   }
 
-  if (acceptedCandidates.length === 0) {
-    return {
-      ok: true,
-      added: 0,
-      skippedDuplicates,
-      rejected,
-      emailVerification: { checked: emailAddresses.length, passed: 0, held: rejected.length },
-      readBackVerified: true,
-      message: "No new prospects passed the required mailbox verification; no rows were written.",
-    };
-  }
-
-  const rows = acceptedCandidates.map((prospect) => mapProductionRow(headers, prospect));
+  const rows = addedCandidates.map((prospect) => mapProductionRow(headers, prospect));
   const appendResult = await sheetsAppend(env, env.PRODUCTION_SPREADSHEET_ID, PRODUCTION_TAB, rows);
   const verify = await sheetsGet(env, env.PRODUCTION_SPREADSHEET_ID, range);
   const verifyValues = verify.values || [];
   const verifyHeaders = verifyValues[0] || [];
   const verifyBusinessIndex = findHeaderIndex(verifyHeaders, ["Business Name", "Company Name", "Company", "Lead Name", "Prospect"]);
   const verifyWebsiteIndex = findHeaderIndex(verifyHeaders, ["Website", "Official Website", "URL"]);
-  const verified = acceptedCandidates.filter((prospect) => verifyValues.slice(1).some((row) =>
+  const verified = addedCandidates.filter((prospect) => verifyValues.slice(1).some((row) =>
     normalizeName(row[verifyBusinessIndex]) === normalizeName(prospect.business_name) &&
     normalizeDomain(row[verifyWebsiteIndex]) === normalizeDomain(prospect.website)
   ));
-  if (verified.length !== acceptedCandidates.length) {
+  if (verified.length !== addedCandidates.length) {
     throw new Error("The append request returned but read-back could not verify every submitted row. Do not retry blindly; inspect the Leads tab to avoid duplicates.");
   }
   return {
@@ -459,12 +419,7 @@ async function appendProductionProspects(env: Env, prospects: Prospect[]): Promi
     added: verified.length,
     addedBusinessNames: verified.map((prospect) => prospect.business_name),
     skippedDuplicates,
-    rejected,
-    emailVerification: {
-      checked: emailAddresses.length,
-      passed: emailAddresses.filter((email) => verificationByEmail.get(email)?.decision === "sendable").length,
-      held: rejected.length,
-    },
+    rejected: [],
     readBackVerified: true,
     updatedRange: appendResult.updates?.updatedRange || null,
   };
@@ -476,7 +431,7 @@ const prospectSchema = z.object({
   location: z.string().trim().min(2).max(200),
   services: z.string().trim().min(2).max(500),
   decision_maker: z.string().trim().max(200).optional(),
-  email: z.string().trim().email().max(320).optional(),
+  email: z.string().trim().max(320).optional(),
   phone: z.string().trim().max(80).optional(),
   website_observation: z.string().trim().min(2).max(1000),
   buying_signal: z.string().trim().max(1000).optional(),
@@ -494,10 +449,8 @@ const prospectSchema = z.object({
 function createServer(env: Env): McpServer {
   const server = new McpServer({
     name: "Starlight Prospect Sheet Writer",
-    version: "1.1.0",
+    version: "1.0.0",
   });
-
-  registerEmailVerificationTool(server, env);
 
   server.registerTool(
     "write_test_row",
