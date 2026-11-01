@@ -476,7 +476,7 @@ const prospectSchema = z.object({
   location: z.string().trim().min(2).max(200),
   services: z.string().trim().min(2).max(500),
   decision_maker: z.string().trim().max(200).optional(),
-  email: z.string().trim().max(320).optional(),
+  email: z.string().trim().email().max(320).optional(),
   phone: z.string().trim().max(80).optional(),
   website_observation: z.string().trim().min(2).max(1000),
   buying_signal: z.string().trim().max(1000).optional(),
