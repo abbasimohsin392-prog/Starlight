@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Nav } from '@/components/site/nav'
 import { Footer } from '@/components/site/footer'
+import { PilotOffers } from '@/components/site/pilot-offers'
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -58,15 +59,19 @@ export default function PricingPage() {
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">Transparent starting points</p>
             <h1 className="font-display mt-5 text-4xl font-bold tracking-tight md:text-6xl">Pricing built around the workflow.</h1>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Start with the business problem, not a bundle of features you may not need. These are starting monthly service prices in USD; we confirm the exact scope and all costs in writing before work begins.
+              Start with a fixed-scope pilot or explore a monthly plan for a custom workflow. We confirm scope and costs in writing before work begins.
             </p>
           </div>
 
-          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        </section>
+        <PilotOffers />
+        <section aria-labelledby="custom-plans" className="relative mx-auto max-w-7xl px-6">
+          <h2 id="custom-plans" className="font-display mt-8 text-3xl font-bold tracking-tight">Custom workflow plans</h2>
+          <div className="mt-6 grid gap-6 lg:grid-cols-3">
             {plans.map((plan) => (
               <article key={plan.name} className={plan.featured ? 'flex flex-col rounded-3xl border border-primary/60 bg-surface p-7 shadow-[0_0_40px_-16px_var(--glow)] md:p-9' : 'flex flex-col rounded-3xl border border-border bg-surface/60 p-7 md:p-9'}>
                 <div className="flex items-center justify-between gap-4">
-                  <h2 className="font-display text-2xl font-bold">{plan.name}</h2>
+                  <h3 className="font-display text-2xl font-bold">{plan.name}</h3>
                   {plan.featured && <span className="rounded-full bg-primary/15 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-primary">Connected workflow</span>}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{plan.summary}</p>
