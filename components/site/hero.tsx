@@ -75,10 +75,10 @@ export function Hero() {
           >
             <Magnetic>
               <a
-                href="#contact"
+                href="#pilots"
                 className="glow-primary group inline-flex h-14 items-center gap-3 rounded-full bg-primary pl-7 pr-2 text-base font-semibold text-primary-foreground"
               >
-                Book a strategy call
+                See pilot prices
                 <span className="flex size-10 items-center justify-center rounded-full bg-background/20 transition-transform group-hover:translate-x-1">
                   <ArrowRight className="size-4" />
                 </span>
@@ -86,10 +86,10 @@ export function Hero() {
             </Magnetic>
             <Magnetic strength={0.2}>
               <a
-                href="#systems"
+                href="/demo/ai-receptionist#walkthrough"
                 className="inline-flex h-14 items-center rounded-full border border-border bg-surface/40 px-7 text-base font-semibold backdrop-blur transition-colors hover:border-foreground/40"
               >
-                See the systems
+                Watch the 60-second demo
               </a>
             </Magnetic>
           </motion.div>

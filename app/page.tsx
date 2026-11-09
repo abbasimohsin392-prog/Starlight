@@ -1,5 +1,6 @@
 import { Nav } from '@/components/site/nav'
 import { Hero } from '@/components/site/hero'
+import { PilotOffers } from '@/components/site/pilot-offers'
 import { Marquee } from '@/components/site/marquee'
 import { Services } from '@/components/site/services'
 import { Process } from '@/components/site/process'
@@ -21,6 +22,7 @@ export default function HomePage() {
       <Nav />
       <main id="main-content">
         <Hero />
+        <PilotOffers />
         <Marquee />
         <Services />
         <Process />
