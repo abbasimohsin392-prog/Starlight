@@ -38,9 +38,14 @@ export default function AIReceptionistDemoPage() {
             >
               <track kind="captions" src="/demo/robot-explainer.vtt?v=2" srcLang="en" label="English" />
             </video>
-            <a href="/demo/leasing-walkthrough.mp4" className="mt-3 inline-block text-sm font-semibold text-primary hover:underline">
-              Watch the full leasing example
-            </a>
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <a href="/contact?pilot=receptionist#pilot-request" className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]">
+                Request the $49 pilot <ArrowRight className="size-4" />
+              </a>
+              <a href="/demo/leasing-walkthrough.mp4" className="text-sm font-semibold text-primary hover:underline">
+                Watch the full leasing example
+              </a>
+            </div>
           </section>
 
           <div className="mx-auto mt-12 max-w-5xl">
