@@ -71,7 +71,7 @@ function Field({
   )
 }
 
-export function Contact() {
+export function Contact({ receptionistPilot = false }: { receptionistPilot?: boolean }) {
   const [state, action, pending] = useActionState(submitContact, initial)
 
   return (
@@ -83,9 +83,11 @@ export function Contact() {
         <div>
           <SectionHeader
             headingLevel="h1"
-            eyebrow="Let’s talk"
-            title="Ready to stop losing leads to voicemail?"
-            description="Book a free 30-minute strategy call. We’ll map one customer workflow, identify a practical opportunity, and outline what a scoped AI solution could look like."
+            eyebrow={receptionistPilot ? '7-day pilot' : 'Let’s talk'}
+            title={receptionistPilot ? 'Request the $49 receptionist pilot' : 'Ready to stop losing leads to voicemail?'}
+            description={receptionistPilot
+              ? 'Tell us who to contact. We’ll confirm the call setup and pilot details with you before payment.'
+              : 'Book a free 30-minute strategy call. We’ll map one customer workflow, identify a practical opportunity, and outline what a scoped AI solution could look like.'}
           />
           <Reveal className="mt-12 space-y-4" delay={0.2}>
             <a href={`mailto:${site.email}`} className="group flex items-center gap-4 text-lg">
@@ -108,7 +110,9 @@ export function Contact() {
             </a>
           </Reveal>
           <Reveal className="mt-12 flex flex-wrap gap-3" delay={0.3}>
-            {['Free strategy call', 'No commitment', 'Reply within 1 business day'].map((chip) => (
+            {(receptionistPilot
+              ? ['40 call minutes included', 'Reply within 1 business day']
+              : ['Free strategy call', 'No commitment', 'Reply within 1 business day']).map((chip) => (
               <span key={chip} className="flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm">
                 <Check className="size-3.5 text-primary" /> {chip}
               </span>
@@ -117,7 +121,7 @@ export function Contact() {
         </div>
 
         <Reveal delay={0.15} amount={0.2}>
-          <div className="relative rounded-[2rem] border border-border bg-surface/70 p-6 backdrop-blur md:p-10">
+          <div id={receptionistPilot ? 'pilot-request' : undefined} className="relative scroll-mt-28 rounded-[2rem] border border-border bg-surface/70 p-6 backdrop-blur md:p-10">
             <AnimatePresence mode="wait">
               {state.status === 'success' ? (
                 <motion.div
@@ -148,12 +152,21 @@ export function Contact() {
                   exit={{ opacity: 0, y: -12 }}
                   className="space-y-5"
                 >
+                  {receptionistPilot && (
+                    <div className="rounded-2xl border border-primary/40 bg-primary/5 p-4">
+                      <p className="text-sm font-semibold">After-hours AI receptionist pilot selected</p>
+                      <p className="mt-1 text-sm text-muted-foreground">$49 for 7 days. The pilot fee goes toward your first month if you continue.</p>
+                      <input type="hidden" name="message" value="I’m interested in the $49, 7-day after-hours AI receptionist pilot." />
+                    </div>
+                  )}
                   <div className="grid gap-5 sm:grid-cols-2">
                     <Field label="Your name" name="name" autoComplete="name" error={state.errors?.name} />
                     <Field label="Work email" name="email" type="email" autoComplete="email" error={state.errors?.email} />
                   </div>
                   <Field label="Business name" name="business" autoComplete="organization" error={state.errors?.business} />
-                  <Field label="What would you like to automate?" name="message" textarea error={state.errors?.message} />
+                  {!receptionistPilot && (
+                    <Field label="What would you like to automate?" name="message" textarea error={state.errors?.message} />
+                  )}
                   <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
 
                   {state.status === 'error' && state.message && (
@@ -178,7 +191,7 @@ export function Contact() {
                         </>
                       ) : (
                         <>
-                          Request my AI system
+                          {receptionistPilot ? 'Request the pilot' : 'Request my AI system'}
                           <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                         </>
                       )}
