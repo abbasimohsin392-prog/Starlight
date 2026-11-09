@@ -51,7 +51,7 @@ export function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="font-display text-[clamp(2.75rem,7.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.03em]">
+          <h1 className="font-display text-[clamp(2.25rem,6vw,5.25rem)] font-bold leading-[0.95] tracking-[-0.03em]">
             <SplitWords text="Turn after-hours" delay={introDelay + 0.1} />
             <br />
             <SplitWords text="enquiries into" delay={introDelay + 0.25} />{' '}
