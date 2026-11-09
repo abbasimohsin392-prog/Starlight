@@ -89,7 +89,7 @@ export function Hero() {
                 href="/demo/ai-receptionist#walkthrough"
                 className="inline-flex h-14 items-center rounded-full border border-border bg-surface/40 px-7 text-base font-semibold backdrop-blur transition-colors hover:border-foreground/40"
               >
-                Watch the 60-second demo
+                Watch the 30-second demo
               </a>
             </Magnetic>
           </motion.div>
