@@ -26,25 +26,21 @@ export default function AIReceptionistDemoPage() {
           </div>
 
           <section id="walkthrough" aria-labelledby="walkthrough-heading" className="mx-auto mt-10 max-w-3xl scroll-mt-28">
-            <h2 id="walkthrough-heading" className="font-display text-2xl font-bold">Watch an after-hours leasing enquiry</h2>
-            <p className="mt-2 text-sm text-muted-foreground">A one-minute illustrated walkthrough of a sample call and the email your team could receive.</p>
+            <h2 id="walkthrough-heading" className="font-display text-2xl font-bold">Meet the AI receptionist in 30 seconds</h2>
+            <p className="mt-2 text-sm text-muted-foreground">Watch an animated, narrated preview of how Starlight answers after-hours calls and passes enquiries to your team.</p>
             <video
-              aria-label="Illustrated after-hours leasing enquiry"
+              aria-label="Animated Starlight AI receptionist explainer"
               className="mt-4 aspect-video w-full rounded-2xl border border-border bg-surface"
               controls
               playsInline
               preload="metadata"
-              src="/demo/leasing-walkthrough.mp4"
-            />
-            <details className="mt-3 text-sm text-muted-foreground">
-              <summary className="cursor-pointer font-semibold">Read the walkthrough</summary>
-              <ol className="mt-2 list-decimal space-y-2 pl-5">
-                <li>A caller asks about a two-bedroom apartment after the leasing office closes.</li>
-                <li>The assistant offers to pass along a viewing request and asks for a name, callback number, and preferred time.</li>
-                <li>The caller gives their details and requests Saturday morning. The assistant says the team will confirm availability.</li>
-                <li>The team receives an email with the enquiry and can follow up when the office reopens.</li>
-              </ol>
-            </details>
+              src="/demo/robot-explainer.mp4"
+            >
+              <track kind="captions" src="/demo/robot-explainer.vtt" srcLang="en" label="English" />
+            </video>
+            <a href="/demo/leasing-walkthrough.mp4" className="mt-3 inline-block text-sm font-semibold text-primary hover:underline">
+              Watch the full leasing example
+            </a>
           </section>
 
           <div className="mx-auto mt-12 max-w-5xl">
