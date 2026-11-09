@@ -34,9 +34,9 @@ export default function AIReceptionistDemoPage() {
               controls
               playsInline
               preload="metadata"
-              src="/demo/robot-explainer.mp4"
+              src="/demo/robot-explainer.mp4?v=2"
             >
-              <track kind="captions" src="/demo/robot-explainer.vtt" srcLang="en" label="English" />
+              <track kind="captions" src="/demo/robot-explainer.vtt?v=2" srcLang="en" label="English" />
             </video>
             <a href="/demo/leasing-walkthrough.mp4" className="mt-3 inline-block text-sm font-semibold text-primary hover:underline">
               Watch the full leasing example
