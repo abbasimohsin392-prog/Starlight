@@ -52,10 +52,10 @@ export function Hero() {
           </motion.div>
 
           <h1 className="font-display text-[clamp(2.75rem,7.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.03em]">
-            <SplitWords text="Less busywork," delay={introDelay + 0.1} />
+            <SplitWords text="Turn after-hours" delay={introDelay + 0.1} />
             <br />
-            <SplitWords text="more time for" delay={introDelay + 0.25} />{' '}
-            <SplitWords text="real growth." className="text-gradient" delay={introDelay + 0.4} />
+            <SplitWords text="enquiries into" delay={introDelay + 0.25} />{' '}
+            <SplitWords text="follow-ups." className="text-gradient" delay={introDelay + 0.4} />
           </h1>
 
           <motion.p
