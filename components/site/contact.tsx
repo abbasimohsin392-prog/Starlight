@@ -86,7 +86,7 @@ export function Contact({ receptionistPilot = false }: { receptionistPilot?: boo
             eyebrow={receptionistPilot ? '7-day pilot' : 'Let’s talk'}
             title={receptionistPilot ? 'Request the $49 receptionist pilot' : 'Ready to stop losing leads to voicemail?'}
             description={receptionistPilot
-              ? 'Tell us who to contact. We’ll confirm the call setup and pilot details with you before payment.'
+              ? 'For home-service businesses: capture after-hours job enquiries and send the details to your team. Tell us who to contact; we’ll confirm the call setup and any provider fees before payment.'
               : 'Book a free 30-minute strategy call. We’ll map one customer workflow, identify a practical opportunity, and outline what a scoped AI solution could look like.'}
           />
           <Reveal className="mt-12 space-y-4" delay={0.2}>
@@ -154,7 +154,7 @@ export function Contact({ receptionistPilot = false }: { receptionistPilot?: boo
                 >
                   {receptionistPilot && (
                     <div className="rounded-2xl border border-primary/40 bg-primary/5 p-4">
-                      <p className="text-sm font-semibold">After-hours AI receptionist pilot selected</p>
+                      <p className="text-sm font-semibold">Home-services receptionist pilot selected</p>
                       <p className="mt-1 text-sm text-muted-foreground">$49 for 7 days. The pilot fee goes toward your first month if you continue.</p>
                       <input type="hidden" name="message" value="I’m interested in the $49, 7-day after-hours AI receptionist pilot." />
                     </div>
