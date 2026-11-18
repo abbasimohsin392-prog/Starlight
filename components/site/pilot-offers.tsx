@@ -10,12 +10,12 @@ const pilots = [
   },
   {
     market: 'United States',
-    name: 'After-hours AI receptionist',
+    name: 'After-hours AI receptionist for home services',
     price: '$49',
     monthly: '$99/month',
-    description: 'Answer leasing calls after hours and email enquiry details to your team.',
+    description: 'Answer after-hours service calls, capture job details, and email enquiries to your team for follow-up.',
     limits: '40 call minutes in the pilot. 100 call minutes per month if you continue.',
-    href: 'mailto:hello@starlightai.site?subject=After-hours%20AI%20receptionist%20pilot',
+    href: '/contact?pilot=receptionist#pilot-request',
   },
 ]
 
