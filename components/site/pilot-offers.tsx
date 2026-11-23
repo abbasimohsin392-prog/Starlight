@@ -1,6 +1,7 @@
 const pilots = [
   {
     market: 'Pakistan',
+    durationDays: 7,
     name: 'WhatsApp lead capture',
     price: 'PKR 4,900',
     monthly: 'PKR 7,900/month',
@@ -10,6 +11,7 @@ const pilots = [
   },
   {
     market: 'International',
+    durationDays: 14,
     name: 'After-hours AI receptionist for home services',
     price: '$29',
     monthly: 'Plans from $79/month',
@@ -23,10 +25,10 @@ export function PilotOffers() {
   return (
     <section id="pilots" aria-labelledby="pilot-heading" className="mx-auto max-w-7xl scroll-mt-28 px-6 py-12">
       <h2 id="pilot-heading" className="font-display text-3xl font-bold tracking-tight md:text-4xl">
-        Try a 14-day pilot
+        Try a fixed-scope pilot
       </h2>
       <p className="mt-3 max-w-2xl text-muted-foreground">
-        Try a fixed-scope AI receptionist pilot with approved FAQs, lead capture and human handoff. The $29 receptionist pilot is for 14 days. We confirm setup, call allowance and provider costs before payment. The pilot fee is credited toward the first month if you continue.
+        Choose a scoped pilot. Pakistan WhatsApp lead capture runs for 7 days; the international AI receptionist pilot is $29 for 14 days. We confirm usage limits, technical setup and provider fees before payment. Pilot fees are credited toward the first month if you continue.
       </p>
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         {pilots.map((pilot) => (
@@ -35,7 +37,7 @@ export function PilotOffers() {
             <h3 className="font-display mt-3 text-2xl font-bold">{pilot.name}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{pilot.description}</p>
             <p className="mt-5 text-sm text-muted-foreground">
-              <strong className="font-display text-3xl font-bold text-foreground">{pilot.price}</strong> for 14 days
+              <strong className="font-display text-3xl font-bold text-foreground">{pilot.price}</strong> for {pilot.durationDays} days
             </p>
             <p className="mt-2 text-sm font-semibold">{pilot.monthly} if you continue</p>
             <p className="mb-6 mt-2 text-sm text-muted-foreground">{pilot.limits}</p>
