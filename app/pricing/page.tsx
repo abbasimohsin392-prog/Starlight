@@ -11,11 +11,11 @@ export const metadata: Metadata = {
 const plans = [
   {
     name: 'Starter',
-    price: '$149',
-    summary: 'For one clearly defined enquiry workflow.',
+    price: '$39',
+    summary: 'For a website AI chatbot and enquiry capture.',
     features: [
-      'One agreed website chatbot or straightforward lead workflow',
-      'One primary channel and lead-capture path',
+      'Website AI chatbot with approved FAQs',
+      'One website lead-capture path and email notifications',
       'Approved business information and a defined human handoff',
       'Monthly service scope and support stated in your proposal',
     ],
@@ -23,23 +23,23 @@ const plans = [
   },
   {
     name: 'Growth',
-    price: '$299',
-    summary: 'For a tailored assistant connected to your day-to-day tools.',
+    price: '$79',
+    summary: 'For limited AI receptionist call handling and summaries.',
     features: [
-      'A customized assistant for one agreed business use case',
-      'An agreed CRM, calendar, or inbox connection',
-      'Lead qualification and team notifications where supported',
+      'One configured AI phone receptionist for an agreed use case',
+      'Limited call minutes, with allowance confirmed before payment',
+      'Call summaries and lead notifications where supported',
       'Review against success measures agreed before launch',
     ],
     featured: true,
   },
   {
     name: 'Pro',
-    price: '$499+',
-    summary: 'For more involved workflows and integrations.',
+    price: '$149',
+    summary: 'For higher usage and scoped integrations.',
     features: [
-      'Multi-step or multi-channel workflows, as scoped',
-      'Multiple agreed integrations where technically supported',
+      'Higher voice usage allowance, with an agreed limit',
+      'Booking request routing and custom integrations where supported',
       'Defined routing and escalation for more complex requests',
       'Monitoring and optimization cadence specified in your proposal',
     ],
@@ -66,13 +66,13 @@ export default function PricingPage() {
         </section>
         <PilotOffers />
         <section aria-labelledby="custom-plans" className="relative mx-auto max-w-7xl px-6">
-          <h2 id="custom-plans" className="font-display mt-8 text-3xl font-bold tracking-tight">Custom workflow plans</h2>
+          <h2 id="custom-plans" className="font-display mt-8 text-3xl font-bold tracking-tight">Monthly plans</h2>
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
             {plans.map((plan) => (
               <article key={plan.name} className={plan.featured ? 'flex flex-col rounded-3xl border border-primary/60 bg-surface p-7 shadow-[0_0_40px_-16px_var(--glow)] md:p-9' : 'flex flex-col rounded-3xl border border-border bg-surface/60 p-7 md:p-9'}>
                 <div className="flex items-center justify-between gap-4">
                   <h3 className="font-display text-2xl font-bold">{plan.name}</h3>
-                  {plan.featured && <span className="rounded-full bg-primary/15 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-primary">Connected workflow</span>}
+                  {plan.featured && <span className="rounded-full bg-primary/15 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-primary">Popular plan</span>}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{plan.summary}</p>
                 <p className="mt-8">

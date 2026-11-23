@@ -83,8 +83,8 @@ export function Contact({ receptionistPilot = false }: { receptionistPilot?: boo
         <div>
           <SectionHeader
             headingLevel="h1"
-            eyebrow={receptionistPilot ? '7-day pilot' : 'Let’s talk'}
-            title={receptionistPilot ? 'Request the $49 receptionist pilot' : 'Ready to stop losing leads to voicemail?'}
+            eyebrow={receptionistPilot ? '14-day pilot' : 'Let’s talk'}
+            title={receptionistPilot ? 'Request the $29 receptionist pilot' : 'Ready to stop losing leads to voicemail?'}
             description={receptionistPilot
               ? 'For home-service businesses: capture after-hours job enquiries and send the details to your team. Tell us who to contact; we’ll confirm the call setup and any provider fees before payment.'
               : 'Book a free 30-minute strategy call. We’ll map one customer workflow, identify a practical opportunity, and outline what a scoped AI solution could look like.'}
@@ -111,7 +111,7 @@ export function Contact({ receptionistPilot = false }: { receptionistPilot?: boo
           </Reveal>
           <Reveal className="mt-12 flex flex-wrap gap-3" delay={0.3}>
             {(receptionistPilot
-              ? ['40 call minutes included', 'Reply within 1 business day']
+              ? ['Usage confirmed before payment', 'Reply within 1 business day']
               : ['Free strategy call', 'No commitment', 'Reply within 1 business day']).map((chip) => (
               <span key={chip} className="flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm">
                 <Check className="size-3.5 text-primary" /> {chip}
@@ -155,8 +155,8 @@ export function Contact({ receptionistPilot = false }: { receptionistPilot?: boo
                   {receptionistPilot && (
                     <div className="rounded-2xl border border-primary/40 bg-primary/5 p-4">
                       <p className="text-sm font-semibold">Home-services receptionist pilot selected</p>
-                      <p className="mt-1 text-sm text-muted-foreground">$49 for 7 days. The pilot fee goes toward your first month if you continue.</p>
-                      <input type="hidden" name="message" value="I’m interested in the $49, 7-day after-hours AI receptionist pilot." />
+                      <p className="mt-1 text-sm text-muted-foreground">$29 for 14 days. Exact call limits and provider fees are confirmed before payment. The pilot fee is credited toward your first month if you continue.</p>
+                      <input type="hidden" name="message" value="I’m interested in the $29, 14-day after-hours AI receptionist pilot." />
                     </div>
                   )}
                   <div className="grid gap-5 sm:grid-cols-2">
